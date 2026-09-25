@@ -21,7 +21,7 @@
 <style>
 /* ------------------------------------------------------------------
    Boogie · the studio's class app — an ode to Mondrian.
-   White ground. Red, blue, yellow, black. No rounded corners.
+   White ground. Planes in red, blue, yellow or white — black is for lines, never a plane. No rounded corners.
    A black line exists only where two substances meet: no rules
    hanging in space, no offset shadows, no dashed edges.
 ------------------------------------------------------------------ */
@@ -585,13 +585,13 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
    Each person's mark belongs to a FAMILY seeded from their email — how
    dense the grid, how thick the lines, how much colour, which colours win.
    The family is for life; the composition is minted fresh each day. */
-const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", black:"#151515", white:"#ffffff"};
+const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", white:"#ffffff", black:"#151515"}; // black is for lines only — never a plane
 const FAMILIES = [
   // lw: ONE line weight per family (fraction of the side) — every cut and the frame share it
-  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2,black:1}, lw:.040},
-  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3,black:1}, lw:.028},
-  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5,black:0}, lw:.016},
-  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4,black:2}, lw:.032},
+  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.040},
+  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.028},
+  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5}, lw:.016},
+  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4}, lw:.032},
 ];
 let _mid=0;
 const mRatio = (r,P)=>{ if(r()<P.strip){ const s=.08+r()*.14; return r()<.5?s:1-s; } return .3+r()*.4; };

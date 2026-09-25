@@ -17,9 +17,9 @@ A single self-contained `index.html` (vanilla JS, no build step) on Firebase
 
 ## An ode to Mondrian
 
-White ground; red, blue, yellow, black; no rounded corners; and a black line
-only where two planes meet — never a rule hanging in space, never an offset
-shadow. The whole app is painted by one **long-form Mondrian program**
+White ground; planes only in red, blue, yellow or white — black is for lines,
+never a plane; no rounded corners; and a black line only where two planes meet
+— never a rule hanging in space, never an offset shadow. The whole app is painted by one **long-form Mondrian program**
 (`Mondrian` class in `index.html`):
 
 - A composition is a binary partition of the square — every cut is vertical
