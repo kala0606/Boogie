@@ -19,6 +19,7 @@ the logo.
 3. Open it and sign in:
    - Your **@learner.manipal.edu** email
    - Password: your **first name, lowercase** (e.g. `oorja`)
+   - First time only, the class password: **MONDRIAN**
    - That's it — your name is already on the class list.
 - *(If it ever looks oddly plain or stale, close it and open it again.)*
 
@@ -37,8 +38,11 @@ the logo.
 
 ## For faculty
 
-- Anyone with an `@learner.manipal.edu` address can sign in as a student; any
-  `@manipal.edu` address signs in as faculty and can post Announcements. No
-  approval step — share the link (Me → *Copy invite message*).
+- Anyone with an `@learner.manipal.edu` address **and the class password**
+  can sign up as a student; any `@manipal.edu` address with the password signs
+  up as faculty and can post Announcements. No approval step — share the link
+  (Me → *Copy invite message*, which includes the password). The password is
+  enforced server-side; to change it, update the SHA-256 in `firestore.rules`
+  and `index.html` and redeploy the rules.
 - The **Class** tab shows who hasn't joined yet.
 - Reset a password / remove someone: Firebase console (Authentication + Firestore).

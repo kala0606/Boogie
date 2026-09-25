@@ -371,13 +371,15 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     <div class="scrim" data-close="sheetWrap"></div>
     <div class="sheet">
       <h4>Sign in</h4>
-      <p class="sub">Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? That's the whole sign-up — we already know your name from the class list.</p>
+      <p class="sub">Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? Add the <b>class password</b> from the invite — that's the whole sign-up; we already know your name from the class list.</p>
       <label class="flabel">Email</label>
       <input class="finput" id="loginEmail" type="email" inputmode="email" autocomplete="username" placeholder="you.smiblr2025@learner.manipal.edu">
       <label class="flabel">Password</label>
       <input class="finput" id="loginPass" type="password" autocomplete="current-password" placeholder="your first name">
       <label class="flabel">Your name <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— if we don't have it already</span></label>
       <input class="finput" id="loginName" autocomplete="name" placeholder="e.g. Oorja Mundra">
+      <label class="flabel">Class password <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— first time only</span></label>
+      <input class="finput" id="loginKey" autocomplete="off" autocapitalize="characters" placeholder="from the invite">
       <button class="createbtn" id="loginBtn">Enter</button>
       <p class="fine" id="loginErr" style="min-height:16px;color:var(--red)"></p>
     </div>
@@ -529,7 +531,14 @@ let people=[];               // live profiles from Firestore
 let unsubs=[];               // realtime listeners torn down on sign-out
 let curChan=null;
 let dmThreadsData=[], liveMsgs=[], allDMs=[], msgUnsub=null;
-let pendingSignup=null;      // {name} captured for a first-time account
+let pendingSignup=null;      // {name, key} captured for a first-time account
+// the class password is checked server-side (firestore.rules); this hash only lets the form say "wrong" instantly
+const CLASS_KEY_SHA256="afde2d40bbe599fe1415802cd8fea5a4d167597eafcd61018e313c1523908d93";
+async function keyLooksRight(k){
+  if(!(crypto&&crypto.subtle)) return true;              // can't check here — the rules still will
+  const buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(k.trim().toUpperCase()));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("")===CLASS_KEY_SHA256;
+}
 
 /* ------------ helpers ------------ */
 const $ = s=>document.querySelector(s);
@@ -1033,7 +1042,10 @@ async function doLogin(){
         const r=rosterFind(email);
         const name=$("#loginName").value.trim() || (r?r.n:"");
         if(!name) throw {code:"need-name"};
-        pendingSignup={name};
+        const key=$("#loginKey").value.trim();
+        if(!key) throw {code:"need-key"};
+        if(!(await keyLooksRight(key))) throw {code:"wrong-key"};
+        pendingSignup={name, key};
         try{ await auth.createUserWithEmailAndPassword(email,pass); }
         catch(e2){
           if(e2.code==="auth/email-already-in-use") throw {code:"wrong-pass"};
@@ -1045,11 +1057,14 @@ async function doLogin(){
   }catch(e){
     btn.disabled=false;
     err(e.code==="need-name" ? "New here? Add your name above to create your account." :
+        e.code==="need-key" ? "New here? Add the class password from the invite." :
+        e.code==="wrong-key" ? "That's not the class password — check the invite." :
         e.code==="wrong-pass" ? "That email already has an account — the password is your first name, lowercase." :
         e.code==="auth/invalid-email" ? "That doesn't look like an email." :
         e.code==="auth/weak-password" ? "Use your first name as the password." :
         "Couldn't sign in — please try again.");
     if(e.code==="need-name") $("#loginName").focus();
+    if(e.code==="need-key"||e.code==="wrong-key") $("#loginKey").focus();
   }
 }
 if(FB_OK) auth.onAuthStateChanged(async user=>{
@@ -1060,16 +1075,20 @@ if(FB_OK) auth.onAuthStateChanged(async user=>{
     const ref=db.collection("profiles").doc(user.uid);
     let snap=await ref.get();
     if(!snap.exists){
+      // first sign-in: the profile is created now. The class password travels with it and
+      // is checked by the rules; the account exists already, so a wrong key can simply be retried.
       const info=pendingSignup||{}; const r=rosterFind(email);
-      const name=info.name || (r?r.n:null) || email.split("@")[0];
+      const name=info.name || $("#loginName").value.trim() || (r?r.n:null) || email.split("@")[0];
+      const key=info.key || $("#loginKey").value.trim();
       pendingSignup=null;
+      if(!key){ err("New here? Add the class password from the invite."); await auth.signOut(); $("#loginBtn").disabled=false; $("#loginKey").focus(); return; }
       try{
-        await ref.set({email, name, role:roleFor(email), isAdmin:email===OWNER, joinedAt:svTime()});
+        await ref.set({email, name, role:roleFor(email), isAdmin:email===OWNER, key, joinedAt:svTime()});
         snap=await ref.get();
       }catch(rulesErr){
         console.error(rulesErr);
-        err("Couldn't create your profile — is this a class email?");
-        await auth.signOut(); $("#loginBtn").disabled=false; return;
+        err("That's not the class password — check the invite.");
+        await auth.signOut(); $("#loginBtn").disabled=false; $("#loginKey").focus(); return;
       }
     }
     const p=snap.data();
@@ -1287,7 +1306,7 @@ function openDM(email, name){
 /* ------------ faculty: invite the class ------------ */
 function copyInvite(){
   const url=location.origin+location.pathname;
-  const msg=`Boogie — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
+  const msg=`Boogie — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. First time, it also asks for the class password: MONDRIAN. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
   navigator.clipboard.writeText(msg).then(()=>toast("Invite copied — paste it in the class group"),
     ()=>toast("Couldn't copy — long-press to select"));
 }
@@ -1299,6 +1318,7 @@ $("#loginEmail").addEventListener("input",prefillName);
 $("#loginEmail").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#loginPass").focus(); });
 $("#loginPass").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
 $("#loginName").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
+$("#loginKey").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
 $("#signoutBtn").addEventListener("click",signOut);
 $("#copyInviteBtn").addEventListener("click",copyInvite);
 $("#meMark").addEventListener("click",shiftMeMark);

@@ -81,7 +81,11 @@ Roles come from the **email domain**, enforced both in the app and in
 
 There is no invite list. Sign-in is email + password, where the password is
 your **first name, lowercase** (padded client-side to satisfy Firebase's
-6-character minimum). First sign-in creates the account.
+6-character minimum). First sign-in creates the account — and needs the
+**class password**, which is enforced in `firestore.rules` (only its SHA-256
+is in the repo; the word itself is in the welcome note you send the class).
+To change it: put the new hash in `firestore.rules` and `CLASS_KEY_SHA256` in
+`index.html`, then `firebase deploy --only firestore:rules`.
 
 The class roster lives in `index.html` (`ROSTER`). It only **pre-fills names**
 and shows on the Class tab who hasn't joined yet — it is *not* a gate, so a

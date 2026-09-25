@@ -4,7 +4,7 @@ rules_version = '2';
 // Roles come from the email domain, never from the client:
 //   @learner.manipal.edu  → student
 //   @manipal.edu          → faculty   (no "learner." — the two patterns are mutually exclusive)
-// Only the studio owner's address gets isAdmin.
+// Only the studio owner's address gets isAdmin. Creating a profile also needs the class password.
 // Deploy: firebase deploy --only firestore:rules
 
 service cloud.firestore {
@@ -25,12 +25,15 @@ service cloud.firestore {
 
       // First sign-in creates the profile. Email must be the token's own
       // address, role must match the domain, isAdmin only for the owner.
+      // …and the class password (only its SHA-256 lives here; case-insensitive).
       allow create: if signedIn() && request.auth.uid == uid
         && request.resource.data.email == myEmail()
         && (isStudentEmail(myEmail()) || isFacultyEmail(myEmail()))
         && request.resource.data.role == (isStudentEmail(myEmail()) ? 'student' : 'faculty')
         && request.resource.data.isAdmin == isOwnerEmail(myEmail())
-        && okText(request.resource.data.name, 80);
+        && okText(request.resource.data.name, 80)
+        && request.resource.data.key is string
+        && hashing.sha256(request.resource.data.key.upper()).toHexString().lower() == 'afde2d40bbe599fe1415802cd8fea5a4d167597eafcd61018e313c1523908d93';
 
       // You may edit your own display name / bio, nothing else.
       allow update: if signedIn() && request.auth.uid == uid
