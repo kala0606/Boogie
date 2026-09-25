@@ -5,7 +5,7 @@ Srishti Manipal Institute. Announcements, studio chat, show & tell, and direct
 messages between students and faculty.
 
 > Named after *Broadway Boogie Woogie* (1942–43), Mondrian's last painting —
-> a grid made of rhythm and movement. The logo moves once a second.
+> a grid made of rhythm and movement. The logo moves to a noise field's tempo.
 
 *(The repository, URL and Firebase project keep their old name, **Katte**, from
 the app's first life as a faculty availability pilot. Internal storage keys
@@ -32,8 +32,14 @@ never a plane; no rounded corners; and a black line only where two planes meet
   there — and slides inward; a merging cut slides back into the edge and
   vanishes into it; a colour **sweeps** across a plane as a cut travelling
   edge to edge. Nothing scales, nothing thins, nothing changes colour in
-  place, so nothing blinks. The **logo** ticks once a second — ⅓ s hold,
-  ⅔ s move — and the sign-in hero is the same daily composition, large.
+  place, so nothing blinks. The sign-in hero is the same daily composition
+  as the logo, large.
+- **Dr Perlin conducts.** The timeline is not seconds. A seeded 1-D Perlin
+  noise field sets the speed at which a step advances: where the noise runs
+  high the composition moves quickly, where it dips it slows, and below a
+  threshold it rests — so holds and rushes fall where the noise puts them,
+  of whatever length, and a cut may even pause mid-slide. The logo and the
+  hero share a seed and breathe together.
 - **Every cut moves on its own clock.** How far it travels sets how long it
   takes; the kind of move sets its easing — a birth bursts from the edge and
   settles, a collapse hesitates then accelerates into the edge, a slide

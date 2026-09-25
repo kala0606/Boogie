@@ -582,7 +582,7 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
    inside a plane (recursion: a framed composition inset in a plane, same
    line weight, which may itself hold one). Every mutation is continuous,
    so the picture can move from one state to the next: that is the logo,
-   ticking once a second, and it is the tap on your own mark.
+   moving to Dr Perlin's tempo, and it is the tap on your own mark.
 
    Each person's mark belongs to a FAMILY seeded from their email — how
    dense the grid, how thick the lines, how much colour, which colours win.
@@ -642,6 +642,24 @@ const EASE={
   sweep: q=>q<.5 ? 16*Math.pow(q,5) : 1-Math.pow(-2*q+2,5)/2, // a sweep: one long, decisive stroke
 };
 function mAnim(c,dist,kind){ const dur=.35+.65*Math.min(1,dist/.5); return {kind, dur, delay:c.r()*(1-dur)*.8}; }
+/* ---- tempo ----
+   Dr Perlin conducts. The timeline is not seconds: a seeded 1-D noise field
+   sets the speed at which a step's progress advances. Where the noise runs
+   high the composition moves quickly; where it dips it slows; below a
+   threshold it rests — so holds and rushes fall where the noise puts them,
+   of whatever length, and a cut may even pause mid-slide. Two players with
+   the same seed breathe together. */
+function perlin1(seed){
+  const g=new Float32Array(512), r=mulberry32(hashStr(seed));
+  for(let i=0;i<512;i++) g[i]=r()*2-1;
+  const fade=t=>t*t*t*(t*(t*6-15)+10);
+  return x=>{ const xi=Math.floor(x), xf=x-xi, a=g[xi&511]*xf, b=g[(xi+1)&511]*(xf-1); return (a+(b-a)*fade(xf))*2; };
+}
+function tempo(noise,t){
+  const n=.7*noise(t*.35)+.3*noise(t*.9+37);         // slow swell with a quicker tremor on top
+  const u=Math.min(1,Math.max(0,.5+n*.9));
+  return u<.25 ? 0 : Math.pow((u-.25)/.75,1.2)*2.4;   // progress per second; 0 = rest
+}
 const prog=(a,p)=>{ if(!a) return p; const q=Math.min(1,Math.max(0,(p-a.delay)/a.dur)); return EASE[a.kind](q); };
 
 // a painting within the painting: a framed composition inset in a plane, same line weight
@@ -760,7 +778,8 @@ class Mondrian{
     this.gLeaves=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.gLines=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.svg.append(this.gLeaves,this.gLines); el.innerHTML=""; el.appendChild(this.svg);
-    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now(); this.lastPx=0; this.ops=[];
+    this.els=new Map(); this.stepping=false; this.p=0; this.noise=perlin1(seed+"-tempo"); this.born=performance.now(); this.last=this.born; this.lastPx=0; this.ops=[];
+    if(this.auto) this.mutate();   // the first move is set up at once; the tempo decides when it starts
     this.render(0); PLAYERS.push(this);
   }
   destroy(){ const i=PLAYERS.indexOf(this); if(i>=0) PLAYERS.splice(i,1); }
@@ -908,24 +927,26 @@ class Mondrian{
     line({id:"fL",o:"v",x:0,y:0,w:f,h:1},"L"); line({id:"fR",o:"v",x:1-f,y:0,w:f,h:1},"R");
     for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
   }
-  // tap: move to the next composition of the same family
+  // tap: move to the next composition of the same family (at the tempo, but never resting)
   step(){
-    if(this.animStart!==null){ this.finalize(); }
-    this.mutate(); this.animStart=performance.now();
+    if(this.stepping){ this.finalize(); }
+    this.mutate(); this.p=0; this.stepping=true;
   }
   // instant, silent step — used to replay a person's saved variant
   skip(){ this.mutate(); this.finalize(); this.render(0); }
   tick(now){
+    const dt=Math.min(.1,(now-this.last)/1000); this.last=now;
     if(!this.el.isConnected || this.el.offsetParent===null) return; // hidden: don't burn frames
-    if(this.auto){
-      // 1 s period: hold for 0.333 s, move for 0.667 s (each cut eases on its own clock inside the window)
-      const cycle=Math.floor((now-this.born)/1000), local=(now-this.born)%1000;
-      if(cycle!==this.cycle){ if(this.cycle!==null) this.finalize(); this.mutate(); this.cycle=cycle; }
-      this.render(local<333 ? 0 : (local-333)/667);
-    }else if(this.animStart!==null){
-      const p=Math.min(1,(now-this.animStart)/667);
-      this.render(p);
-      if(p>=1){ this.finalize(); this.animStart=null; this.render(0); }
+    if(this.auto || this.stepping){
+      let v=tempo(this.noise,(now-this.born)/1000);
+      if(this.stepping) v=Math.max(.8,v);           // a tap always completes
+      this.p=Math.min(1,this.p+v*dt);
+      this.render(this.p);
+      if(this.p>=1){
+        this.finalize();
+        if(this.auto){ this.mutate(); this.p=0; this.render(0); }
+        else { this.stepping=false; this.render(0); }
+      }
     }else if(this.el.clientWidth && this.el.clientWidth!==this.lastPx){
       this.render(0); // size changed since the last paint (e.g. the tab just became visible): re-snap
     }
