@@ -7,10 +7,12 @@ messages between students and faculty.
 > Named after *Broadway Boogie Woogie* (1942–43), Mondrian's last painting —
 > a grid made of rhythm and movement. The logo moves to a noise field's tempo.
 
-*(The repository, URL and Firebase project keep their old name, **Katte**, from
-the app's first life as a faculty availability pilot. Internal storage keys
-and mark seeds are still prefixed `katte-` — deliberately, so nobody's saved
-variant resets.)*
+Live at **https://kala0606.github.io/Boogie/** (GitHub Pages, branch `main`).
+
+*(The Firebase project keeps its old name, **katte-d9efb**, from the app's
+first life as a faculty availability pilot, and internal storage keys and mark
+seeds are still prefixed `katte-` — deliberately, so nobody's saved variant
+resets.)*
 
 A single self-contained `index.html` (vanilla JS, no build step) on Firebase
 (Auth + Firestore). Installable PWA.

@@ -1,6 +1,6 @@
 # Boogie — welcome note for the class
 
-*Paste this into the class group. Fill in `[the link]`.*
+*Paste this into the class group. The link is https://kala0606.github.io/Boogie/*
 
 ---
 
@@ -11,7 +11,7 @@ tell, and a direct line to me. Named after *Broadway Boogie Woogie* — watch
 the logo.
 
 **Set it up — on your phone**
-1. Open `[the link]` in your phone's browser (iPhone: use **Safari**).
+1. Open **https://kala0606.github.io/Boogie/** in your phone's browser (iPhone: use **Safari**).
 2. Tap **Get the app** — it walks you through putting Boogie on your home
    screen so it behaves like a real app:
    - **iPhone (Safari):** Share → **Add to Home Screen**
