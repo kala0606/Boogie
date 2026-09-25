@@ -1,0 +1,68 @@
+rules_version = '2';
+
+// Katte · class comms for the Creative Coding & Generative Art studio.
+// Roles come from the email domain, never from the client:
+//   @learner.manipal.edu  → student
+//   @manipal.edu          → faculty   (no "learner." — the two patterns are mutually exclusive)
+// Only the studio owner's address gets isAdmin.
+// Deploy: firebase deploy --only firestore:rules
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn()        { return request.auth != null; }
+    function myEmail()         { return request.auth.token.email.lower(); }
+    function isStudentEmail(e) { return e.matches('.*@learner[.]manipal[.]edu'); }
+    function isFacultyEmail(e) { return e.matches('.*@manipal[.]edu'); }
+    function isOwnerEmail(e)   { return e == 'ujjwal.agarwal@manipal.edu'; }
+    function myProfile()       { return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data; }
+    function isFaculty()       { return signedIn() && myProfile().role == 'faculty'; }
+    function okText(s, max)    { return s is string && s.size() > 0 && s.size() <= max; }
+
+    // ---- profiles/{uid} — one per signed-in person -----------------------
+    match /profiles/{uid} {
+      allow read: if signedIn();
+
+      // First sign-in creates the profile. Email must be the token's own
+      // address, role must match the domain, isAdmin only for the owner.
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.email == myEmail()
+        && (isStudentEmail(myEmail()) || isFacultyEmail(myEmail()))
+        && request.resource.data.role == (isStudentEmail(myEmail()) ? 'student' : 'faculty')
+        && request.resource.data.isAdmin == isOwnerEmail(myEmail())
+        && okText(request.resource.data.name, 80);
+
+      // You may edit your own display name / bio, nothing else.
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'about', 'updatedAt'])
+        && okText(request.resource.data.name, 80);
+
+      allow delete: if false;
+    }
+
+    // ---- messages/{id} — the three class channels ------------------------
+    // announce: faculty post, everyone reads · studio / showtell: everyone posts
+    match /messages/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.channelId in ['announce', 'studio', 'showtell']
+        && okText(request.resource.data.body, 4000)
+        && (request.resource.data.channelId != 'announce' || isFaculty());
+      allow update, delete: if false;
+    }
+
+    // ---- dms/{id} — direct messages, private to the two participants ------
+    // The client queries `where participants array-contains myEmail`, which
+    // provably satisfies the read rule (rules are not filters).
+    match /dms/{id} {
+      allow read: if signedIn() && myEmail() in resource.data.participants;
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.participants.size() == 2
+        && myEmail() in request.resource.data.participants
+        && okText(request.resource.data.body, 4000);
+      allow update, delete: if false;
+    }
+  }
+}

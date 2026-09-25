@@ -1,58 +1,41 @@
-# Katte — pilot testing note
+# Katte — welcome note for the class
 
-*Paste this into email/WhatsApp when inviting testers. Fill in `[the link]` and
-`[your contact]`.*
-
----
-
-**You're invited to try Katte 🌱**
-
-Katte is a small experiment: instead of a sign-in register, you just mark
-*where you are* each day so colleagues can find you — presence without policing.
-We'd love your honest reactions over the next week or two.
-
-**Set it up — on your phone (this is a phone-first app)**
-1. Open on your phone's browser: `[the link]`
-2. **Add it to your home screen** so it behaves like a real app — this is what
-   makes it easy to mark yourself each day:
-   - **iPhone (Safari):** tap **Share** → **Add to Home Screen**
-   - **Android (Chrome):** tap the **⋮** menu → **Add to Home Screen / Install app**
-3. Open Katte from your home screen and sign in:
-   - Your **@manipal.edu email**
-   - Password: your **first name, lowercase** (e.g. `priya`)
-   - First time, it'll ask your name — that's the whole sign-up
-- *(If the screen ever looks oddly plain, refresh once.)*
-
-**The one thing that matters most**
-Each morning, open **Today** and mark where you are — On campus / Reachable /
-Studio / Away — and add a note if you like ("on email till 6"). That's the whole
-idea. Do it for a few days like you actually would.
-
-**Things to try**
-- **People** — see who's around, and tap **Message** to send someone a direct note
-- **Adda** — say hello in *Faculty Commons*, react in *Chai Katte*
-- **Ask the Office** — ask Gubbi (our little bot) about dates/deadlines
-  *(coming soon — may be offline early in the pilot)*
-- **Work Pie** — log a bit of teaching-plus work and see your credit pie
-- **Me** — your daily kolam is generated just for you; tap it to re-mint it
-
-**What we want to know (be blunt)**
-1. Did marking your availability feel *quick and natural*, or a chore?
-2. Does it feel **trusting** — or does it feel like being watched? (This is the
-   whole question.)
-3. Would you actually use this **daily**? Why / why not?
-4. Was seeing colleagues' availability genuinely useful?
-5. Anything confusing, broken, or that made you go "hm"?
-
-**Where to send feedback**
-Post in the **Pilot Feedback** channel in Adda — so everyone can see and build on
-each other's thoughts — or message `[your contact]`. Rough and honest beats
-polished.
+*Paste this into the class group. Fill in `[the link]`.*
 
 ---
 
-## For the organiser
+**Katte — our studio's app 🟥🟨🟦**
 
-- **Open to anyone with an @manipal.edu email** — no approval step. Just share
-  the link (Me → Copy invite message) and forward freely.
+One place for everything about the studio: announcements, questions, show &
+tell, and a direct line to me.
+
+**Set it up — on your phone**
+1. Open `[the link]` in your phone's browser.
+2. **Add it to your home screen** so it behaves like a real app:
+   - **iPhone (Safari):** Share → **Add to Home Screen**
+   - **Android (Chrome):** ⋮ menu → **Add to Home Screen / Install app**
+3. Open it and sign in:
+   - Your **@learner.manipal.edu** email
+   - Password: your **first name, lowercase** (e.g. `oorja`)
+   - That's it — your name is already on the class list.
+- *(If it ever looks oddly plain or stale, close it and open it again.)*
+
+**What's inside**
+- **Announcements** — from me to everyone. Read-only, so nothing gets buried.
+  Check it before class.
+- **Studio** — stuck? ask here. Someone else has the same question.
+- **Show & Tell** — paste a link to your sketch (p5 editor share link, GitHub,
+  anything that runs) and say a line about it.
+- **Class** — everyone in the studio. Tap **Message** to DM anyone, me included.
+- **Me** — your own kolam, generated from your identity, fresh every day.
+  Tap it to re-mint.
+
+---
+
+## For faculty
+
+- Anyone with an `@learner.manipal.edu` address can sign in as a student; any
+  `@manipal.edu` address signs in as faculty and can post Announcements. No
+  approval step — share the link (Me → *Copy invite message*).
+- The **Class** tab shows who hasn't joined yet.
 - Reset a password / remove someone: Firebase console (Authentication + Firestore).
