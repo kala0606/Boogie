@@ -1,7 +1,7 @@
 {
   "name": "Boogie · CCGA studio",
   "short_name": "Boogie",
-  "description": "Boogie — the class app for the Creative Coding & Generative Art studio: announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.",
+  "description": "Boogie — the class app for the Creative Coding & Generative Art studio at Srishti Manipal: announcements, studio chat, show & tell and direct messages.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
