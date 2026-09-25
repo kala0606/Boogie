@@ -1,11 +1,16 @@
-# Katte
+# Boogie
 
-**The studio's katte** — the class app for *Creative Coding & Generative Art*
-(SMI26) at Srishti Manipal Institute. Announcements, studio chat, show & tell,
-and direct messages between students and faculty.
+**Boogie** — the class app for *Creative Coding & Generative Art* (SMI26) at
+Srishti Manipal Institute. Announcements, studio chat, show & tell, and direct
+messages between students and faculty.
 
-> *katte* (n., Kannada) — the raised platform under a tree where a
-> neighbourhood gathers.
+> Named after *Broadway Boogie Woogie* (1942–43), Mondrian's last painting —
+> a grid made of rhythm and movement. The logo moves once a second.
+
+*(The repository, URL and Firebase project keep their old name, **Katte**, from
+the app's first life as a faculty availability pilot. Internal storage keys
+and mark seeds are still prefixed `katte-` — deliberately, so nobody's saved
+variant resets.)*
 
 A single self-contained `index.html` (vanilla JS, no build step) on Firebase
 (Auth + Firestore). Installable PWA.
@@ -20,10 +25,13 @@ shadow. The whole app is painted by one **long-form Mondrian program**
 - A composition is a binary partition of the square — every cut is vertical
   or horizontal at a ratio *t*, every leaf a plane of one colour. Lines are
   drawn only along cuts, and a cut spans exactly the node it divides.
-- It *moves*: a cut slides, a plane splits, two planes merge, a plane changes
-  colour. Every mutation is continuous in *t*, so states tween. The **logo**
-  ticks once a second — ⅓ s hold, ⅔ s move — and the sign-in hero is the same
-  daily composition, large.
+- It *moves*: a cut slides, a plane splits, two planes merge, a new colour
+  **sweeps** across a plane and replaces it. Every mutation is continuous in
+  *t*, so states tween — nothing ever changes colour in place, so nothing
+  blinks. The **logo** ticks once a second — ⅓ s hold, ⅔ s move — and the
+  sign-in hero is the same daily composition, large.
+- **One line weight.** Each family has a single weight; every cut and the
+  frame (drawn inside the SVG, not as a CSS border) share it exactly.
 - Every person has a **family** for life, seeded from their email — *Tableau*,
   *Composition*, *Boogie* or *Trafalgar* (density, line weight, colour
   appetite). Their mark is minted fresh each day; a tap shifts it within the

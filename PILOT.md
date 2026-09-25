@@ -1,17 +1,18 @@
-# Katte — welcome note for the class
+# Boogie — welcome note for the class
 
 *Paste this into the class group. Fill in `[the link]`.*
 
 ---
 
-**Katte — our studio's app 🟥🟨🟦**
+**Boogie — our studio's app 🟥🟨🟦**
 
 One place for everything about the studio: announcements, questions, show &
-tell, and a direct line to me.
+tell, and a direct line to me. Named after *Broadway Boogie Woogie* — watch
+the logo.
 
 **Set it up — on your phone**
 1. Open `[the link]` in your phone's browser (iPhone: use **Safari**).
-2. Tap **Get the app** — it walks you through putting Katte on your home
+2. Tap **Get the app** — it walks you through putting Boogie on your home
    screen so it behaves like a real app:
    - **iPhone (Safari):** Share → **Add to Home Screen**
    - **Android (Chrome):** the install prompt appears; confirm

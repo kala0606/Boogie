@@ -1,7 +1,7 @@
 {
-  "name": "Katte · CCGA studio",
-  "short_name": "Katte",
-  "description": "The studio's katte — announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.",
+  "name": "Boogie · CCGA studio",
+  "short_name": "Boogie",
+  "description": "Boogie — the class app for the Creative Coding & Generative Art studio: announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

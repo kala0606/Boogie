@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Katte · CCGA studio</title>
-<meta name="description" content="The studio's katte — announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.">
+<title>Boogie · CCGA studio</title>
+<meta name="description" content="Boogie — the class app for the Creative Coding & Generative Art studio: announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.">
 <!-- PWA: installable, offline-capable -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffffff">
@@ -14,13 +14,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Katte">
+<meta name="apple-mobile-web-app-title" content="Boogie">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* ------------------------------------------------------------------
-   Katte · the studio's katte — an ode to Mondrian.
+   Boogie · the studio's class app — an ode to Mondrian.
    White ground. Red, blue, yellow, black. No rounded corners.
    A black line exists only where two substances meet: no rules
    hanging in space, no offset shadows, no dashed edges.
@@ -48,9 +48,9 @@ button{font-family:var(--sans);color:var(--ink);cursor:pointer}
 .shell{max-width:430px;margin:0 auto;min-height:100dvh;position:relative;background:var(--white)}
 
 /* ---------- the mark: a square Mondrian that moves ---------- */
-.mark{display:block;aspect-ratio:1/1;border:2px solid var(--ink);background:var(--white);overflow:hidden}
+/* no CSS border: the frame is part of the drawing, at the same weight as every cut */
+.mark{display:block;aspect-ratio:1/1;background:var(--white);overflow:hidden}
 .mark svg{display:block;width:100%;height:100%}
-.mark.lg{border-width:3px}
 
 /* ---------- SIGN IN ---------- */
 #signin{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:28px 24px 40px}
@@ -357,8 +357,8 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
       <div class="mark lg mhero" id="heroMark" aria-hidden="true"></div>
       <div class="hero">
         <div class="kn">SMI26 · Creative Coding &amp; Generative Art</div>
-        <h1>Kat<em>te</em></h1>
-        <p class="def"><b>katte</b> <i>(n., Kannada)</i> — the raised platform under a tree where a neighbourhood gathers. This one is the studio's: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
+        <h1>Boo<em>gie</em></h1>
+        <p class="def">After <b>Broadway Boogie Woogie</b>, Mondrian's last painting — a grid that moves. The studio's own room: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
         <button class="gbtn" id="signinBtn">Sign in to the studio →</button>
         <small>Students <b>@learner.manipal.edu</b> · Faculty <b>@manipal.edu</b></small>
         <div class="installrow"><button class="mini installbtn" data-install>Get the app on your phone</button></div>
@@ -388,7 +388,7 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     <div class="scrim" data-close="installWrap"></div>
     <div class="sheet">
       <h4>Get the app</h4>
-      <p class="sub" id="installSub">Katte installs from the browser — no app store.</p>
+      <p class="sub" id="installSub">Boogie installs from the browser — no app store.</p>
       <ol class="steps" id="installSteps"></ol>
       <button class="createbtn" data-close="installWrap">Got it</button>
     </div>
@@ -399,7 +399,7 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     <header class="appbar">
       <div class="brand">
         <div class="mark" id="logoMark" aria-hidden="true"></div>
-        <div><div class="word">Kat<i>te</i></div><div class="tag">CCGA studio · SMI26</div></div>
+        <div><div class="word">Boo<i>gie</i></div><div class="tag">CCGA studio · SMI26</div></div>
       </div>
       <nav class="tabs">
         <button class="on" data-v="adda"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/></svg></span>Adda</button>
@@ -451,7 +451,7 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
           <p class="marknote" id="markNote"></p>
         </div>
         <h2 class="sec">App</h2>
-        <button class="setrow install" data-install><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18"/><path d="M12 8v7M9 12l3 3 3-3"/></svg></span><div>Get the app<small>Install Katte on your phone's home screen</small></div><span class="val">Install</span></button>
+        <button class="setrow install" data-install><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18"/><path d="M12 8v7M9 12l3 3 3-3"/></svg></span><div>Get the app<small>Install Boogie on your phone's home screen</small></div><span class="val">Install</span></button>
         <div id="inviteBox" style="display:none">
           <button class="setrow" id="copyInviteBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg></span><div>Copy invite message<small>Ready to paste into the class group</small></div><span class="val">Copy</span></button>
         </div>
@@ -587,14 +587,15 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
    The family is for life; the composition is minted fresh each day. */
 const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", black:"#151515", white:"#ffffff"};
 const FAMILIES = [
-  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2,black:1}, lw:[.028,.048]},
-  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3,black:1}, lw:[.020,.034]},
-  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5,black:0}, lw:[.012,.020]},
-  {name:"Trafalgar",   about:"mostly white, a few strong accents, lines of every weight", maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4,black:2}, lw:[.014,.050]},
+  // lw: ONE line weight per family (fraction of the side) — every cut and the frame share it
+  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2,black:1}, lw:.040},
+  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3,black:1}, lw:.028},
+  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5,black:0}, lw:.016},
+  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4,black:2}, lw:.032},
 ];
 let _mid=0;
 const mRatio = (r,P)=>{ if(r()<P.strip){ const s=.08+r()*.14; return r()<.5?s:1-s; } return .3+r()*.4; };
-const mLW    = (r,P)=>P.lw[0]+r()*(P.lw[1]-P.lw[0]);
+const mLW    = (r,P)=>P.lw;
 function mColour(r,P,force){
   if(!force && r()>P.colour) return "white";
   const ks=Object.keys(P.weights), sum=ks.reduce((a,k)=>a+P.weights[k],0);
@@ -613,7 +614,9 @@ function mGrow(r,P,w,h,depth){
 // lay the tree out at progress p (0 = previous state, 1 = target state)
 function mLayout(n,x,y,w,h,p,lwScale,out){
   if(n.colour!==undefined){ out.leaves.push({id:n.id,x,y,w,h,colour:n.colour}); return; }
-  const t=n.t0+(n.t1-n.t0)*p, lw=(n.lw0+(n.lw1-n.lw0)*p)*lwScale;
+  const t=n.t0+(n.t1-n.t0)*p;
+  // a sweeping cut carries its line only mid-journey: none at either edge, full weight in the middle
+  const lw=(n.sweep ? n.lw*Math.sin(p*Math.PI) : n.lw0+(n.lw1-n.lw0)*p)*lwScale;
   if(n.dir==="v"){
     const sx=x+w*t;
     mLayout(n.a,x,y,w*t,h,p,lwScale,out); mLayout(n.b,sx,y,w*(1-t),h,p,lwScale,out);
@@ -663,9 +666,12 @@ class Mondrian{
       walk(n.a,n,"a"); walk(n.b,n,"b");
     })(this.tree,null,null);
     const count=leaves.length, ops=2+Math.floor(r()*3);
+    const coloured=()=>lay.leaves.filter(l=>l.colour!=="white").map(l=>l.id);
+    // nothing ever changes colour in place — a colour can only ARRIVE, as a
+    // plane born at zero width that grows or sweeps; so nothing ever blinks
     for(let i=0;i<ops;i++){
       const v=r();
-      let op = v<.40?"shift" : v<.65?"split" : v<.85?"merge" : "recolour";
+      let op = v<.40?"shift" : v<.62?"split" : v<.80?"merge" : "sweep";
       if(count>this.target*1.4 && op==="split") op="merge";
       if(count<this.target*.6  && op==="merge") op="split";
       if(op==="shift"){
@@ -677,19 +683,27 @@ class Mondrian{
         const {n,parent,key}=pick(r,c), s=size[n.id];
         const dir = s.w>s.h ? (r()<.75?"v":"h") : (r()<.75?"h":"v");
         const fromStart=r()<.5, lw=mLW(r,P);
-        const fresh=mLeaf(r,P,r()<.5); fresh.fresh=true;
+        const fresh=mLeaf(r,P, r()<.5 || !coloured().length); fresh.fresh=true;
         const node={id:_mid++, dir, t0:fromStart?0:1, t1:mRatio(r,P), lw, lw0:0, lw1:lw, a:fromStart?fresh:n, b:fromStart?n:fresh};
         if(parent) parent[key]=node; else this.tree=node;
       }else if(op==="merge"){
         const c=mergeable.filter(m=>!m.n.prune); if(!c.length) continue;
-        const {n}=pick(r,c); const keepA=r()<.5;
+        const {n}=pick(r,c); const keepA=r()<.5, drop=keepA?n.b:n.a;
+        const col=coloured(); if(col.length===1 && col[0]===drop.id) continue; // never lose the last colour
         n.t1=keepA?1:0; n.lw1=0; n.prune=keepA?"a":"b";
       }else{
-        if(!leaves.length) continue;
-        pick(r,leaves).n.colour=mColour(r,P,r()<.6);
+        // sweep: a plane of another colour wipes across this one and replaces it
+        const c=leaves.filter(l=>!l.n.fresh && size[l.n.id]); if(!c.length) continue;
+        const {n,parent,key}=pick(r,c), s=size[n.id];
+        let col=mColour(r,P,r()<.6); if(col===n.colour) col = col==="white" ? mColour(r,P,true) : "white";
+        if(col==="white"){ const k=coloured(); if(k.length===1 && k[0]===n.id) col=mColour(r,P,true); if(col===n.colour) continue; }
+        const dir = s.w>s.h?"v":"h", fromStart=r()<.5, lw=mLW(r,P);
+        const fresh={id:_mid++, colour:col, fresh:true};
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:fromStart?1:0, lw, lw0:0, lw1:0, sweep:true,
+          a:fromStart?fresh:n, b:fromStart?n:fresh, prune:fromStart?"a":"b"};
+        if(parent) parent[key]=node; else this.tree=node;
       }
     }
-    this.ensureColour();
   }
   // commit the target state: prune collapsed cuts, freeze t
   finalize(){
@@ -713,6 +727,10 @@ class Mondrian{
     };
     lay.leaves.forEach(l=>put(this.gLeaves,l,MCOL[l.colour]));
     lay.lines.forEach(l=>put(this.gLines,l,MCOL.black));
+    // the frame is drawn here, at exactly the family's line weight — one weight for every black line
+    const f=this.P.lw*this.lwScale;
+    [{id:"fT",x:0,y:0,w:1,h:f},{id:"fB",x:0,y:1-f,w:1,h:f},{id:"fL",x:0,y:0,w:f,h:1},{id:"fR",x:1-f,y:0,w:f,h:1}]
+      .forEach(l=>put(this.gLines,l,MCOL.black));
     for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
   }
   // tap: move to the next composition of the same family
@@ -740,7 +758,7 @@ class Mondrian{
 const familyOf = email => FAMILIES[hashStr("katte-family-"+email)%FAMILIES.length];
 
 // the two public marks: the logo, and the sign-in hero — the same daily seed
-const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, name:"Katte"};
+const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, name:"Boogie"};
 new Mondrian($("#heroMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:1});
 new Mondrian($("#logoMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:2.4});
 
@@ -769,7 +787,7 @@ let installEvt=null;
 const isStandalone = ()=>matchMedia("(display-mode: standalone)").matches || navigator.standalone===true;
 const isIOS = ()=>/iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
 window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; });
-window.addEventListener("appinstalled",()=>{ installEvt=null; toast("Katte is on your home screen"); syncInstallUI(); });
+window.addEventListener("appinstalled",()=>{ installEvt=null; toast("Boogie is on your home screen"); syncInstallUI(); });
 function syncInstallUI(){ $$("[data-install]").forEach(b=>b.style.display=isStandalone()?"none":""); }
 async function installApp(){
   if(installEvt){
@@ -781,10 +799,10 @@ async function installApp(){
   const steps = isIOS()
     ? [["Open this page in <strong>Safari</strong>", "not Chrome — iPhone only installs from Safari"],
        ["Tap <strong>Share</strong>", "the square with the arrow, bottom of the screen"],
-       ["Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>", "Katte appears next to your other apps"]]
+       ["Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>", "Boogie appears next to your other apps"]]
     : [["Open the browser menu <strong>⋮</strong>", "top-right of Chrome"],
        ["Tap <strong>Add to Home screen</strong> or <strong>Install app</strong>", "then confirm"],
-       ["Open Katte from your home screen", "it runs full-screen, like any app"]];
+       ["Open Boogie from your home screen", "it runs full-screen, like any app"]];
   $("#installSub").innerHTML = isIOS() ? "iPhone installs from Safari — two taps, no app store." : "Installs from the browser — no app store.";
   $("#installSteps").innerHTML = steps.map((s,i)=>`<li><b>${i+1}</b><span>${s[0]}<small>${s[1]}</small></span></li>`).join("");
   $("#installWrap").classList.add("open");
@@ -1071,7 +1089,7 @@ function openDM(email, name){
 /* ------------ faculty: invite the class ------------ */
 function copyInvite(){
   const url=location.origin+location.pathname;
-  const msg=`Katte — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
+  const msg=`Boogie — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
   navigator.clipboard.writeText(msg).then(()=>toast("Invite copied — paste it in the class group"),
     ()=>toast("Couldn't copy — long-press to select"));
 }
