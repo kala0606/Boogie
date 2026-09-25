@@ -591,10 +591,10 @@ const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", white:"#ffffff", 
 const FAMILIES = [
   // lw: ONE line weight per family (fraction of the side) — every cut and every frame share it
   // minCell: the smallest plane the family will draw · nest: chance a plane holds a painting within the painting
-  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.040, nest:.15, nestDepth:1},
-  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.028, nest:.25, nestDepth:1},
-  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5}, lw:.016, nest:.35, nestDepth:2},
-  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4}, lw:.032, nest:.30, nestDepth:2},
+  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.020, nest:.15, nestDepth:1},
+  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.014, nest:.25, nestDepth:1},
+  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5}, lw:.008, nest:.35, nestDepth:2},
+  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4}, lw:.016, nest:.30, nestDepth:2},
 ];
 let _mid=0;
 /* Everything below works in one unit square. The line weight is absolute
@@ -630,8 +630,9 @@ function mColour(c,force){
 const mNestNeed = c=>2*c.margin+2.2*c.min;   // a plane must be this big to hold a painting
 // a painting within the painting: a framed composition inset in a plane, same line weight
 function mInner(c,w,h,lvl){
-  const m=c.margin;
-  return {id:_mid++, g0:1, g1:1, m, lvl, tree:mGrow(c,w-2*m,h-2*m,0,Math.min(c.P.maxDepth,1+lvl),lvl)};
+  const m=c.margin, r=c.r;
+  // dir/from: the edge it slides open from — the same language as a plane born from a cut
+  return {id:_mid++, g0:1, g1:1, m, lvl, dir:r()<.5?"v":"h", from:r()<.5?0:1, tree:mGrow(c,w-2*m,h-2*m,0,Math.min(c.P.maxDepth,1+lvl),lvl)};
 }
 function mLeaf(c,force,w,h,lvl){
   const n={id:_mid++, colour:mColour(c,force)};
@@ -658,12 +659,16 @@ function mLayout(n,x,y,w,h,p,lwScale,out){
   if(n.colour!==undefined){
     out.leaves.push({id:n.id,x,y,w,h,colour:n.colour});
     const I=n.inner;
-    if(I){ // the inner painting scales about its centre — that is how it arrives and how it leaves
+    if(I){ // the inner painting slides open from one edge (and shut the same way) — never zooms
       const g=I.g0+(I.g1-I.g0)*p;
       if(g>.001){
-        const bw=(w-2*I.m)*g, bh=(h-2*I.m)*g, bx=x+(w-bw)/2, by=y+(h-bh)/2, f=out.lw*lwScale*g;
-        out.lines.push({id:I.id+"T",x:bx,y:by,w:bw,h:f},{id:I.id+"B",x:bx,y:by+bh-f,w:bw,h:f},
-                       {id:I.id+"L",x:bx,y:by,w:f,h:bh},{id:I.id+"R",x:bx+bw-f,y:by,w:f,h:bh});
+        const fw=w-2*I.m, fh=h-2*I.m;
+        let bx=x+I.m, by=y+I.m, bw=fw, bh=fh;
+        if(I.dir==="v"){ bw=fw*g; if(I.from===1) bx+=fw-bw; } else { bh=fh*g; if(I.from===1) by+=fh-bh; }
+        const f=out.lw*lwScale*g;   // its lines thicken as it opens, like a cut being born
+        // the frame is centred on the box edge, exactly as a cut is centred on its line
+        out.lines.push({id:I.id+"T",x:bx-f/2,y:by-f/2,w:bw+f,h:f},{id:I.id+"B",x:bx-f/2,y:by+bh-f/2,w:bw+f,h:f},
+                       {id:I.id+"L",x:bx-f/2,y:by-f/2,w:f,h:bh+f},{id:I.id+"R",x:bx+bw-f/2,y:by-f/2,w:f,h:bh+f});
         mLayout(I.tree,bx,by,bw,bh,p,lwScale*g,out);
       }
     }
@@ -691,7 +696,7 @@ class Mondrian{
     this.el=el; this.P=P; this.r=mulberry32(hashStr(seed));
     this.auto=!!opts.auto; this.lwScale=opts.lwScale||1;
     this.c=mCtx(this.r,P,this.lwScale);
-    this.tree=mGrow(this.c,1,1,0,P.maxDepth,0); this.ensureColour();
+    const i=this.c.lwAbs/2; this.tree=mGrow(this.c,1-2*i,1-2*i,0,P.maxDepth,0); this.ensureColour();
     this.target=this.count();
     this.svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
     this.svg.setAttribute("viewBox","0 0 1000 1000"); this.svg.setAttribute("preserveAspectRatio","none");
@@ -702,7 +707,7 @@ class Mondrian{
     this.render(0); PLAYERS.push(this);
   }
   destroy(){ const i=PLAYERS.indexOf(this); if(i>=0) PLAYERS.splice(i,1); }
-  layout(p){ const out={leaves:[],lines:[],box:{},lw:this.P.lw}; mLayout(this.tree,0,0,1,1,p,this.lwScale,out); return out; }
+  layout(p){ const i=this.c.lwAbs/2, out={leaves:[],lines:[],box:{},lw:this.P.lw}; mLayout(this.tree,i,i,1-2*i,1-2*i,p,this.lwScale,out); return out; }
   count(){ return this.layout(1).leaves.length; }
   ensureColour(){
     const lay=this.layout(1);
@@ -783,7 +788,7 @@ class Mondrian{
       }else{
         // …and leaves the same way
         const cand=leaves.filter(l=>l.n.inner && !l.n.inner.prune && l.n.inner.g1===1); if(!cand.length) continue;
-        const L=pick(r,cand); const I=L.n.inner; I.g0=1; I.g1=0; I.prune=true; this.ops.push("unnest:"+L.n.id);
+        const L=pick(r,cand); const I=L.n.inner; I.g0=1; I.g1=0; I.prune=true; I.dir=r()<.5?"v":"h"; I.from=r()<.5?0:1; this.ops.push("unnest:"+L.n.id);
       }
     }
   }
@@ -803,30 +808,35 @@ class Mondrian{
   }
   render(p){
     const lay=this.layout(p);
-    // lines are snapped to whole CSS pixels by the engine itself, so every
-    // line in a mark is the same number of pixels — never 6 here and 7 there
+    // Everything is snapped to whole CSS pixels by the engine itself: plane
+    // edges land on the pixel grid, and every line is centred on its snapped
+    // cut with one fixed pixel thickness — so no plane can bleed past a line,
+    // and every line in a mark is the same number of pixels.
     const px=this.el.clientWidth||this.lastPx||400; this.lastPx=px;
-    const seen=new Set(), S=1000, NS="http://www.w3.org/2000/svg";
-    const put=(g,it,fill)=>{
-      let el=this.els.get(it.id);
-      if(!el){ el=document.createElementNS(NS,"rect"); el.setAttribute("shape-rendering","crispEdges"); this.els.set(it.id,el); g.appendChild(el); }
-      el.setAttribute("x",(it.x*S).toFixed(1)); el.setAttribute("y",(it.y*S).toFixed(1));
-      el.setAttribute("width",Math.max(0,it.w*S).toFixed(1)); el.setAttribute("height",Math.max(0,it.h*S).toFixed(1));
-      el.setAttribute("fill",fill); seen.add(it.id);
+    const seen=new Set(), S=1000/px, NS="http://www.w3.org/2000/svg", R=v=>Math.round(v*px);
+    const put=(g,id,x0,y0,x1,y1,fill)=>{
+      let el=this.els.get(id);
+      if(!el){ el=document.createElementNS(NS,"rect"); el.setAttribute("shape-rendering","crispEdges"); this.els.set(id,el); g.appendChild(el); }
+      el.setAttribute("x",(x0*S).toFixed(2)); el.setAttribute("y",(y0*S).toFixed(2));
+      el.setAttribute("width",(Math.max(0,x1-x0)*S).toFixed(2)); el.setAttribute("height",(Math.max(0,y1-y0)*S).toFixed(2));
+      el.setAttribute("fill",fill); seen.add(id);
     };
-    const snap=it=>{
-      const x0=Math.round(it.x*px), y0=Math.round(it.y*px), x1=Math.round((it.x+it.w)*px), y1=Math.round((it.y+it.h)*px);
-      const thinW = it.w<it.h;                                   // which axis is the thickness
-      const w = thinW ? (it.w>0?Math.max(1,Math.round(it.w*px)):0) : x1-x0;
-      const h = thinW ? y1-y0 : (it.h>0?Math.max(1,Math.round(it.h*px)):0);
-      return {id:it.id, x:x0/px, y:y0/px, w:w/px, h:h/px};
+    const line=(l,edge)=>{
+      const thinW=l.w<l.h;
+      const t = thinW ? (l.w>0?Math.max(1,Math.round(l.w*px)):0) : (l.h>0?Math.max(1,Math.round(l.h*px)):0);
+      let x0,y0,x1,y1;
+      if(thinW){ const c=R(l.x+l.w/2); x0=c-Math.floor(t/2); x1=x0+t; y0=R(l.y); y1=R(l.y+l.h); }
+      else     { const c=R(l.y+l.h/2); y0=c-Math.floor(t/2); y1=y0+t; x0=R(l.x); x1=R(l.x+l.w); }
+      if(edge==="T"){ y0=0; y1=t; x0=0; x1=px; } if(edge==="B"){ y1=px; y0=px-t; x0=0; x1=px; }
+      if(edge==="L"){ x0=0; x1=t; y0=0; y1=px; } if(edge==="R"){ x1=px; x0=px-t; y0=0; y1=px; }
+      put(this.gLines,l.id,x0,y0,x1,y1,MCOL.black);
     };
-    lay.leaves.forEach(l=>put(this.gLeaves,l,MCOL[l.colour]));
-    lay.lines.forEach(l=>put(this.gLines,snap(l),MCOL.black));
-    // the outer frame, at exactly the family's line weight — one weight for every black line
-    const f=this.P.lw*this.lwScale;
-    [{id:"fT",x:0,y:0,w:1,h:f},{id:"fB",x:0,y:1-f,w:1,h:f},{id:"fL",x:0,y:0,w:f,h:1},{id:"fR",x:1-f,y:0,w:f,h:1}]
-      .forEach(l=>put(this.gLines,snap(l),MCOL.black));
+    lay.leaves.forEach(l=>put(this.gLeaves,l.id,R(l.x),R(l.y),R(l.x+l.w),R(l.y+l.h),MCOL[l.colour]));
+    lay.lines.forEach(l=>line(l));
+    // the outer frame: centred on the composition's edge (which sits half a line in), so it fills to the canvas edge
+    const f=this.c.lwAbs;
+    line({id:"fT",x:0,y:0,w:1,h:f},"T"); line({id:"fB",x:0,y:1-f,w:1,h:f},"B");
+    line({id:"fL",x:0,y:0,w:f,h:1},"L"); line({id:"fR",x:1-f,y:0,w:f,h:1},"R");
     for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
   }
   // tap: move to the next composition of the same family

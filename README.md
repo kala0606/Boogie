@@ -30,17 +30,21 @@ never a plane; no rounded corners; and a black line only where two planes meet
   *t*, so states tween — nothing ever changes colour in place, so nothing
   blinks. The **logo** ticks once a second — ⅓ s hold, ⅔ s move — and the
   sign-in hero is the same daily composition, large.
-- **One line weight.** Each family has a single weight; every cut and every
-  frame (drawn inside the SVG, not as a CSS border) share it exactly, and the
-  engine snaps lines to whole CSS pixels so they are the same number of
-  pixels everywhere, not 6 here and 7 there.
+- **One line weight, centred.** Each family has a single weight; every cut
+  and every frame share it exactly. Frames are centred on their box edge just
+  as a cut is centred on its line (the composition sits half a line in, so
+  the outer frame still fills to the canvas edge). The engine snaps plane
+  edges *and* lines to whole CSS pixels, each line centred on its snapped
+  cut — so no plane can bleed past a line, and every line in a mark is the
+  same number of pixels.
 - **No plane thinner than three lines.** Every cut asks both subtrees how
   much room they need (recursively, nested paintings included) before it
   chooses a ratio, so two lines can never touch and read as one fat one.
 - **It recurses.** A plane may hold a *painting within the painting*: a
   framed inner composition, inset in the plane, at the same line weight —
-  which may itself hold one. Paintings arrive by growing from their centre
-  and leave the same way.
+  which may itself hold one. A painting arrives the way a plane is born from
+  a cut: it slides open from one edge, its cuts sliding with it, and closes
+  the same way. Nothing zooms.
 - Every person has a **family** for life, seeded from their email — *Tableau*,
   *Composition*, *Boogie* or *Trafalgar* (density, line weight, colour
   appetite). Their mark is minted fresh each day; a tap shifts it within the
