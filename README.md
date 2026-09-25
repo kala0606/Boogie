@@ -25,26 +25,35 @@ never a plane; no rounded corners; and a black line only where two planes meet
 - A composition is a binary partition of the square — every cut is vertical
   or horizontal at a ratio *t*, every leaf a plane of one colour. Lines are
   drawn only along cuts, and a cut spans exactly the node it divides.
-- It *moves*: a cut slides, a plane splits, two planes merge, a new colour
-  **sweeps** across a plane and replaces it. Every mutation is continuous in
-  *t*, so states tween — nothing ever changes colour in place, so nothing
-  blinks. The **logo** ticks once a second — ⅓ s hold, ⅔ s move — and the
-  sign-in hero is the same daily composition, large.
-- **One line weight, centred.** Each family has a single weight; every cut
-  and every frame share it exactly. Frames are centred on their box edge just
-  as a cut is centred on its line (the composition sits half a line in, so
-  the outer frame still fills to the canvas edge). The engine snaps plane
-  edges *and* lines to whole CSS pixels, each line centred on its snapped
-  cut — so no plane can bleed past a line, and every line in a mark is the
-  same number of pixels.
+- **The line never changes thickness. Ever.** Not while a cut is born,
+  not while one dies, not inside a nested painting. This works because every
+  plane's edge already lies on a black line: a new cut is born *on* the
+  plane's edge at full weight — invisible, coincident with the line already
+  there — and slides inward; a merging cut slides back into the edge and
+  vanishes into it; a colour **sweeps** across a plane as a cut travelling
+  edge to edge. Nothing scales, nothing thins, nothing changes colour in
+  place, so nothing blinks. The **logo** ticks once a second — ⅓ s hold,
+  ⅔ s move — and the sign-in hero is the same daily composition, large.
+- **Every cut moves on its own clock.** How far it travels sets how long it
+  takes; the kind of move sets its easing — a birth bursts from the edge and
+  settles, a collapse hesitates then accelerates into the edge, a slide
+  gathers–glides–settles, a sweep is one long decisive stroke — with small
+  deterministic delays so cuts don't all leave together.
+- **One line weight, centred, pixel-exact.** Each family has a single
+  weight; every cut and every frame share it. Frames are centred on their
+  box edge as a cut is centred on its line (the composition sits half a line
+  in, so the outer frame fills to the canvas). Plane edges and lines are
+  snapped to whole CSS pixels with one fixed line thickness, so no plane can
+  bleed past a line.
 - **No plane thinner than three lines.** Every cut asks both subtrees how
-  much room they need (recursively, nested paintings included) before it
-  chooses a ratio, so two lines can never touch and read as one fat one.
+  much room they need (exactly, given their ratios; nested paintings
+  included) before choosing a ratio, so two lines can never touch.
 - **It recurses.** A plane may hold a *painting within the painting*: a
   framed inner composition, inset in the plane, at the same line weight —
-  which may itself hold one. A painting arrives the way a plane is born from
-  a cut: it slides open from one edge, its cuts sliding with it, and closes
-  the same way. Nothing zooms.
+  which may itself hold one. It is born on the container's own edges — frame
+  on the boundary, every cut on the frame, all at full weight and invisible
+  — and slides into place; the plane filling the box at that instant wears
+  the container's colour. It leaves the same way.
 - Every person has a **family** for life, seeded from their email — *Tableau*,
   *Composition*, *Boogie* or *Trafalgar* (density, line weight, colour
   appetite). Their mark is minted fresh each day; a tap shifts it within the

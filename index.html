@@ -402,7 +402,7 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
         <div><div class="word">Boo<i>gie</i></div><div class="tag">CCGA studio · SMI26</div></div>
       </div>
       <nav class="tabs">
-        <button class="on" data-v="adda"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/></svg></span>Adda</button>
+        <button class="on" data-v="adda"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/></svg></span>Atelier</button>
         <button data-v="class"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></span>Class</button>
         <button data-v="me"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"/><path d="M12 4v16M4 13h8"/></svg></span>Me</button>
       </nav>
@@ -589,7 +589,7 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
    The family is for life; the composition is minted fresh each day. */
 const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", white:"#ffffff", black:"#151515"}; // black is for lines only — never a plane
 const FAMILIES = [
-  // lw: ONE line weight per family (fraction of the side) — every cut and every frame share it
+  // lw: ONE line weight per family (fraction of the side) — every cut and every frame share it, always
   // minCell: the smallest plane the family will draw · nest: chance a plane holds a painting within the painting
   {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.020, nest:.15, nestDepth:1},
   {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.014, nest:.25, nestDepth:1},
@@ -598,8 +598,9 @@ const FAMILIES = [
 ];
 let _mid=0;
 /* Everything below works in one unit square. The line weight is absolute
-   (lw × lwScale), and so is the minimum plane: never thinner than ~3 lines,
-   so two lines can never touch and read as one fat one. */
+   (lw × lwScale) and it NEVER changes — not while a cut is born, not while
+   one dies, not inside a nested painting. The minimum plane is absolute too:
+   never thinner than ~3 lines, so two lines can never touch and read as one. */
 function mCtx(r,P,lwScale){ const lwAbs=P.lw*lwScale; return {r,P,lwScale,lwAbs, min:Math.max(P.minCell,lwAbs*3.2), margin:1.5*lwAbs+.04}; }
 // how much room a subtree needs along a direction so that no plane in it
 // — however deep, including nested paintings — ever drops below the minimum.
@@ -628,11 +629,25 @@ function mColour(c,force){
   let v=r()*sum; for(const k of ks){ v-=P.weights[k]; if(v<=0) return k; } return ks[0];
 }
 const mNestNeed = c=>2*c.margin+2.2*c.min;   // a plane must be this big to hold a painting
+
+/* ---- motion ----
+   Every cut moves on its own clock. How far it travels sets how long it
+   takes (a short hop is quick, a long slide uses the whole window), and the
+   kind of move sets its character. Small deterministic delays keep cuts
+   from all leaving together. */
+const EASE={
+  inout: q=>q<.5 ? 4*q*q*q : 1-Math.pow(-2*q+2,3)/2,        // a slide: gathers, glides, settles
+  out:   q=>1-Math.pow(1-q,4),                               // a birth: bursts from the edge, eases home
+  in:    q=>q*q*q*q,                                         // a collapse: hesitates, then accelerates into the edge
+  sweep: q=>q<.5 ? 16*Math.pow(q,5) : 1-Math.pow(-2*q+2,5)/2, // a sweep: one long, decisive stroke
+};
+function mAnim(c,dist,kind){ const dur=.35+.65*Math.min(1,dist/.5); return {kind, dur, delay:c.r()*(1-dur)*.8}; }
+const prog=(a,p)=>{ if(!a) return p; const q=Math.min(1,Math.max(0,(p-a.delay)/a.dur)); return EASE[a.kind](q); };
+
 // a painting within the painting: a framed composition inset in a plane, same line weight
 function mInner(c,w,h,lvl){
-  const m=c.margin, r=c.r;
-  // dir/from: the edge it slides open from — the same language as a plane born from a cut
-  return {id:_mid++, g0:1, g1:1, m, lvl, dir:r()<.5?"v":"h", from:r()<.5?0:1, tree:mGrow(c,w-2*m,h-2*m,0,Math.min(c.P.maxDepth,1+lvl),lvl)};
+  const m=c.margin;
+  return {id:_mid++, g0:1, g1:1, m, lvl, anim:null, tree:mGrow(c,w-2*m,h-2*m,0,Math.min(c.P.maxDepth,1+lvl),lvl)};
 }
 function mLeaf(c,force,w,h,lvl){
   const n={id:_mid++, colour:mColour(c,force)};
@@ -651,43 +666,85 @@ function mGrow(c,w,h,depth,maxDepth,lvl){
   if(!dir) return mLeaf(c,false,w,h,lvl);
   const len=dir==="v"?w:h, t=mRatio(c,len,c.min,c.min);
   const [aw,ah,bw,bh] = dir==="v" ? [w*t,h,w*(1-t),h] : [w,h*t,w,h*(1-t)];
-  return {id:_mid++, dir, t0:t, t1:t, lw:P.lw, lw0:P.lw, lw1:P.lw, a:mGrow(c,aw,ah,depth+1,maxDepth,lvl), b:mGrow(c,bw,bh,depth+1,maxDepth,lvl)};
+  return {id:_mid++, dir, t0:t, t1:t, lw:P.lw, anim:null, a:mGrow(c,aw,ah,depth+1,maxDepth,lvl), b:mGrow(c,bw,bh,depth+1,maxDepth,lvl)};
+}
+const mHas = (n,L)=>{ if(n===L) return true; if(n.colour!==undefined) return false; return mHas(n.a,L)||mHas(n.b,L); };
+// the leaf that will hold the most room, given a box and which t (t0 or t1) to trust
+function mBiggest(n,w,h,useT1){
+  if(n.colour!==undefined) return {leaf:n, area:w*h};
+  const t=useT1?n.t1:n.t0;
+  const A = n.dir==="v" ? mBiggest(n.a,w*t,h,useT1) : mBiggest(n.a,w,h*t,useT1);
+  const B = n.dir==="v" ? mBiggest(n.b,w*(1-t),h,useT1) : mBiggest(n.b,w,h*(1-t),useT1);
+  return A.area>=B.area?A:B;
+}
+/* A painting is born on the container's own edges: its frame starts ON the
+   plane's boundary lines and every cut starts ON the frame — all at full
+   thickness, all invisible because they coincide with lines already there —
+   and then everything slides into place. The one plane that fills the box
+   at that instant wears the container's colour, so nothing pops. */
+function mEdges(n,c,w,h,L,birth,kind){
+  if(n.colour!==undefined){
+    if(n.inner && !n.inner.prune){ if(birth) mBirthInner(n,c,w,h); else mCollapseInner(n,c,w,h,null); }
+    return;
+  }
+  const edge = mHas(n.a,L) ? 1 : 0;              // keep the side that leads to L full
+  const len = n.dir==="v"?w:h;
+  if(birth){ n.t0=edge; n.anim=mAnim(c,Math.abs(n.t1-edge)*len,kind); }
+  else     { n.t1=edge; n.anim=mAnim(c,Math.abs(edge-n.t0)*len,kind); }
+  const t = birth ? n.t1 : n.t0;                  // sizes at the fully-open state
+  const [aw,ah,bw,bh] = n.dir==="v" ? [w*t,h,w*(1-t),h] : [w,h*t,w,h*(1-t)];
+  mEdges(n.a,c,aw,ah,L,birth,kind); mEdges(n.b,c,bw,bh,L,birth,kind);
+}
+function mBirthInner(leaf,c,w,h){
+  const I=leaf.inner; I.g0=0; I.g1=1; I.anim=mAnim(c,I.m,"out");
+  const bw=w-2*I.m, bh=h-2*I.m;
+  const L=mBiggest(I.tree,bw,bh,true).leaf; L.colour=leaf.colour; delete L.inner;
+  mEdges(I.tree,c,bw,bh,L,true,"out");
+}
+// L: the inner leaf, wearing the container's colour, that will fill the box at the end (null = any)
+function mCollapseInner(leaf,c,w,h,L){
+  const I=leaf.inner; I.g0=1; I.g1=0; I.prune=true; I.anim=mAnim(c,I.m,"in");
+  const bw=w-2*I.m, bh=h-2*I.m;
+  mEdges(I.tree,c,bw,bh,L||mBiggest(I.tree,bw,bh,false).leaf,false,"in");
 }
 // lay the tree out at progress p (0 = previous state, 1 = target state)
 function mLayout(n,x,y,w,h,p,lwScale,out){
   out.box[n.id]={x,y,w,h};
+  const lw=out.lw*lwScale;   // the one and only line weight
   if(n.colour!==undefined){
     out.leaves.push({id:n.id,x,y,w,h,colour:n.colour});
     const I=n.inner;
-    if(I){ // the inner painting slides open from one edge (and shut the same way) — never zooms
-      const g=I.g0+(I.g1-I.g0)*p;
-      if(g>.001){
-        const fw=w-2*I.m, fh=h-2*I.m;
-        let bx=x+I.m, by=y+I.m, bw=fw, bh=fh;
-        if(I.dir==="v"){ bw=fw*g; if(I.from===1) bx+=fw-bw; } else { bh=fh*g; if(I.from===1) by+=fh-bh; }
-        const f=out.lw*lwScale*g;   // its lines thicken as it opens, like a cut being born
+    if(I){
+      let mc=I.m*(I.g0+(I.g1-I.g0)*prog(I.anim,p));     // the frame slides in from the plane's edges
+      if(mc<2*lw) mc=0;                                  // …but is either ON the edge or clear of it — never half-overlapping
+      const bx=x+mc, by=y+mc, bw=w-2*mc, bh=h-2*mc;
+      if(bw>=2*lw && bh>=2*lw){                       // a painting exists only once its box is two lines wide — no stubs
         // the frame is centred on the box edge, exactly as a cut is centred on its line
-        out.lines.push({id:I.id+"T",x:bx-f/2,y:by-f/2,w:bw+f,h:f},{id:I.id+"B",x:bx-f/2,y:by+bh-f/2,w:bw+f,h:f},
-                       {id:I.id+"L",x:bx-f/2,y:by-f/2,w:f,h:bh+f},{id:I.id+"R",x:bx+bw-f/2,y:by-f/2,w:f,h:bh+f});
-        mLayout(I.tree,bx,by,bw,bh,p,lwScale*g,out);
+        out.lines.push({id:I.id+"T",o:"h",x:bx-lw/2,y:by-lw/2,w:bw+lw,h:lw},{id:I.id+"B",o:"h",x:bx-lw/2,y:by+bh-lw/2,w:bw+lw,h:lw},
+                       {id:I.id+"L",o:"v",x:bx-lw/2,y:by-lw/2,w:lw,h:bh+lw},{id:I.id+"R",o:"v",x:bx+bw-lw/2,y:by-lw/2,w:lw,h:bh+lw});
+        mLayout(I.tree,bx,by,bw,bh,p,lwScale,out);
       }
     }
     return;
   }
-  const t=n.t0+(n.t1-n.t0)*p;
-  // a sweeping cut carries its line only mid-journey: none at either edge, full weight in the middle
-  const lw=(n.sweep ? n.lw*Math.sin(p*Math.PI) : n.lw0+(n.lw1-n.lw0)*p)*lwScale;
+  let t=n.t0+(n.t1-n.t0)*prog(n.anim,p);
+  // Two parallel lines are either exactly coincident or clear of each other
+  // by at least a plane one line wide — never half-overlapping. So a line
+  // being born stays ON its edge until its plane is that wide, and a line
+  // dying vanishes INTO the edge at that same distance. The stroke never
+  // looks thicker for an instant.
+  const len=n.dir==="v"?w:h;
+  if(t*len<2*lw) t=0; else if((1-t)*len<2*lw) t=1;
   if(n.dir==="v"){
     const sx=x+w*t;
     mLayout(n.a,x,y,w*t,h,p,lwScale,out); mLayout(n.b,sx,y,w*(1-t),h,p,lwScale,out);
-    out.lines.push({id:n.id,x:sx-lw/2,y,w:lw,h});
+    out.lines.push({id:n.id,o:"v",x:sx-lw/2,y,w:lw,h});
   }else{
     const sy=y+h*t;
     mLayout(n.a,x,y,w,h*t,p,lwScale,out); mLayout(n.b,x,sy,w,h*(1-t),p,lwScale,out);
-    out.lines.push({id:n.id,x,y:sy-lw/2,w,h:lw});
+    out.lines.push({id:n.id,o:"h",x,y:sy-lw/2,w,h:lw});
   }
 }
-const ease = p=>p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
 const pick = (r,arr)=>arr[Math.floor(r()*arr.length)];
 const PLAYERS=[];
 class Mondrian{
@@ -703,7 +760,7 @@ class Mondrian{
     this.gLeaves=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.gLines=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.svg.append(this.gLeaves,this.gLines); el.innerHTML=""; el.appendChild(this.svg);
-    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now(); this.lastPx=0;
+    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now(); this.lastPx=0; this.ops=[];
     this.render(0); PLAYERS.push(this);
   }
   destroy(){ const i=PLAYERS.indexOf(this); if(i>=0) PLAYERS.splice(i,1); }
@@ -715,7 +772,6 @@ class Mondrian{
     const big=lay.leaves.reduce((a,b)=>a.w*a.h>b.w*b.h?a:b);
     (function w(x){ if(x.colour!==undefined){ if(x.id===big.id) x.colour="red"; if(x.inner) w(x.inner.tree); return; } w(x.a); w(x.b); })(this.tree);
   }
-  // one long-form step: 2–4 mutations, every one of them continuous
   // the tree as it will stand when this step lands (p = 1): boxes, and every node by role
   survey(){
     const lay=this.layout(1), leaves=[], internals=[], mergeable=[];
@@ -731,12 +787,12 @@ class Mondrian{
     })(this.tree,null,null,0);
     return {lay, box:lay.box, leaves, internals, mergeable};
   }
+  // one long-form step: 2–4 mutations. Every one of them is a cut sliding at
+  // full weight — born on an edge, dying into an edge, or moving between.
   mutate(){
     const c=this.c, P=this.P, r=this.r;
     const count=this.count(), ops=2+Math.floor(r()*3);
     this.ops=[];
-    // nothing ever changes colour in place — a colour can only ARRIVE, as a
-    // plane born at zero width that grows or sweeps; so nothing ever blinks
     for(let i=0;i<ops;i++){
       // survey afresh for every op: an earlier op in this same step may have
       // moved a cut, so sizes and needs must be read from the target state
@@ -747,10 +803,11 @@ class Mondrian{
       if(count>this.target*1.4 && op==="split") op="merge";
       if(count<this.target*.6  && op==="merge") op="split";
       if(op==="shift"){
-        const cand=internals.filter(i=>!i.n.prune); if(!cand.length) continue;
+        const cand=internals.filter(i=>!i.n.prune && !i.n.anim); if(!cand.length) continue;
         const {n}=pick(r,cand), b=box[n.id]; if(!b) continue;
-        const t=mRatio(c, n.dir==="v"?b.w:b.h, mNeed(n.a,n.dir,c), mNeed(n.b,n.dir,c));
-        if(t!==null){ n.t1=t; this.ops.push("shift:"+n.id); }
+        const len=n.dir==="v"?b.w:b.h;
+        const t=mRatio(c, len, mNeed(n.a,n.dir,c), mNeed(n.b,n.dir,c));
+        if(t!==null){ n.t1=t; n.anim=mAnim(c,Math.abs(t-n.t0)*len,"inout"); this.ops.push("shift:"+n.id); }
       }else if(op==="split"){
         const cand=leaves.filter(l=>!l.n.fresh && box[l.n.id]); if(!cand.length) continue;
         const {n,parent,key}=pick(r,cand), b=box[n.id];
@@ -759,36 +816,48 @@ class Mondrian{
         let dir=null, t=null;
         for(const d of dirs){ const keep=mNeed(n,d,c); t=mRatio(c, d==="v"?b.w:b.h, fromStart?c.min:keep, fromStart?keep:c.min); if(t!==null){ dir=d; break; } }
         if(!dir) continue;
+        const len=dir==="v"?b.w:b.h;
         const fresh={id:_mid++, colour:mColour(c, r()<.5 || !coloured().length), fresh:true};
-        const node={id:_mid++, dir, t0:fromStart?0:1, t1:t, lw:P.lw, lw0:0, lw1:P.lw, a:fromStart?fresh:n, b:fromStart?n:fresh};
+        // born ON the plane's edge at full weight (coincident with the line already there), then slides in
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:t, lw:P.lw, anim:mAnim(c,(fromStart?t:1-t)*len,"out"), a:fromStart?fresh:n, b:fromStart?n:fresh};
         if(parent) parent[key]=node; else this.tree=node; this.ops.push("split:"+n.id+"→"+node.id);
       }else if(op==="merge"){
-        const cand=mergeable.filter(m=>!m.n.prune); if(!cand.length) continue;
-        const {n}=pick(r,cand); const keepA=r()<.5, drop=keepA?n.b:n.a;
+        const cand=mergeable.filter(m=>!m.n.prune && !m.n.anim); if(!cand.length) continue;
+        const {n}=pick(r,cand), b=box[n.id]; const keepA=r()<.5, drop=keepA?n.b:n.a;
         const col=coloured(); if(col.length===1 && col[0]===drop.id) continue; // never lose the last colour
-        n.t1=keepA?1:0; n.lw1=0; n.prune=keepA?"a":"b"; this.ops.push("merge:"+n.id+" keep "+n.prune);
+        const len=n.dir==="v"?b.w:b.h;
+        // the line slides back INTO the edge at full weight and vanishes into the line there;
+        // if the departing plane holds a painting, that painting folds itself away on the way out
+        if(drop.inner && !drop.inner.prune){ const db=box[drop.id]; if(db) mCollapseInner(drop,c,db.w,db.h,null); }
+        n.t1=keepA?1:0; n.prune=keepA?"a":"b"; n.anim=mAnim(c,Math.abs(n.t1-n.t0)*len,"in"); this.ops.push("merge:"+n.id+" keep "+n.prune);
       }else if(op==="sweep"){
         // a plane of another colour wipes across this one and replaces it
         const cand=leaves.filter(l=>!l.n.fresh && !l.n.inner && box[l.n.id]); if(!cand.length) continue;
         const {n,parent,key}=pick(r,cand), b=box[n.id];
         let col=mColour(c,r()<.6); if(col===n.colour) col = col==="white" ? mColour(c,true) : "white";
         if(col==="white"){ const k=coloured(); if(k.length===1 && k[0]===n.id) col=mColour(c,true); if(col===n.colour) continue; }
-        const dir = b.w>b.h?"v":"h", fromStart=r()<.5;
+        const dir = b.w>b.h?"v":"h", fromStart=r()<.5, len=dir==="v"?b.w:b.h;
         const fresh={id:_mid++, colour:col, fresh:true};
-        const node={id:_mid++, dir, t0:fromStart?0:1, t1:fromStart?1:0, lw:P.lw, lw0:0, lw1:0, sweep:true,
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:fromStart?1:0, lw:P.lw, anim:mAnim(c,len,"sweep"),
           a:fromStart?fresh:n, b:fromStart?n:fresh, prune:fromStart?"a":"b"};
         if(parent) parent[key]=node; else this.tree=node; this.ops.push("sweep:"+n.id+"→"+fresh.id);
       }else if(op==="nest"){
-        // a painting arrives inside a plane, growing from its centre
+        // a painting arrives inside a plane: born on the plane's edges, it slides into place
         const need=mNestNeed(c);
         const cand=leaves.filter(l=>!l.n.fresh && !l.n.inner && l.lvl<(P.nestDepth||0) && box[l.n.id] && box[l.n.id].w>=need && box[l.n.id].h>=need);
         if(!cand.length) continue;
         const {n,lvl}=pick(r,cand), b=box[n.id];
-        n.inner=mInner(c,b.w,b.h,lvl+1); n.inner.g0=0; n.inner.g1=1; this.ops.push("nest:"+n.id);
+        n.inner=mInner(c,b.w,b.h,lvl+1); mBirthInner(n,c,b.w,b.h); this.ops.push("nest:"+n.id);
       }else{
-        // …and leaves the same way
-        const cand=leaves.filter(l=>l.n.inner && !l.n.inner.prune && l.n.inner.g1===1); if(!cand.length) continue;
-        const L=pick(r,cand); const I=L.n.inner; I.g0=1; I.g1=0; I.prune=true; I.dir=r()<.5?"v":"h"; I.from=r()<.5?0:1; this.ops.push("unnest:"+L.n.id);
+        // …and leaves the same way: cuts slide out to the frame, the frame slides out to the plane's
+        // edges, and the plane that is left wearing the container's colour is the container again
+        const cand=[];
+        leaves.forEach(l=>{ const I=l.n.inner; if(!I||I.prune||I.g1!==1||I.anim) return; const b=box[l.n.id]; if(!b) return;
+          const inner=[]; (function w(x){ if(x.colour!==undefined){ inner.push(x); return; } w(x.a); w(x.b); })(I.tree);
+          const L=inner.filter(x=>x.colour===l.n.colour && !x.inner); if(L.length) cand.push({l,L:pick(r,L)}); });
+        if(!cand.length) continue;
+        const {l,L}=pick(r,cand), b=box[l.n.id];
+        mCollapseInner(l.n,c,b.w,b.h,L); this.ops.push("unnest:"+l.n.id);
       }
     }
   }
@@ -798,21 +867,22 @@ class Mondrian{
     (function walk(n,parent,key){
       if(n.colour!==undefined){
         delete n.fresh;
-        if(n.inner){ if(n.inner.prune) delete n.inner; else { n.inner.g0=n.inner.g1=1; walk(n.inner.tree,n.inner,"tree"); } }
+        if(n.inner){ if(n.inner.prune) delete n.inner; else { n.inner.g0=n.inner.g1=1; n.inner.anim=null; walk(n.inner.tree,n.inner,"tree"); } }
         return;
       }
       if(n.prune){ const keep=n[n.prune]; if(parent) parent[key]=keep; else self.tree=keep; walk(keep,parent,key); return; }
-      n.t0=n.t1; n.lw0=n.lw1=n.lw;
+      n.t0=n.t1; n.anim=null;
       walk(n.a,n,"a"); walk(n.b,n,"b");
     })(this.tree,null,null);
   }
   render(p){
     const lay=this.layout(p);
     // Everything is snapped to whole CSS pixels by the engine itself: plane
-    // edges land on the pixel grid, and every line is centred on its snapped
-    // cut with one fixed pixel thickness — so no plane can bleed past a line,
-    // and every line in a mark is the same number of pixels.
+    // edges land on the pixel grid, and every line — cut or frame — has the
+    // one fixed pixel thickness, so no plane can bleed past a line and no
+    // line is ever thinner or thicker than any other.
     const px=this.el.clientWidth||this.lastPx||400; this.lastPx=px;
+    const T=Math.max(1,Math.round(this.c.lwAbs*px));   // THE line, in pixels
     const seen=new Set(), S=1000/px, NS="http://www.w3.org/2000/svg", R=v=>Math.round(v*px);
     const put=(g,id,x0,y0,x1,y1,fill)=>{
       let el=this.els.get(id);
@@ -822,21 +892,20 @@ class Mondrian{
       el.setAttribute("fill",fill); seen.add(id);
     };
     const line=(l,edge)=>{
-      const thinW=l.w<l.h;
-      const t = thinW ? (l.w>0?Math.max(1,Math.round(l.w*px)):0) : (l.h>0?Math.max(1,Math.round(l.h*px)):0);
+      // orientation is declared, never inferred — a zero-length line is simply not drawn
       let x0,y0,x1,y1;
-      if(thinW){ const c=R(l.x+l.w/2); x0=c-Math.floor(t/2); x1=x0+t; y0=R(l.y); y1=R(l.y+l.h); }
-      else     { const c=R(l.y+l.h/2); y0=c-Math.floor(t/2); y1=y0+t; x0=R(l.x); x1=R(l.x+l.w); }
-      if(edge==="T"){ y0=0; y1=t; x0=0; x1=px; } if(edge==="B"){ y1=px; y0=px-t; x0=0; x1=px; }
-      if(edge==="L"){ x0=0; x1=t; y0=0; y1=px; } if(edge==="R"){ x1=px; x0=px-t; y0=0; y1=px; }
+      if(l.o==="v"){ if(l.h<=0) return; x0=R(l.x); x1=x0+T; y0=R(l.y); y1=R(l.y+l.h); if(y1<=y0) return; }
+      else         { if(l.w<=0) return; y0=R(l.y); y1=y0+T; x0=R(l.x); x1=R(l.x+l.w); if(x1<=x0) return; }
+      if(edge==="T"){ y0=0; y1=T; x0=0; x1=px; } if(edge==="B"){ y1=px; y0=px-T; x0=0; x1=px; }
+      if(edge==="L"){ x0=0; x1=T; y0=0; y1=px; } if(edge==="R"){ x1=px; x0=px-T; y0=0; y1=px; }
       put(this.gLines,l.id,x0,y0,x1,y1,MCOL.black);
     };
     lay.leaves.forEach(l=>put(this.gLeaves,l.id,R(l.x),R(l.y),R(l.x+l.w),R(l.y+l.h),MCOL[l.colour]));
     lay.lines.forEach(l=>line(l));
     // the outer frame: centred on the composition's edge (which sits half a line in), so it fills to the canvas edge
     const f=this.c.lwAbs;
-    line({id:"fT",x:0,y:0,w:1,h:f},"T"); line({id:"fB",x:0,y:1-f,w:1,h:f},"B");
-    line({id:"fL",x:0,y:0,w:f,h:1},"L"); line({id:"fR",x:1-f,y:0,w:f,h:1},"R");
+    line({id:"fT",o:"h",x:0,y:0,w:1,h:f},"T"); line({id:"fB",o:"h",x:0,y:1-f,w:1,h:f},"B");
+    line({id:"fL",o:"v",x:0,y:0,w:f,h:1},"L"); line({id:"fR",o:"v",x:1-f,y:0,w:f,h:1},"R");
     for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
   }
   // tap: move to the next composition of the same family
@@ -849,13 +918,13 @@ class Mondrian{
   tick(now){
     if(!this.el.isConnected || this.el.offsetParent===null) return; // hidden: don't burn frames
     if(this.auto){
-      // 1 s period: hold for 0.333 s, move for 0.667 s
+      // 1 s period: hold for 0.333 s, move for 0.667 s (each cut eases on its own clock inside the window)
       const cycle=Math.floor((now-this.born)/1000), local=(now-this.born)%1000;
       if(cycle!==this.cycle){ if(this.cycle!==null) this.finalize(); this.mutate(); this.cycle=cycle; }
-      this.render(local<333 ? 0 : ease((local-333)/667));
+      this.render(local<333 ? 0 : (local-333)/667);
     }else if(this.animStart!==null){
       const p=Math.min(1,(now-this.animStart)/667);
-      this.render(ease(p));
+      this.render(p);
       if(p>=1){ this.finalize(); this.animStart=null; this.render(0); }
     }else if(this.el.clientWidth && this.el.clientWidth!==this.lastPx){
       this.render(0); // size changed since the last paint (e.g. the tab just became visible): re-snap
@@ -868,7 +937,7 @@ const familyOf = email => FAMILIES[hashStr("katte-family-"+email)%FAMILIES.lengt
 // the two public marks: the logo, and the sign-in hero — the same daily seed
 const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, nest:.2, nestDepth:1, name:"Boogie"};
 new Mondrian($("#heroMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:1});
-new Mondrian($("#logoMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:2.4});
+new Mondrian($("#logoMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:4.8});
 
 /* ------------ me: personal mark ------------ */
 let meMark=null;

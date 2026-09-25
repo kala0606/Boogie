@@ -1,6 +1,6 @@
 /* Boogie service worker — offline-first app shell.
    Bump CACHE when any precached file changes to roll the cache over. */
-const CACHE = "katte-v11";
+const CACHE = "katte-v12";
 const SHELL = [
   "./",
   "./index.html",
