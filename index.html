@@ -578,7 +578,9 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
 
    The program is long-form: one seed grows one composition, and the same
    composition can be *mutated* — a cut slides, a plane splits in two, two
-   planes merge, a plane changes colour. Every mutation is continuous in t,
+   planes merge, a new colour sweeps across a plane, a painting arrives
+   inside a plane (recursion: a framed composition inset in a plane, same
+   line weight, which may itself hold one). Every mutation is continuous,
    so the picture can move from one state to the next: that is the logo,
    ticking once a second, and it is the tap on your own mark.
 
@@ -587,33 +589,86 @@ const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
    The family is for life; the composition is minted fresh each day. */
 const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", white:"#ffffff", black:"#151515"}; // black is for lines only — never a plane
 const FAMILIES = [
-  // lw: ONE line weight per family (fraction of the side) — every cut and the frame share it
-  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.040},
-  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.028},
-  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5}, lw:.016},
-  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4}, lw:.032},
+  // lw: ONE line weight per family (fraction of the side) — every cut and every frame share it
+  // minCell: the smallest plane the family will draw · nest: chance a plane holds a painting within the painting
+  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2}, lw:.040, nest:.15, nestDepth:1},
+  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3}, lw:.028, nest:.25, nestDepth:1},
+  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5}, lw:.016, nest:.35, nestDepth:2},
+  {name:"Trafalgar",   about:"mostly white, a few strong accents",                 maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4}, lw:.032, nest:.30, nestDepth:2},
 ];
 let _mid=0;
-const mRatio = (r,P)=>{ if(r()<P.strip){ const s=.08+r()*.14; return r()<.5?s:1-s; } return .3+r()*.4; };
-const mLW    = (r,P)=>P.lw;
-function mColour(r,P,force){
+/* Everything below works in one unit square. The line weight is absolute
+   (lw × lwScale), and so is the minimum plane: never thinner than ~3 lines,
+   so two lines can never touch and read as one fat one. */
+function mCtx(r,P,lwScale){ const lwAbs=P.lw*lwScale; return {r,P,lwScale,lwAbs, min:Math.max(P.minCell,lwAbs*3.2), margin:1.5*lwAbs+.04}; }
+// how much room a subtree needs along a direction so that no plane in it
+// — however deep, including nested paintings — ever drops below the minimum.
+// Exact, not a sum: a node cut at ratio t hands t of its length to one side
+// and 1−t to the other, so it needs max(needA/t, needB/(1−t)).
+function mNeed(n,dir,c){
+  if(n.colour!==undefined) return (n.inner && !n.inner.prune) ? 2*n.inner.m+mNeed(n.inner.tree,dir,c) : c.min;
+  if(n.prune) return mNeed(n[n.prune],dir,c);
+  const a=mNeed(n.a,dir,c), b=mNeed(n.b,dir,c);
+  if(n.dir!==dir) return Math.max(a,b);
+  const t=Math.min(.999,Math.max(.001,n.t1));
+  return Math.max(a/t, b/(1-t));
+}
+// a cut ratio that honours what both sides need; null if the node is too small to cut
+function mRatio(c,len,needA,needB){
+  const lo=needA/len, hi=1-needB/len; if(lo>hi) return null;
+  const r=c.r; let t;
+  if(r()<c.P.strip){ const s=r()*Math.min(.10,hi-lo); t = r()<.5 ? lo+s : hi-s; } // a strip, hugging one side
+  else t=.3+r()*.4;
+  return Math.min(hi,Math.max(lo,t));
+}
+function mColour(c,force){
+  const r=c.r, P=c.P;
   if(!force && r()>P.colour) return "white";
   const ks=Object.keys(P.weights), sum=ks.reduce((a,k)=>a+P.weights[k],0);
   let v=r()*sum; for(const k of ks){ v-=P.weights[k]; if(v<=0) return k; } return ks[0];
 }
-const mLeaf = (r,P,force)=>({id:_mid++, colour:mColour(r,P,force)});
-function mGrow(r,P,w,h,depth){
-  const canSplit = depth<P.maxDepth && Math.max(w,h)>P.minCell*2.2;
+const mNestNeed = c=>2*c.margin+2.2*c.min;   // a plane must be this big to hold a painting
+// a painting within the painting: a framed composition inset in a plane, same line weight
+function mInner(c,w,h,lvl){
+  const m=c.margin;
+  return {id:_mid++, g0:1, g1:1, m, lvl, tree:mGrow(c,w-2*m,h-2*m,0,Math.min(c.P.maxDepth,1+lvl),lvl)};
+}
+function mLeaf(c,force,w,h,lvl){
+  const n={id:_mid++, colour:mColour(c,force)};
+  const need=mNestNeed(c);
+  if(lvl<(c.P.nestDepth||0) && w>=need && h>=need && c.r()<(c.P.nest||0)) n.inner=mInner(c,w,h,lvl+1);
+  return n;
+}
+function mGrow(c,w,h,depth,maxDepth,lvl){
+  const P=c.P, r=c.r;
   const prob = depth===0 ? 1 : P.split*Math.pow(P.decay,depth-1)*(Math.max(w,h)>.5?1.3:1);
-  if(!canSplit || r()>prob) return mLeaf(r,P);
-  const wide=w>h, dir = r()<.72 ? (wide?"v":"h") : (wide?"h":"v");
-  const t=mRatio(r,P), lw=mLW(r,P);
+  let dir=null;
+  if(depth<maxDepth && r()<=prob){
+    const wide=w>h, first = r()<.72 ? (wide?"v":"h") : (wide?"h":"v"), second = first==="v"?"h":"v";
+    for(const d of [first,second]){ if((d==="v"?w:h)>=2*c.min){ dir=d; break; } }
+  }
+  if(!dir) return mLeaf(c,false,w,h,lvl);
+  const len=dir==="v"?w:h, t=mRatio(c,len,c.min,c.min);
   const [aw,ah,bw,bh] = dir==="v" ? [w*t,h,w*(1-t),h] : [w,h*t,w,h*(1-t)];
-  return {id:_mid++, dir, t0:t, t1:t, lw, lw0:lw, lw1:lw, a:mGrow(r,P,aw,ah,depth+1), b:mGrow(r,P,bw,bh,depth+1)};
+  return {id:_mid++, dir, t0:t, t1:t, lw:P.lw, lw0:P.lw, lw1:P.lw, a:mGrow(c,aw,ah,depth+1,maxDepth,lvl), b:mGrow(c,bw,bh,depth+1,maxDepth,lvl)};
 }
 // lay the tree out at progress p (0 = previous state, 1 = target state)
 function mLayout(n,x,y,w,h,p,lwScale,out){
-  if(n.colour!==undefined){ out.leaves.push({id:n.id,x,y,w,h,colour:n.colour}); return; }
+  out.box[n.id]={x,y,w,h};
+  if(n.colour!==undefined){
+    out.leaves.push({id:n.id,x,y,w,h,colour:n.colour});
+    const I=n.inner;
+    if(I){ // the inner painting scales about its centre — that is how it arrives and how it leaves
+      const g=I.g0+(I.g1-I.g0)*p;
+      if(g>.001){
+        const bw=(w-2*I.m)*g, bh=(h-2*I.m)*g, bx=x+(w-bw)/2, by=y+(h-bh)/2, f=out.lw*lwScale*g;
+        out.lines.push({id:I.id+"T",x:bx,y:by,w:bw,h:f},{id:I.id+"B",x:bx,y:by+bh-f,w:bw,h:f},
+                       {id:I.id+"L",x:bx,y:by,w:f,h:bh},{id:I.id+"R",x:bx+bw-f,y:by,w:f,h:bh});
+        mLayout(I.tree,bx,by,bw,bh,p,lwScale*g,out);
+      }
+    }
+    return;
+  }
   const t=n.t0+(n.t1-n.t0)*p;
   // a sweeping cut carries its line only mid-journey: none at either edge, full weight in the middle
   const lw=(n.sweep ? n.lw*Math.sin(p*Math.PI) : n.lw0+(n.lw1-n.lw0)*p)*lwScale;
@@ -635,88 +690,122 @@ class Mondrian{
   constructor(el,seed,P,opts={}){
     this.el=el; this.P=P; this.r=mulberry32(hashStr(seed));
     this.auto=!!opts.auto; this.lwScale=opts.lwScale||1;
-    this.tree=mGrow(this.r,P,1,1,0); this.ensureColour();
+    this.c=mCtx(this.r,P,this.lwScale);
+    this.tree=mGrow(this.c,1,1,0,P.maxDepth,0); this.ensureColour();
     this.target=this.count();
     this.svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
     this.svg.setAttribute("viewBox","0 0 1000 1000"); this.svg.setAttribute("preserveAspectRatio","none");
     this.gLeaves=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.gLines=document.createElementNS("http://www.w3.org/2000/svg","g");
     this.svg.append(this.gLeaves,this.gLines); el.innerHTML=""; el.appendChild(this.svg);
-    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now();
+    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now(); this.lastPx=0;
     this.render(0); PLAYERS.push(this);
   }
   destroy(){ const i=PLAYERS.indexOf(this); if(i>=0) PLAYERS.splice(i,1); }
-  count(){ let n=0; (function w(x){ if(x.colour!==undefined){n++;return;} w(x.a); w(x.b); })(this.tree); return n; }
+  layout(p){ const out={leaves:[],lines:[],box:{},lw:this.P.lw}; mLayout(this.tree,0,0,1,1,p,this.lwScale,out); return out; }
+  count(){ return this.layout(1).leaves.length; }
   ensureColour(){
-    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,1,1,lay);
+    const lay=this.layout(1);
     if(lay.leaves.some(l=>l.colour!=="white")) return;
     const big=lay.leaves.reduce((a,b)=>a.w*a.h>b.w*b.h?a:b);
-    (function w(x){ if(x.colour!==undefined){ if(x.id===big.id) x.colour="red"; return; } w(x.a); w(x.b); })(this.tree);
+    (function w(x){ if(x.colour!==undefined){ if(x.id===big.id) x.colour="red"; if(x.inner) w(x.inner.tree); return; } w(x.a); w(x.b); })(this.tree);
   }
-  // one long-form step: 2–4 mutations, every one of them continuous in t
+  // one long-form step: 2–4 mutations, every one of them continuous
+  // the tree as it will stand when this step lands (p = 1): boxes, and every node by role
+  survey(){
+    const lay=this.layout(1), leaves=[], internals=[], mergeable=[];
+    (function walk(n,parent,key,lvl){
+      if(n.colour!==undefined){
+        leaves.push({n,parent,key,lvl});
+        if(n.inner && !n.inner.prune) walk(n.inner.tree,n.inner,"tree",lvl+1);
+        return;
+      }
+      internals.push({n,parent,key,lvl});
+      if(n.a.colour!==undefined && n.b.colour!==undefined) mergeable.push({n,parent,key,lvl});
+      walk(n.a,n,"a",lvl); walk(n.b,n,"b",lvl);
+    })(this.tree,null,null,0);
+    return {lay, box:lay.box, leaves, internals, mergeable};
+  }
   mutate(){
-    const P=this.P, r=this.r;
-    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,1,1,lay);
-    const size={}; lay.leaves.forEach(l=>size[l.id]=l);
-    const leaves=[], internals=[], mergeable=[];
-    (function walk(n,parent,key){
-      if(n.colour!==undefined){ leaves.push({n,parent,key}); return; }
-      internals.push({n,parent,key});
-      if(n.a.colour!==undefined && n.b.colour!==undefined) mergeable.push({n,parent,key});
-      walk(n.a,n,"a"); walk(n.b,n,"b");
-    })(this.tree,null,null);
-    const count=leaves.length, ops=2+Math.floor(r()*3);
-    const coloured=()=>lay.leaves.filter(l=>l.colour!=="white").map(l=>l.id);
+    const c=this.c, P=this.P, r=this.r;
+    const count=this.count(), ops=2+Math.floor(r()*3);
+    this.ops=[];
     // nothing ever changes colour in place — a colour can only ARRIVE, as a
     // plane born at zero width that grows or sweeps; so nothing ever blinks
     for(let i=0;i<ops;i++){
+      // survey afresh for every op: an earlier op in this same step may have
+      // moved a cut, so sizes and needs must be read from the target state
+      const {lay,box,leaves,internals,mergeable}=this.survey();
+      const coloured=()=>lay.leaves.filter(l=>l.colour!=="white").map(l=>l.id);
       const v=r();
-      let op = v<.40?"shift" : v<.62?"split" : v<.80?"merge" : "sweep";
+      let op = v<.32?"shift" : v<.50?"split" : v<.66?"merge" : v<.80?"sweep" : v<.92?"nest" : "unnest";
       if(count>this.target*1.4 && op==="split") op="merge";
       if(count<this.target*.6  && op==="merge") op="split";
       if(op==="shift"){
-        const c=internals.filter(i=>!i.n.prune); if(!c.length) continue;
-        pick(r,c).n.t1=mRatio(r,P);
+        const cand=internals.filter(i=>!i.n.prune); if(!cand.length) continue;
+        const {n}=pick(r,cand), b=box[n.id]; if(!b) continue;
+        const t=mRatio(c, n.dir==="v"?b.w:b.h, mNeed(n.a,n.dir,c), mNeed(n.b,n.dir,c));
+        if(t!==null){ n.t1=t; this.ops.push("shift:"+n.id); }
       }else if(op==="split"){
-        const c=leaves.filter(l=>{ const s=size[l.n.id]; return s && Math.max(s.w,s.h)>P.minCell*2.2 && !l.n.fresh; });
-        if(!c.length) continue;
-        const {n,parent,key}=pick(r,c), s=size[n.id];
-        const dir = s.w>s.h ? (r()<.75?"v":"h") : (r()<.75?"h":"v");
-        const fromStart=r()<.5, lw=mLW(r,P);
-        const fresh=mLeaf(r,P, r()<.5 || !coloured().length); fresh.fresh=true;
-        const node={id:_mid++, dir, t0:fromStart?0:1, t1:mRatio(r,P), lw, lw0:0, lw1:lw, a:fromStart?fresh:n, b:fromStart?n:fresh};
-        if(parent) parent[key]=node; else this.tree=node;
+        const cand=leaves.filter(l=>!l.n.fresh && box[l.n.id]); if(!cand.length) continue;
+        const {n,parent,key}=pick(r,cand), b=box[n.id];
+        const fromStart=r()<.5;
+        const dirs = b.w>b.h ? ["v","h"] : ["h","v"];
+        let dir=null, t=null;
+        for(const d of dirs){ const keep=mNeed(n,d,c); t=mRatio(c, d==="v"?b.w:b.h, fromStart?c.min:keep, fromStart?keep:c.min); if(t!==null){ dir=d; break; } }
+        if(!dir) continue;
+        const fresh={id:_mid++, colour:mColour(c, r()<.5 || !coloured().length), fresh:true};
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:t, lw:P.lw, lw0:0, lw1:P.lw, a:fromStart?fresh:n, b:fromStart?n:fresh};
+        if(parent) parent[key]=node; else this.tree=node; this.ops.push("split:"+n.id+"→"+node.id);
       }else if(op==="merge"){
-        const c=mergeable.filter(m=>!m.n.prune); if(!c.length) continue;
-        const {n}=pick(r,c); const keepA=r()<.5, drop=keepA?n.b:n.a;
+        const cand=mergeable.filter(m=>!m.n.prune); if(!cand.length) continue;
+        const {n}=pick(r,cand); const keepA=r()<.5, drop=keepA?n.b:n.a;
         const col=coloured(); if(col.length===1 && col[0]===drop.id) continue; // never lose the last colour
-        n.t1=keepA?1:0; n.lw1=0; n.prune=keepA?"a":"b";
-      }else{
-        // sweep: a plane of another colour wipes across this one and replaces it
-        const c=leaves.filter(l=>!l.n.fresh && size[l.n.id]); if(!c.length) continue;
-        const {n,parent,key}=pick(r,c), s=size[n.id];
-        let col=mColour(r,P,r()<.6); if(col===n.colour) col = col==="white" ? mColour(r,P,true) : "white";
-        if(col==="white"){ const k=coloured(); if(k.length===1 && k[0]===n.id) col=mColour(r,P,true); if(col===n.colour) continue; }
-        const dir = s.w>s.h?"v":"h", fromStart=r()<.5, lw=mLW(r,P);
+        n.t1=keepA?1:0; n.lw1=0; n.prune=keepA?"a":"b"; this.ops.push("merge:"+n.id+" keep "+n.prune);
+      }else if(op==="sweep"){
+        // a plane of another colour wipes across this one and replaces it
+        const cand=leaves.filter(l=>!l.n.fresh && !l.n.inner && box[l.n.id]); if(!cand.length) continue;
+        const {n,parent,key}=pick(r,cand), b=box[n.id];
+        let col=mColour(c,r()<.6); if(col===n.colour) col = col==="white" ? mColour(c,true) : "white";
+        if(col==="white"){ const k=coloured(); if(k.length===1 && k[0]===n.id) col=mColour(c,true); if(col===n.colour) continue; }
+        const dir = b.w>b.h?"v":"h", fromStart=r()<.5;
         const fresh={id:_mid++, colour:col, fresh:true};
-        const node={id:_mid++, dir, t0:fromStart?0:1, t1:fromStart?1:0, lw, lw0:0, lw1:0, sweep:true,
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:fromStart?1:0, lw:P.lw, lw0:0, lw1:0, sweep:true,
           a:fromStart?fresh:n, b:fromStart?n:fresh, prune:fromStart?"a":"b"};
-        if(parent) parent[key]=node; else this.tree=node;
+        if(parent) parent[key]=node; else this.tree=node; this.ops.push("sweep:"+n.id+"→"+fresh.id);
+      }else if(op==="nest"){
+        // a painting arrives inside a plane, growing from its centre
+        const need=mNestNeed(c);
+        const cand=leaves.filter(l=>!l.n.fresh && !l.n.inner && l.lvl<(P.nestDepth||0) && box[l.n.id] && box[l.n.id].w>=need && box[l.n.id].h>=need);
+        if(!cand.length) continue;
+        const {n,lvl}=pick(r,cand), b=box[n.id];
+        n.inner=mInner(c,b.w,b.h,lvl+1); n.inner.g0=0; n.inner.g1=1; this.ops.push("nest:"+n.id);
+      }else{
+        // …and leaves the same way
+        const cand=leaves.filter(l=>l.n.inner && !l.n.inner.prune && l.n.inner.g1===1); if(!cand.length) continue;
+        const L=pick(r,cand); const I=L.n.inner; I.g0=1; I.g1=0; I.prune=true; this.ops.push("unnest:"+L.n.id);
       }
     }
   }
-  // commit the target state: prune collapsed cuts, freeze t
+  // commit the target state: prune collapsed cuts and departed paintings, freeze t
   finalize(){
     const self=this;
     (function walk(n,parent,key){
-      if(n.colour!==undefined){ delete n.fresh; return; }
+      if(n.colour!==undefined){
+        delete n.fresh;
+        if(n.inner){ if(n.inner.prune) delete n.inner; else { n.inner.g0=n.inner.g1=1; walk(n.inner.tree,n.inner,"tree"); } }
+        return;
+      }
       if(n.prune){ const keep=n[n.prune]; if(parent) parent[key]=keep; else self.tree=keep; walk(keep,parent,key); return; }
       n.t0=n.t1; n.lw0=n.lw1=n.lw;
       walk(n.a,n,"a"); walk(n.b,n,"b");
     })(this.tree,null,null);
   }
   render(p){
-    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,p,this.lwScale,lay);
+    const lay=this.layout(p);
+    // lines are snapped to whole CSS pixels by the engine itself, so every
+    // line in a mark is the same number of pixels — never 6 here and 7 there
+    const px=this.el.clientWidth||this.lastPx||400; this.lastPx=px;
     const seen=new Set(), S=1000, NS="http://www.w3.org/2000/svg";
     const put=(g,it,fill)=>{
       let el=this.els.get(it.id);
@@ -725,12 +814,19 @@ class Mondrian{
       el.setAttribute("width",Math.max(0,it.w*S).toFixed(1)); el.setAttribute("height",Math.max(0,it.h*S).toFixed(1));
       el.setAttribute("fill",fill); seen.add(it.id);
     };
+    const snap=it=>{
+      const x0=Math.round(it.x*px), y0=Math.round(it.y*px), x1=Math.round((it.x+it.w)*px), y1=Math.round((it.y+it.h)*px);
+      const thinW = it.w<it.h;                                   // which axis is the thickness
+      const w = thinW ? (it.w>0?Math.max(1,Math.round(it.w*px)):0) : x1-x0;
+      const h = thinW ? y1-y0 : (it.h>0?Math.max(1,Math.round(it.h*px)):0);
+      return {id:it.id, x:x0/px, y:y0/px, w:w/px, h:h/px};
+    };
     lay.leaves.forEach(l=>put(this.gLeaves,l,MCOL[l.colour]));
-    lay.lines.forEach(l=>put(this.gLines,l,MCOL.black));
-    // the frame is drawn here, at exactly the family's line weight — one weight for every black line
+    lay.lines.forEach(l=>put(this.gLines,snap(l),MCOL.black));
+    // the outer frame, at exactly the family's line weight — one weight for every black line
     const f=this.P.lw*this.lwScale;
     [{id:"fT",x:0,y:0,w:1,h:f},{id:"fB",x:0,y:1-f,w:1,h:f},{id:"fL",x:0,y:0,w:f,h:1},{id:"fR",x:1-f,y:0,w:f,h:1}]
-      .forEach(l=>put(this.gLines,l,MCOL.black));
+      .forEach(l=>put(this.gLines,snap(l),MCOL.black));
     for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
   }
   // tap: move to the next composition of the same family
@@ -751,6 +847,8 @@ class Mondrian{
       const p=Math.min(1,(now-this.animStart)/667);
       this.render(ease(p));
       if(p>=1){ this.finalize(); this.animStart=null; this.render(0); }
+    }else if(this.el.clientWidth && this.el.clientWidth!==this.lastPx){
+      this.render(0); // size changed since the last paint (e.g. the tab just became visible): re-snap
     }
   }
 }
@@ -758,7 +856,7 @@ class Mondrian{
 const familyOf = email => FAMILIES[hashStr("katte-family-"+email)%FAMILIES.length];
 
 // the two public marks: the logo, and the sign-in hero — the same daily seed
-const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, name:"Boogie"};
+const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, nest:.2, nestDepth:1, name:"Boogie"};
 new Mondrian($("#heroMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:1});
 new Mondrian($("#logoMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:2.4});
 
@@ -771,7 +869,7 @@ function renderMeMark(){
   meMark=new Mondrian($("#meMark"), "katte-me-"+me.email+"-"+todaySeed(), fam, {lwScale:1});
   const v=+localStorage.getItem(userKey("markvar"))||0;
   for(let i=0;i<v;i++) meMark.skip();
-  $("#markNote").innerHTML=`Your Mondrian · the <b>${fam.name}</b> family — ${fam.about}.<br>Minted fresh each day. Tap to shift it.`;
+  $("#markNote").innerHTML=`Your Mondrian · the <b>${fam.name}</b> family — ${fam.about}.<br>Minted fresh each day; some planes hold a painting of their own. Tap to shift it.`;
 }
 function shiftMeMark(){
   if(!meMark) return;
