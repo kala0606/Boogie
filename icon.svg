@@ -1,17 +1,16 @@
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <!-- Katte app icon — cream kolam knot on terracotta, full-bleed for maskable -->
-  <rect width="512" height="512" fill="#c2502c"/>
-  <g fill="none" stroke="#faf5ea" stroke-width="19" stroke-linecap="round" stroke-linejoin="round">
-    <!-- four-fold kolam loop: one petal rotated around the centre -->
-    <g id="p"><path d="M256,250 C182,214 182,112 256,112 C330,112 330,214 256,250"/></g>
-    <use href="#p" transform="rotate(90 256 256)"/>
-    <use href="#p" transform="rotate(180 256 256)"/>
-    <use href="#p" transform="rotate(270 256 256)"/>
-    <!-- pulli dots between the loops -->
-    <circle cx="256" cy="256" r="7" fill="#faf5ea" stroke="none"/>
-    <circle cx="150" cy="150" r="6" fill="#e79f1f" stroke="none"/>
-    <circle cx="362" cy="150" r="6" fill="#e79f1f" stroke="none"/>
-    <circle cx="150" cy="362" r="6" fill="#e79f1f" stroke="none"/>
-    <circle cx="362" cy="362" r="6" fill="#e79f1f" stroke="none"/>
-  </g>
+<svg width="512" height="512" viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
+  <!-- Katte app icon — a fixed Mondrian square; lines only where planes meet -->
+  <rect x="0.0" y="0.0" width="0.62" height="0.66" fill="#d7261e"/>
+  <rect x="0.62" y="0.0" width="0.38" height="0.22" fill="#ffffff"/>
+  <rect x="0.62" y="0.22" width="0.38" height="0.44" fill="#ffffff"/>
+  <rect x="0.0" y="0.66" width="0.16" height="0.34" fill="#ffffff"/>
+  <rect x="0.16" y="0.66" width="0.46" height="0.34" fill="#ffffff"/>
+  <rect x="0.62" y="0.66" width="0.38" height="0.34" fill="#1d4fbd"/>
+  <rect x="0.0" y="0.84" width="0.16" height="0.16" fill="#f0c02e"/>
+  <rect x="0.5975" y="0.0000" width="0.0450" height="1.0000" fill="#151515"/>
+  <rect x="0.0000" y="0.6375" width="1.0000" height="0.0450" fill="#151515"/>
+  <rect x="0.6200" y="0.1975" width="0.3800" height="0.0450" fill="#151515"/>
+  <rect x="0.1375" y="0.6600" width="0.0450" height="0.3400" fill="#151515"/>
+  <rect x="0.0000" y="0.8175" width="0.1600" height="0.0450" fill="#151515"/>
+  <rect x="0.0225" y="0.0225" width="0.955" height="0.955" fill="none" stroke="#151515" stroke-width="0.045"/>
 </svg>

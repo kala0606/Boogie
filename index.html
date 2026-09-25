@@ -7,7 +7,7 @@
 <meta name="description" content="The studio's katte — announcements, studio chat, show & tell and direct messages for the Creative Coding & Generative Art class at Srishti Manipal.">
 <!-- PWA: installable, offline-capable -->
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#f4efe6">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -20,169 +20,143 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 /* ------------------------------------------------------------------
-   Katte · the studio's katte
-   Paper + Mondrian palette — the same language as the SMI26 course site
+   Katte · the studio's katte — an ode to Mondrian.
+   White ground. Red, blue, yellow, black. No rounded corners.
+   A black line exists only where two substances meet: no rules
+   hanging in space, no offset shadows, no dashed edges.
 ------------------------------------------------------------------ */
 :root{
-  --paper:#f4efe6;
-  --paper-2:#ece5d8;
-  --card:#fffdf8;
+  --white:#ffffff;
   --ink:#151515;
   --muted:#6d6660;
-  --faint:#6d666090;
-  --hair:#15151522;
+  --faint:#6d666099;
   --red:#d7261e;
   --yellow:#f0c02e;
   --blue:#1d4fbd;
   --sans:"Space Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --r:8px;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0 !important;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{
-  font-family:var(--sans);background:var(--paper);color:var(--ink);
+  font-family:var(--sans);background:var(--white);color:var(--ink);
   min-height:100dvh;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
 }
 a{color:var(--blue);text-decoration-thickness:1.5px;text-underline-offset:3px;overflow-wrap:anywhere}
 a:hover{color:var(--red)}
-.shell{max-width:430px;margin:0 auto;min-height:100dvh;position:relative;background:var(--paper)}
-@media(min-width:431px){.shell{border-left:3px solid var(--ink);border-right:3px solid var(--ink)}}
+button{font-family:var(--sans);color:var(--ink);cursor:pointer}
+.shell{max-width:430px;margin:0 auto;min-height:100dvh;position:relative;background:var(--white)}
 
-/* ---------- the Mondrian block (brand) ---------- */
-.mondrian{
-  display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;
-  gap:3px;width:54px;height:40px;background:var(--ink);padding:3px;flex:none;
-}
-.mondrian i{display:block;background:var(--paper)}
-.mondrian i:nth-child(1){background:var(--red)}
-.mondrian i:nth-child(3){background:var(--yellow)}
-.mondrian i:nth-child(4){background:var(--blue)}
-.mondrian.sm{width:30px;height:22px;gap:2px;padding:2px}
+/* ---------- the mark: a square Mondrian that moves ---------- */
+.mark{display:block;aspect-ratio:1/1;border:2px solid var(--ink);background:var(--white);overflow:hidden}
+.mark svg{display:block;width:100%;height:100%}
+.mark.lg{border-width:3px}
 
 /* ---------- SIGN IN ---------- */
-#signin{
-  min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;
-  padding:40px 26px 40px;position:relative;overflow:hidden;
-}
-.hero{position:relative;margin:auto 0}
-.hero .kn{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.hero .kn span{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+#signin{min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:28px 24px 40px}
+.signgrid{display:flex;flex-direction:column;gap:30px}
+.mhero{width:100%;max-width:360px;margin:0 auto}
+.hero .kn{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
 .hero h1{font-size:76px;line-height:.9;letter-spacing:-.04em;font-weight:700}
 .hero h1 em{font-style:normal;color:var(--red)}
-.hero p.def{
-  margin-top:22px;padding-left:16px;border-left:4px solid var(--yellow);
-  color:var(--muted);font-size:15px;max-width:330px;line-height:1.5;
-}
+.hero p.def{margin-top:20px;color:var(--muted);font-size:15px;max-width:340px;line-height:1.5}
 .hero p.def b{color:var(--ink)}
-.signin-foot{position:relative}
 .gbtn{
-  width:100%;background:var(--ink);color:var(--paper);border:2px solid var(--ink);border-radius:var(--r);
-  padding:17px 20px;font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;
-  transition:transform .12s ease,box-shadow .12s ease;
+  width:100%;margin-top:28px;background:var(--red);color:#fff;border:2px solid var(--ink);
+  padding:17px 20px;font-size:16px;font-weight:700;
 }
-.gbtn:hover{background:var(--red);border-color:var(--red)}
-.gbtn:active{transform:translate(2px,2px)}
-.signin-foot small{display:block;text-align:center;margin-top:14px;color:var(--muted);font-size:12px;font-family:var(--mono)}
-.signin-foot small b{color:var(--ink);font-weight:600}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-#signin .hero>*,#signin .signin-foot{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
-#signin .hero h1{animation-delay:.12s}
-#signin .hero p.def{animation-delay:.24s}
-#signin .signin-foot{animation-delay:.4s}
-/* threshold kolam: the solver leaves the text zones blank, lines close around them */
-.signbg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.signbg svg{display:block}
-.signpath{
-  fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
-  opacity:.38;stroke-dasharray:1000;stroke-dashoffset:1000;animation:signdraw 3.2s ease-out .2s forwards;
-}
-@keyframes signdraw{to{stroke-dashoffset:0}}
+.gbtn:hover{background:var(--ink)}
+.hero small{display:block;margin-top:12px;color:var(--muted);font-size:12px;font-family:var(--mono)}
+.hero small b{color:var(--ink);font-weight:600}
+.installrow{margin-top:18px}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#signin .hero>*{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+#signin .hero h1{animation-delay:.08s}
+#signin .hero p.def{animation-delay:.16s}
+#signin .hero .gbtn{animation-delay:.26s}
 
-/* ---------- SHEET (sign-in form) ---------- */
+/* ---------- SHEETS ---------- */
 .sheetwrap{position:fixed;inset:0;z-index:80;display:none}
 .sheetwrap.open{display:block}
-.sheetwrap .scrim{position:absolute;inset:0;background:#15151580;animation:fadein .2s both}
+.sheetwrap .scrim{position:absolute;inset:0;background:#15151599;animation:fadein .2s both}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 @keyframes slideup{from{transform:translate(-50%,50px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 .sheet{
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;
-  background:var(--card);border:3px solid var(--ink);border-bottom:none;
-  padding:20px 20px calc(24px + env(safe-area-inset-bottom));
+  background:var(--white);border:3px solid var(--ink);border-bottom:none;
+  padding:22px 20px calc(24px + env(safe-area-inset-bottom));
   animation:slideup .3s cubic-bezier(.2,.7,.2,1) both;
 }
-.sheet .grab{width:44px;height:4px;background:var(--ink);margin:0 auto 16px}
 .sheet h4{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .sheet .sub{font-size:13px;color:var(--muted);margin-bottom:6px;line-height:1.45}
 .flabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin:14px 0 6px}
 .finput{
-  width:100%;border:2px solid var(--ink);border-radius:var(--r);padding:12px 13px;
-  font-family:var(--sans);font-size:15px;background:var(--paper);color:var(--ink);
+  width:100%;border:2px solid var(--ink);padding:12px 13px;
+  font-family:var(--sans);font-size:15px;background:var(--white);color:var(--ink);
 }
 .finput::placeholder{color:var(--faint)}
-.finput:focus{outline:none;border-color:var(--blue);box-shadow:3px 3px 0 var(--blue)}
+.finput:focus{outline:none;border-color:var(--blue)}
 .createbtn{
-  width:100%;margin-top:18px;border:2px solid var(--ink);background:var(--red);color:#fff;font-family:var(--sans);
-  font-weight:700;font-size:15px;border-radius:var(--r);padding:14px;cursor:pointer;
-  box-shadow:4px 4px 0 var(--ink);transition:all .12s;
+  width:100%;margin-top:18px;border:2px solid var(--ink);background:var(--red);color:#fff;
+  font-weight:700;font-size:15px;padding:14px;
 }
-.createbtn:active,.createbtn:disabled{transform:translate(4px,4px);box-shadow:none}
-.createbtn:disabled{opacity:.7;cursor:default}
+.createbtn:hover{background:var(--ink)}
+.createbtn:disabled{background:var(--muted);border-color:var(--muted);cursor:default}
 .sheet .fine{margin-top:12px;font-size:12px;text-align:center;font-family:var(--mono)}
+.steps{list-style:none;margin-top:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;font-size:14px;line-height:1.4}
+.steps li>b{flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--yellow);border:2px solid var(--ink);font-family:var(--mono);font-size:12px}
+.steps li small{display:block;color:var(--muted);font-size:12.5px}
 
 /* ---------- APP CHROME ---------- */
 #app{display:none;padding-bottom:112px}
 #app.show{display:block}
 header.appbar{
-  padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  position:sticky;top:0;background:var(--paper);z-index:20;border-bottom:3px solid var(--ink);
+  padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  position:sticky;top:0;background:var(--white);z-index:20;border-bottom:3px solid var(--ink);
 }
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand .mark{width:40px}
 .brand .word{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1}
 .brand .word i{font-style:normal;color:var(--red)}
 .brand .tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:3px;white-space:nowrap}
 .avatar{
-  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
   font-weight:700;font-size:14px;border:2px solid var(--ink);flex:none;
 }
 main{padding:6px 20px 12px}
-.view{display:none;animation:rise .35s cubic-bezier(.2,.7,.2,1) both}
+.view{display:none;animation:rise .3s cubic-bezier(.2,.7,.2,1) both}
 .view.active{display:block}
 #v-channel{animation:none} /* fixed composer must anchor to the viewport */
 h2.sec{
-  font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  margin:26px 0 12px;padding-top:10px;border-top:3px solid var(--ink);display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  margin:26px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-h2.sec small{font-family:var(--mono);font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted);font-size:11.5px}
+h2.sec small{font-weight:400;letter-spacing:0;text-transform:none;font-size:11px}
 .empty{color:var(--muted);font-size:13px;padding:8px 2px 6px;line-height:1.5}
 .empty.center{text-align:center;padding:30px 0}
 .empty b{color:var(--ink)}
 
 /* ---------- TAB BAR (phone) ---------- */
 nav.tabs{
-  position:fixed;bottom:calc(14px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
-  width:calc(100% - 28px);max-width:402px;background:var(--card);border:3px solid var(--ink);
-  display:flex;z-index:40;padding:4px;box-shadow:6px 6px 0 var(--ink);
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;
+  background:var(--white);border-top:3px solid var(--ink);display:flex;z-index:40;
+  padding-bottom:env(safe-area-inset-bottom);
 }
 nav.tabs button{
-  flex:1;background:none;border:none;font-family:var(--sans);cursor:pointer;
-  padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;
-  color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-  position:relative;transition:color .15s;
+  flex:1;background:none;border:none;padding:10px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:color .15s;
 }
 nav.tabs button .tic{font-size:20px;line-height:1}
-nav.tabs button.on{color:var(--ink);background:var(--paper-2)}
-nav.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red)}
+nav.tabs button.on{color:var(--ink);background:var(--yellow)}
 
 /* ---------- CHANNEL LIST ---------- */
 .chanrow{
-  width:100%;display:flex;align-items:center;gap:12px;background:var(--card);
-  border:2px solid var(--ink);border-radius:var(--r);padding:12px 13px;margin-bottom:8px;
-  cursor:pointer;font-family:var(--sans);text-align:left;color:var(--ink);transition:all .12s ease;
+  width:100%;display:flex;align-items:center;gap:12px;background:var(--white);
+  border:2px solid var(--ink);padding:12px 13px;margin-bottom:8px;text-align:left;transition:all .12s ease;
 }
-.chanrow:active{transform:translate(2px,2px)}
 .chanrow .ce{
-  width:38px;height:38px;border-radius:var(--r);background:var(--paper-2);border:2px solid var(--ink);
+  width:38px;height:38px;background:var(--white);border:2px solid var(--ink);
   display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;
 }
 .chanrow .cm{flex:1;min-width:0}
@@ -190,24 +164,23 @@ nav.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;h
 .chanrow .cn .cntext{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .chanrow .cn .lk{font-size:11px;opacity:.7;flex:none}
 .chanrow .cd{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dmava{border-radius:50% !important;font-weight:700;font-size:13px;border:2px solid var(--ink) !important}
+.chanrow.open{background:var(--ink);color:var(--white)}
+.chanrow.open .cd{color:#ffffffaa}
+.dmava{font-weight:700;font-size:13px;border:2px solid var(--ink) !important}
 
 /* ---------- THREAD ---------- */
 .chanhead{display:flex;align-items:center;gap:11px;padding:8px 0 2px}
 .chanhead .ce{
-  width:38px;height:38px;border-radius:var(--r);background:var(--paper-2);border:2px solid var(--ink);
+  width:38px;height:38px;background:var(--white);border:2px solid var(--ink);
   display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;
 }
 .chanhead .cn{font-weight:700;font-size:17px;letter-spacing:-.01em}
 .chanhead .cd{font-size:11.5px;color:var(--muted);font-family:var(--mono)}
-.backbtn{
-  border:2px solid var(--ink);background:var(--card);border-radius:var(--r);width:34px;height:34px;
-  font-size:15px;cursor:pointer;flex:none;font-family:var(--sans);color:var(--ink);
-}
-.backbtn:active{background:var(--ink);color:var(--paper)}
+.backbtn{border:2px solid var(--ink);background:var(--white);width:34px;height:34px;font-size:15px;flex:none}
+.backbtn:hover{background:var(--ink);color:var(--white)}
 .msg{display:flex;gap:10px;margin-bottom:15px;animation:rise .25s cubic-bezier(.2,.7,.2,1) both}
 .msg .ma{
-  width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;
+  width:34px;height:34px;flex:none;display:flex;align-items:center;
   justify-content:center;font-weight:700;font-size:12px;border:2px solid var(--ink);
 }
 .msg .mb{flex:1;min-width:0}
@@ -219,65 +192,42 @@ nav.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;h
   background:var(--yellow);color:var(--ink);border:1.5px solid var(--ink);padding:1px 6px;
 }
 .msg .mt{font-size:14px;margin-top:3px;overflow-wrap:anywhere;white-space:pre-wrap}
-.msg.pin .mt{
-  background:var(--card);border:2px solid var(--ink);border-left:6px solid var(--red);
-  padding:10px 13px;margin-top:6px;
-}
+.msg.pin .mt{border:2px solid var(--ink);border-left:8px solid var(--red);padding:10px 13px;margin-top:6px}
 .composer{
-  position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  position:fixed;bottom:calc(64px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
   width:100%;max-width:430px;padding:10px 14px;display:flex;gap:8px;z-index:30;
-  background:var(--paper);border-top:2px solid var(--ink);
+  background:var(--white);border-top:2px solid var(--ink);
 }
 .composer input{
-  flex:1;border:2px solid var(--ink);border-radius:var(--r);padding:12px 14px;min-width:0;
-  font-family:var(--sans);font-size:14.5px;background:var(--card);color:var(--ink);
+  flex:1;border:2px solid var(--ink);padding:12px 14px;min-width:0;
+  font-family:var(--sans);font-size:14.5px;background:var(--white);color:var(--ink);
 }
 .composer input:focus{outline:none;border-color:var(--blue)}
-.composer .send{
-  flex:none;width:46px;height:46px;border-radius:var(--r);border:2px solid var(--ink);background:var(--red);color:#fff;
-  font-size:16px;cursor:pointer;transition:all .12s;
-}
-.composer .send:active{transform:translate(2px,2px)}
+.composer .send{flex:none;width:46px;height:46px;border:2px solid var(--ink);background:var(--red);color:#fff;font-size:16px}
+.composer .send:hover{background:var(--ink)}
 .lockedbar{
-  position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;padding:10px 14px;z-index:30;background:var(--paper);border-top:2px solid var(--ink);
+  position:fixed;bottom:calc(64px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;padding:10px 14px;z-index:30;background:var(--white);border-top:2px solid var(--ink);
 }
-.lockedbar .in{
-  background:var(--paper-2);border:2px dashed var(--ink);border-radius:var(--r);
-  padding:12px 15px;font-size:12.5px;color:var(--muted);text-align:center;font-family:var(--mono);
-}
+.lockedbar .in{background:var(--ink);color:var(--white);padding:12px 15px;font-size:12.5px;text-align:center;font-family:var(--mono)}
 .chanspacer{height:116px}
 
 /* ---------- CLASS LIST ---------- */
-.classhead{
-  margin-top:10px;background:var(--ink);color:var(--paper);padding:16px 18px;border-radius:var(--r);
-  font-size:14px;display:flex;align-items:center;gap:14px;
-}
+.classhead{margin-top:10px;background:var(--ink);color:var(--white);padding:16px 18px;font-size:14px;display:flex;align-items:center;gap:14px}
 .classhead b{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--yellow)}
 .classhead .cl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75;display:block;margin-top:3px}
-.prow{
-  display:flex;gap:12px;align-items:center;background:var(--card);
-  border:2px solid var(--ink);border-radius:var(--r);padding:11px 12px;margin-bottom:8px;
-}
-.prow.ghost{background:transparent;border-style:dashed;border-color:var(--hair)}
-.prow.ghost .pa{opacity:.35;filter:grayscale(1)}
-.prow.ghost .nm{color:var(--muted)}
-.prow.self{background:var(--paper-2)}
-.prow .pa{
-  width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:13.5px;border:2px solid var(--ink);
-}
+.prow{display:flex;gap:12px;align-items:center;background:var(--white);border:2px solid var(--ink);padding:11px 12px;margin-bottom:8px}
+.prow.ghost{border-color:transparent;padding-top:6px;padding-bottom:6px;margin-bottom:2px}
+.prow.ghost .pa{opacity:.3;filter:grayscale(1)}
+.prow.ghost .nm{color:var(--muted);font-weight:500}
+.prow .pa{width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13.5px;border:2px solid var(--ink)}
 .prow .pm{flex:1;min-width:0}
 .prow .nm{font-weight:700;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prow .sub{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .prow .act{flex:none}
 .notyet{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.04em}
-.mini{
-  border:2px solid var(--ink);background:var(--card);border-radius:var(--r);padding:7px 11px;
-  font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);
-  transition:all .12s;white-space:nowrap;
-}
-.mini:active{background:var(--ink);color:var(--paper)}
+.mini{border:2px solid var(--ink);background:var(--white);padding:7px 11px;font-size:12px;font-weight:700;transition:all .12s;white-space:nowrap}
+.mini:hover{background:var(--ink);color:var(--white)}
 .youchip{
   display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
   border:2px solid var(--ink);background:var(--yellow);padding:5px 9px;
@@ -288,85 +238,75 @@ nav.tabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;h
 .mecard h3{font-size:26px;font-weight:700;letter-spacing:-.03em}
 .mecard p{font-size:13px;color:var(--muted);font-family:var(--mono);margin-top:2px}
 .mecard .role{display:inline-block;margin-top:10px}
-.mekolam{width:100%;max-width:300px;aspect-ratio:1/1;cursor:pointer;margin:16px auto 0;border:3px solid var(--ink);background:var(--card);padding:8px}
-.mekolam svg{width:100%;height:100%;display:block}
-.mekolam:active{opacity:.75}
-.kolamnote{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+.memark{width:100%;max-width:320px;margin:18px auto 0;cursor:pointer}
+.marknote{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+.marknote b{color:var(--ink);font-weight:600}
 .setrow{
-  display:flex;align-items:center;gap:12px;background:transparent;border:none;
-  border-bottom:2px solid var(--hair);padding:15px 4px;font-size:14px;width:100%;
-  font-family:var(--sans);text-align:left;color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;gap:12px;background:var(--white);border:2px solid var(--ink);
+  padding:14px;margin-bottom:8px;font-size:14px;width:100%;text-align:left;color:var(--ink);
 }
 .setrow .ic{font-size:17px;flex:none;display:flex}
 .setrow div{flex:1}
 .setrow small{display:block;color:var(--muted);font-size:11.5px}
 .setrow .val{color:var(--red);font-weight:700;font-size:12.5px;flex:none;font-family:var(--mono)}
-.setrow:active{background:var(--paper-2)}
+.setrow:hover{background:var(--ink);color:var(--white)}
+.setrow:hover small{color:#ffffffaa}
+.setrow:hover .val{color:var(--yellow)}
+.setrow.install{background:var(--blue);color:var(--white);border-color:var(--ink)}
+.setrow.install small{color:#ffffffcc}
+.setrow.install .val{color:var(--yellow)}
+.setrow.install:hover{background:var(--ink)}
 
 /* ---------- toast ---------- */
 #toast{
-  position:fixed;bottom:calc(96px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(16px);
-  background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:var(--r);font-size:13.5px;
+  position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(16px);
+  background:var(--ink);color:var(--white);padding:12px 18px;font-size:13.5px;
   opacity:0;pointer-events:none;transition:all .25s cubic-bezier(.2,.7,.2,1);z-index:90;max-width:88%;text-align:center;
-  border:2px solid var(--yellow);
 }
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast b{color:var(--yellow)}
 
 /* ---------- flat icons ---------- */
-.fi{
-  width:1em;height:1em;display:inline-block;vertical-align:-0.16em;flex:none;
-  fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
-}
-footer.foot{display:none}
+.fi{width:1em;height:1em;display:inline-block;vertical-align:-0.16em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter}
 
 /* ================= DESKTOP (>=900px) ================= */
 @media(hover:hover) and (min-width:900px){
-  .chanrow:hover,.prow:not(.ghost):hover{box-shadow:4px 4px 0 var(--ink);transform:translate(-2px,-2px)}
-  .mini:hover{background:var(--ink);color:var(--paper)}
-  .setrow:hover{background:var(--paper-2)}
+  .chanrow:not(.open):hover{background:var(--ink);color:var(--white)}
+  .chanrow:not(.open):hover .cd{color:#ffffffaa}
 }
 @media(min-width:900px){
-  .shell{max-width:1240px;border:none}
+  .shell{max-width:1240px}
   header.appbar{padding:0 48px;gap:40px;height:78px}
+  .brand .mark{width:44px}
   .brand .word{font-size:26px}
   .brand .tag{font-size:10.5px}
-  nav.tabs{
-    position:static;transform:none;width:auto;max-width:none;flex:1;justify-content:center;
-    background:none;border:none;box-shadow:none;padding:0;gap:6px;align-self:stretch;
-  }
-  nav.tabs button{
-    flex:none;flex-direction:row;align-items:center;gap:8px;padding:0 16px;
-    font-size:13px;letter-spacing:.06em;
-  }
+  nav.tabs{position:static;transform:none;width:auto;max-width:none;flex:1;justify-content:center;border:none;padding:0;gap:6px;align-self:stretch}
+  nav.tabs button{flex:none;flex-direction:row;align-items:center;gap:8px;padding:0 18px;font-size:13px;letter-spacing:.06em}
   nav.tabs button .tic{font-size:16px}
-  nav.tabs button.on{background:none}
-  nav.tabs button.on::after{bottom:-3px;height:3px}
+  nav.tabs button:hover{color:var(--ink)}
   #app.show{padding-bottom:0}
-  main{padding:16px 48px 56px;min-height:calc(100vh - 240px)}
-  h2.sec{font-size:14px;margin:36px 0 16px}
+  main{padding:16px 48px 56px;min-height:calc(100vh - 200px)}
+  h2.sec{margin:32px 0 12px}
 
   /* ---- ADDA: rail left, thread right ---- */
   #addaWrap{display:none}
   #addaWrap:has(.view.active){
-    display:grid;grid-template-columns:290px 1fr;
-    border:3px solid var(--ink);overflow:hidden;background:var(--card);
-    height:calc(100vh - 200px);min-height:480px;margin-top:24px;box-shadow:8px 8px 0 var(--ink);
+    display:grid;grid-template-columns:290px 1fr;border:3px solid var(--ink);overflow:hidden;
+    background:var(--white);height:calc(100vh - 200px);min-height:480px;margin-top:24px;
   }
   #addaWrap .view{animation:none}
   #addaWrap .view.active{display:flex;flex-direction:column}
   #addaWrap:has(#v-channel.active) #v-adda{display:flex;flex-direction:column}
-  #addaWrap:has(.view.active) #v-adda{border-right:3px solid var(--ink);padding:6px 12px 14px;overflow-y:auto;background:var(--paper)}
-  #v-adda h2.sec{font-size:10.5px;font-family:var(--mono);font-weight:600;border-top:none;margin:20px 4px 8px;padding-top:0;color:var(--muted)}
-  #v-adda .chanrow{background:transparent;border-color:transparent;padding:9px 10px;margin-bottom:2px;gap:10px}
-  #v-adda .chanrow:hover{background:var(--paper-2);box-shadow:none;transform:none}
+  #addaWrap:has(.view.active) #v-adda{border-right:3px solid var(--ink);padding:6px 12px 14px;overflow-y:auto}
+  #v-adda h2.sec{margin:20px 4px 8px}
+  #v-adda .chanrow{border-color:transparent;padding:9px 10px;margin-bottom:2px;gap:10px}
   #v-adda .chanrow .ce{width:34px;height:34px;font-size:15px}
+  #v-adda .chanrow.open .ce,#v-adda .chanrow:hover .ce{background:var(--white);color:var(--ink)}
   #v-adda .chanrow .cn{font-size:13.5px}
   #v-adda .chanrow .cd{font-size:11px}
-  #v-adda .chanrow.open{background:var(--card);border-color:var(--ink)}
-  #v-channel.active{height:100%;background:var(--card)}
+  #v-channel.active{height:100%}
   #v-channel #msgList{flex:1;overflow-y:auto;padding:22px 28px 10px;margin-top:0 !important}
-  .chanhead{padding:15px 28px;border-bottom:3px solid var(--ink);margin:0;background:var(--card)}
+  .chanhead{padding:15px 28px;border-bottom:3px solid var(--ink);margin:0}
   .chanhead .ce{display:none}
   .chanhead .cn{font-size:19px}
   #backToAdda{display:none}
@@ -374,10 +314,7 @@ footer.foot{display:none}
   .msg{gap:12px;margin-bottom:18px}
   .msg .ma{width:38px;height:38px;font-size:13px}
   .msg .mt{font-size:14.5px}
-  .composer,.lockedbar{
-    position:static;transform:none;max-width:none;width:100%;
-    padding:14px 28px 18px;border-top:3px solid var(--ink);background:var(--card);
-  }
+  .composer,.lockedbar{position:static;transform:none;max-width:none;width:100%;padding:14px 28px 18px;border-top:3px solid var(--ink)}
 
   /* ---- CLASS: two columns ---- */
   #v-class.active{max-width:900px;margin:0 auto}
@@ -388,36 +325,21 @@ footer.foot{display:none}
   /* ---- ME ---- */
   #v-me.active{max-width:640px;margin:0 auto}
   .mecard h3{font-size:36px}
-  .mekolam{max-width:380px}
+  .memark{max-width:400px}
 
-  /* ---- footer ---- */
-  footer.foot{
-    display:flex;justify-content:space-between;align-items:flex-start;gap:48px;
-    padding:26px 48px 34px;border-top:3px solid var(--ink);
-  }
-  .foot .fword{font-size:20px;font-weight:700;letter-spacing:-.03em}
-  .foot .fword i{font-style:normal;color:var(--red)}
-  .foot .ftag{font-size:13px;color:var(--muted);margin-top:6px;max-width:320px;line-height:1.5}
-  .foot .fcols{display:flex;gap:44px;flex-wrap:wrap}
-  .foot .fcols b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
-  .foot .fcols span{display:block;font-size:12.5px;color:var(--muted);max-width:220px;line-height:1.5}
-
-  /* ---- SIGN-IN: full-bleed, kolam owns the viewport ---- */
-  #signin{width:100vw;margin-left:calc(50% - 50vw);max-width:100vw;padding:64px 9vw 72px}
-  .hero{max-width:600px}
-  .hero h1{font-size:clamp(96px,12vw,150px)}
-  .hero p.def{font-size:16.5px;max-width:420px;margin-top:26px}
-  .signin-foot{max-width:400px}
-  .signin-foot small{text-align:left}
+  /* ---- SIGN-IN: the mark and the words, side by side ---- */
+  #signin{width:100vw;margin-left:calc(50% - 50vw);max-width:100vw;padding:60px 9vw}
+  .signgrid{flex-direction:row;align-items:center;justify-content:space-between;gap:8vw;max-width:1180px;margin:0 auto;width:100%}
+  .hero{flex:1;max-width:520px;order:1}
+  .mhero{flex:none;width:min(46vw,560px);max-width:none;margin:0;order:2}
+  .hero h1{font-size:clamp(96px,11vw,150px)}
+  .hero p.def{font-size:16.5px;max-width:420px}
+  .gbtn{max-width:400px}
+  .hero small{text-align:left}
 
   /* ---- sheet becomes a centred modal ---- */
   @keyframes slideupdesktop{from{transform:translate(-50%,calc(-50% + 30px));opacity:0}to{transform:translate(-50%,-50%);opacity:1}}
-  .sheet{
-    bottom:auto;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:460px;max-width:460px;border-bottom:3px solid var(--ink);padding:26px 26px 28px;
-    box-shadow:10px 10px 0 var(--ink);animation:slideupdesktop .3s cubic-bezier(.2,.7,.2,1) both;
-  }
-  .sheet .grab{display:none}
+  .sheet{bottom:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:460px;max-width:460px;border-bottom:3px solid var(--ink);padding:26px 26px 28px;animation:slideupdesktop .3s cubic-bezier(.2,.7,.2,1) both}
   #toast{bottom:32px}
 }
 /* on a phone, show only the thread when one is open */
@@ -431,23 +353,23 @@ footer.foot{display:none}
 
   <!-- ============ SIGN IN ============ -->
   <section id="signin">
-    <div class="signbg" id="signKolamBg"></div>
-    <div class="hero">
-      <div class="kn"><div class="mondrian"><i></i><i></i><i></i><i></i></div><span>SMI26 · Creative Coding &amp; Generative Art</span></div>
-      <h1>Kat<em>te</em></h1>
-      <p class="def"><b>katte</b> <i>(n., Kannada)</i> — the raised platform under a tree where a neighbourhood gathers. This one is the studio's: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
-    </div>
-    <div class="signin-foot">
-      <button class="gbtn" id="signinBtn">Sign in to the studio →</button>
-      <small>Students <b>@learner.manipal.edu</b> · Faculty <b>@manipal.edu</b></small>
+    <div class="signgrid">
+      <div class="mark lg mhero" id="heroMark" aria-hidden="true"></div>
+      <div class="hero">
+        <div class="kn">SMI26 · Creative Coding &amp; Generative Art</div>
+        <h1>Kat<em>te</em></h1>
+        <p class="def"><b>katte</b> <i>(n., Kannada)</i> — the raised platform under a tree where a neighbourhood gathers. This one is the studio's: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
+        <button class="gbtn" id="signinBtn">Sign in to the studio →</button>
+        <small>Students <b>@learner.manipal.edu</b> · Faculty <b>@manipal.edu</b></small>
+        <div class="installrow"><button class="mini installbtn" data-install>Get the app on your phone</button></div>
+      </div>
     </div>
   </section>
 
   <!-- ============ SIGN IN SHEET ============ -->
   <div id="sheetWrap" class="sheetwrap">
-    <div class="scrim" id="scrim"></div>
+    <div class="scrim" data-close="sheetWrap"></div>
     <div class="sheet">
-      <div class="grab"></div>
       <h4>Sign in</h4>
       <p class="sub">Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? That's the whole sign-up — we already know your name from the class list.</p>
       <label class="flabel">Email</label>
@@ -461,17 +383,28 @@ footer.foot{display:none}
     </div>
   </div>
 
+  <!-- ============ INSTALL SHEET (iOS / no native prompt) ============ -->
+  <div id="installWrap" class="sheetwrap">
+    <div class="scrim" data-close="installWrap"></div>
+    <div class="sheet">
+      <h4>Get the app</h4>
+      <p class="sub" id="installSub">Katte installs from the browser — no app store.</p>
+      <ol class="steps" id="installSteps"></ol>
+      <button class="createbtn" data-close="installWrap">Got it</button>
+    </div>
+  </div>
+
   <!-- ============ APP ============ -->
   <div id="app">
     <header class="appbar">
       <div class="brand">
-        <div class="mondrian sm"><i></i><i></i><i></i><i></i></div>
+        <div class="mark" id="logoMark" aria-hidden="true"></div>
         <div><div class="word">Kat<i>te</i></div><div class="tag">CCGA studio · SMI26</div></div>
       </div>
       <nav class="tabs">
         <button class="on" data-v="adda"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/></svg></span>Adda</button>
-        <button data-v="class"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M2.8 20c.7-3.4 3-5.2 5.7-5.2s5 1.8 5.7 5.2M13.8 14.9c2.2.1 4.3 1.7 4.9 5.1"/></svg></span>Class</button>
-        <button data-v="me"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.3"/><path d="M12 9.7c-2-1-2.6-3-1.7-4.8 1.8-1 3.6.2 3.7 2.3M14.3 12c1-2 3-2.6 4.8-1.7 1 1.8-.2 3.6-2.3 3.7M12 14.3c2 1 2.6 3 1.7 4.8-1.8 1-3.6-.2-3.7-2.3M9.7 12c-1 2-3 2.6-4.8 1.7-1-1.8.2-3.6 2.3-3.7"/></svg></span>Me</button>
+        <button data-v="class"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></span>Class</button>
+        <button data-v="me"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"/><path d="M12 4v16M4 13h8"/></svg></span>Me</button>
       </nav>
       <div class="avatar" id="topAvatar">·</div>
     </header>
@@ -514,29 +447,17 @@ footer.foot{display:none}
           <h3 id="meName">—</h3>
           <p id="meEmail">—</p>
           <span class="rolechip role" id="meRole">—</span>
-          <div class="mekolam" id="meKolam"></div>
-          <p class="kolamnote">Your kolam — minted from your identity, fresh each day. Tap to re-mint.</p>
+          <div class="mark lg memark" id="meMark" role="button" aria-label="Shift your Mondrian"></div>
+          <p class="marknote" id="markNote"></p>
         </div>
+        <h2 class="sec">App</h2>
+        <button class="setrow install" data-install><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18"/><path d="M12 8v7M9 12l3 3 3-3"/></svg></span><div>Get the app<small>Install Katte on your phone's home screen</small></div><span class="val">Install</span></button>
         <div id="inviteBox" style="display:none">
-          <h2 class="sec">Faculty</h2>
-          <button class="setrow" id="copyInviteBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg></span><div>Copy invite message<small>Ready to paste into the class group</small></div><span class="val">Copy</span></button>
+          <button class="setrow" id="copyInviteBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg></span><div>Copy invite message<small>Ready to paste into the class group</small></div><span class="val">Copy</span></button>
         </div>
-        <h2 class="sec">Account</h2>
-        <button class="setrow" id="signoutBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><path d="M9 4H5.5a1.5 1.5 0 0 0-1.5 1.5v13A1.5 1.5 0 0 0 5.5 20H9M14 16l4-4-4-4M18 12H9"/></svg></span><div>Sign out<small>You'll need your first name to get back in</small></div><span class="val">→</span></button>
+        <button class="setrow" id="signoutBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><path d="M9 4H4v16h5M14 16l4-4-4-4M18 12H9"/></svg></span><div>Sign out<small>You'll need your first name to get back in</small></div><span class="val">→</span></button>
       </section>
     </main>
-
-    <footer class="foot">
-      <div>
-        <div class="fword">Kat<i>te</i></div>
-        <p class="ftag">The raised platform under a tree, where the neighbourhood gathers. This one belongs to the studio.</p>
-      </div>
-      <div class="fcols">
-        <div><b>Announcements</b><span>From faculty to the whole class. Read-only for students, so nothing gets buried.</span></div>
-        <div><b>Studio &amp; Show</b><span>Ask, help, and drop links to your sketches — p5 editor, GitHub, anything that runs.</span></div>
-        <div><b>Messages</b><span>A private line between you and anyone in the class. Faculty included.</span></div>
-      </div>
-    </footer>
   </div>
 
   <div id="toast"></div>
@@ -615,14 +536,14 @@ const $ = s=>document.querySelector(s);
 const $$ = s=>document.querySelectorAll(s);
 const isDesktop = () => matchMedia("(min-width:900px)").matches;
 const initials = n=>String(n||"?").trim().split(/\s+/).map(x=>x[0].toUpperCase()).join("").slice(0,2);
-const AVATAR_COLORS = ["#d7261e","#1d4fbd","#151515","#8a1a12","#123a8f","#3b2f7a"];
-const colorFor = n=>AVATAR_COLORS[[...String(n||"?")].reduce((a,ch)=>a+ch.charCodeAt(0),0)%AVATAR_COLORS.length];
+const AVATAR = [["#d7261e","#fff"],["#1d4fbd","#fff"],["#151515","#fff"]];   // students: red, blue, black planes
+const colorFor = n=>AVATAR[[...String(n||"?")].reduce((a,ch)=>a+ch.charCodeAt(0),0)%AVATAR.length];
 const userKey = k=>`katte-${k}-${me?me.email:"anon"}`;
 const escapeHtml = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // links become clickable (run AFTER escapeHtml); trailing punctuation stays outside the link
 const linkify = s=>s.replace(/https?:\/\/[^\s<]+/g, m=>{ const t=m.match(/[.,;:!?)]+$/); const u=t?m.slice(0,-t[0].length):m; return `<a href="${u}" target="_blank" rel="noopener">${u}</a>${t?t[0]:""}`; });
 const ms = t=>(t&&t.toMillis)?t.toMillis():0;
-const avatarStyle = p => p.role==="faculty" ? "background:var(--yellow);color:var(--ink)" : `background:${p.c||colorFor(p.n)};color:#fff`;
+const avatarStyle = p => { if(p.role==="faculty") return "background:#f0c02e;color:#151515"; const [bg,fg]=colorFor(p.n); return `background:${bg};color:${fg}`; };
 const roleLabel = p => p.role==="faculty" ? "Faculty" : ("Student"+(p.cohort?` · ${p.cohort}`:""));
 const profileOf = uid=>people.find(p=>p.uid===uid);
 const personByEmail = e=>people.find(p=>p.email===e);
@@ -637,11 +558,237 @@ function fmtTime(ts){
 }
 const ICONS={
   chat:'<path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/>',
-  megaphone:'<path d="M3.5 10.5v3a1.5 1.5 0 0 0 1.5 1.5h1l.9 4.4a1 1 0 0 0 1 .8h1.3l-.7-5.2M6 10.5l11-4.7v12.4L6 13.5"/>',
-  frame:'<rect x="4" y="4.5" width="16" height="15" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M4.5 16.5l4.5-4.5 3 3 3.5-4 4.5 5.5"/>',
-  lock:'<rect x="5" y="10.5" width="14" height="9.5" rx="1.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  megaphone:'<path d="M3.5 10.5v3h2.5l1 5h2l-.8-5M6 10.5l11-4.7v12.4L6 13.5"/>',
+  frame:'<rect x="4" y="4.5" width="16" height="15"/><path d="M4.5 16.5l4.5-4.5 3 3 3.5-4 4.5 5.5"/>',
+  lock:'<rect x="5" y="10.5" width="14" height="9.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
 };
 function icon(name){ return `<svg class="fi" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]||""}</svg>`; }
+
+/* ------------ seeded rng ------------ */
+const hashStr = s=>{ let h=2166136261; for(const ch of s){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; };
+const mulberry32 = seed=>()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
+
+/* ================= MONDRIAN ENGINE — a long-form program ================
+   A composition is a binary partition of the square: every internal node
+   is one straight cut (vertical or horizontal) at ratio t, every leaf is a
+   plane of one colour. Lines are painted only along cuts, and a cut spans
+   exactly the node it divides — so a line never hangs in empty space; it
+   exists because two planes meet there.
+
+   The program is long-form: one seed grows one composition, and the same
+   composition can be *mutated* — a cut slides, a plane splits in two, two
+   planes merge, a plane changes colour. Every mutation is continuous in t,
+   so the picture can move from one state to the next: that is the logo,
+   ticking once a second, and it is the tap on your own mark.
+
+   Each person's mark belongs to a FAMILY seeded from their email — how
+   dense the grid, how thick the lines, how much colour, which colours win.
+   The family is for life; the composition is minted fresh each day. */
+const MCOL = {red:"#d7261e", blue:"#1d4fbd", yellow:"#f0c02e", black:"#151515", white:"#ffffff"};
+const FAMILIES = [
+  {name:"Tableau",     about:"few planes, one of them enormous, heavy lines",       maxDepth:4, split:.62, decay:.72, minCell:.15, strip:.20, colour:.42, weights:{red:4,blue:3,yellow:2,black:1}, lw:[.028,.048]},
+  {name:"Composition", about:"the classic balance — three colours, a quiet grid",  maxDepth:5, split:.70, decay:.78, minCell:.10, strip:.28, colour:.30, weights:{red:3,blue:3,yellow:3,black:1}, lw:[.020,.034]},
+  {name:"Boogie",      about:"a dense, jittering grid — small planes, thin lines", maxDepth:7, split:.86, decay:.90, minCell:.06, strip:.36, colour:.55, weights:{red:3,blue:2,yellow:5,black:0}, lw:[.012,.020]},
+  {name:"Trafalgar",   about:"mostly white, a few strong accents, lines of every weight", maxDepth:5, split:.60, decay:.80, minCell:.09, strip:.40, colour:.18, weights:{red:3,blue:3,yellow:4,black:2}, lw:[.014,.050]},
+];
+let _mid=0;
+const mRatio = (r,P)=>{ if(r()<P.strip){ const s=.08+r()*.14; return r()<.5?s:1-s; } return .3+r()*.4; };
+const mLW    = (r,P)=>P.lw[0]+r()*(P.lw[1]-P.lw[0]);
+function mColour(r,P,force){
+  if(!force && r()>P.colour) return "white";
+  const ks=Object.keys(P.weights), sum=ks.reduce((a,k)=>a+P.weights[k],0);
+  let v=r()*sum; for(const k of ks){ v-=P.weights[k]; if(v<=0) return k; } return ks[0];
+}
+const mLeaf = (r,P,force)=>({id:_mid++, colour:mColour(r,P,force)});
+function mGrow(r,P,w,h,depth){
+  const canSplit = depth<P.maxDepth && Math.max(w,h)>P.minCell*2.2;
+  const prob = depth===0 ? 1 : P.split*Math.pow(P.decay,depth-1)*(Math.max(w,h)>.5?1.3:1);
+  if(!canSplit || r()>prob) return mLeaf(r,P);
+  const wide=w>h, dir = r()<.72 ? (wide?"v":"h") : (wide?"h":"v");
+  const t=mRatio(r,P), lw=mLW(r,P);
+  const [aw,ah,bw,bh] = dir==="v" ? [w*t,h,w*(1-t),h] : [w,h*t,w,h*(1-t)];
+  return {id:_mid++, dir, t0:t, t1:t, lw, lw0:lw, lw1:lw, a:mGrow(r,P,aw,ah,depth+1), b:mGrow(r,P,bw,bh,depth+1)};
+}
+// lay the tree out at progress p (0 = previous state, 1 = target state)
+function mLayout(n,x,y,w,h,p,lwScale,out){
+  if(n.colour!==undefined){ out.leaves.push({id:n.id,x,y,w,h,colour:n.colour}); return; }
+  const t=n.t0+(n.t1-n.t0)*p, lw=(n.lw0+(n.lw1-n.lw0)*p)*lwScale;
+  if(n.dir==="v"){
+    const sx=x+w*t;
+    mLayout(n.a,x,y,w*t,h,p,lwScale,out); mLayout(n.b,sx,y,w*(1-t),h,p,lwScale,out);
+    out.lines.push({id:n.id,x:sx-lw/2,y,w:lw,h});
+  }else{
+    const sy=y+h*t;
+    mLayout(n.a,x,y,w,h*t,p,lwScale,out); mLayout(n.b,x,sy,w,h*(1-t),p,lwScale,out);
+    out.lines.push({id:n.id,x,y:sy-lw/2,w,h:lw});
+  }
+}
+const ease = p=>p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+const pick = (r,arr)=>arr[Math.floor(r()*arr.length)];
+const PLAYERS=[];
+class Mondrian{
+  // el: container · seed: string · P: family · opts: {auto, lwScale}
+  constructor(el,seed,P,opts={}){
+    this.el=el; this.P=P; this.r=mulberry32(hashStr(seed));
+    this.auto=!!opts.auto; this.lwScale=opts.lwScale||1;
+    this.tree=mGrow(this.r,P,1,1,0); this.ensureColour();
+    this.target=this.count();
+    this.svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+    this.svg.setAttribute("viewBox","0 0 1000 1000"); this.svg.setAttribute("preserveAspectRatio","none");
+    this.gLeaves=document.createElementNS("http://www.w3.org/2000/svg","g");
+    this.gLines=document.createElementNS("http://www.w3.org/2000/svg","g");
+    this.svg.append(this.gLeaves,this.gLines); el.innerHTML=""; el.appendChild(this.svg);
+    this.els=new Map(); this.animStart=null; this.cycle=null; this.born=performance.now();
+    this.render(0); PLAYERS.push(this);
+  }
+  destroy(){ const i=PLAYERS.indexOf(this); if(i>=0) PLAYERS.splice(i,1); }
+  count(){ let n=0; (function w(x){ if(x.colour!==undefined){n++;return;} w(x.a); w(x.b); })(this.tree); return n; }
+  ensureColour(){
+    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,1,1,lay);
+    if(lay.leaves.some(l=>l.colour!=="white")) return;
+    const big=lay.leaves.reduce((a,b)=>a.w*a.h>b.w*b.h?a:b);
+    (function w(x){ if(x.colour!==undefined){ if(x.id===big.id) x.colour="red"; return; } w(x.a); w(x.b); })(this.tree);
+  }
+  // one long-form step: 2–4 mutations, every one of them continuous in t
+  mutate(){
+    const P=this.P, r=this.r;
+    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,1,1,lay);
+    const size={}; lay.leaves.forEach(l=>size[l.id]=l);
+    const leaves=[], internals=[], mergeable=[];
+    (function walk(n,parent,key){
+      if(n.colour!==undefined){ leaves.push({n,parent,key}); return; }
+      internals.push({n,parent,key});
+      if(n.a.colour!==undefined && n.b.colour!==undefined) mergeable.push({n,parent,key});
+      walk(n.a,n,"a"); walk(n.b,n,"b");
+    })(this.tree,null,null);
+    const count=leaves.length, ops=2+Math.floor(r()*3);
+    for(let i=0;i<ops;i++){
+      const v=r();
+      let op = v<.40?"shift" : v<.65?"split" : v<.85?"merge" : "recolour";
+      if(count>this.target*1.4 && op==="split") op="merge";
+      if(count<this.target*.6  && op==="merge") op="split";
+      if(op==="shift"){
+        const c=internals.filter(i=>!i.n.prune); if(!c.length) continue;
+        pick(r,c).n.t1=mRatio(r,P);
+      }else if(op==="split"){
+        const c=leaves.filter(l=>{ const s=size[l.n.id]; return s && Math.max(s.w,s.h)>P.minCell*2.2 && !l.n.fresh; });
+        if(!c.length) continue;
+        const {n,parent,key}=pick(r,c), s=size[n.id];
+        const dir = s.w>s.h ? (r()<.75?"v":"h") : (r()<.75?"h":"v");
+        const fromStart=r()<.5, lw=mLW(r,P);
+        const fresh=mLeaf(r,P,r()<.5); fresh.fresh=true;
+        const node={id:_mid++, dir, t0:fromStart?0:1, t1:mRatio(r,P), lw, lw0:0, lw1:lw, a:fromStart?fresh:n, b:fromStart?n:fresh};
+        if(parent) parent[key]=node; else this.tree=node;
+      }else if(op==="merge"){
+        const c=mergeable.filter(m=>!m.n.prune); if(!c.length) continue;
+        const {n}=pick(r,c); const keepA=r()<.5;
+        n.t1=keepA?1:0; n.lw1=0; n.prune=keepA?"a":"b";
+      }else{
+        if(!leaves.length) continue;
+        pick(r,leaves).n.colour=mColour(r,P,r()<.6);
+      }
+    }
+    this.ensureColour();
+  }
+  // commit the target state: prune collapsed cuts, freeze t
+  finalize(){
+    const self=this;
+    (function walk(n,parent,key){
+      if(n.colour!==undefined){ delete n.fresh; return; }
+      if(n.prune){ const keep=n[n.prune]; if(parent) parent[key]=keep; else self.tree=keep; walk(keep,parent,key); return; }
+      n.t0=n.t1; n.lw0=n.lw1=n.lw;
+      walk(n.a,n,"a"); walk(n.b,n,"b");
+    })(this.tree,null,null);
+  }
+  render(p){
+    const lay={leaves:[],lines:[]}; mLayout(this.tree,0,0,1,1,p,this.lwScale,lay);
+    const seen=new Set(), S=1000, NS="http://www.w3.org/2000/svg";
+    const put=(g,it,fill)=>{
+      let el=this.els.get(it.id);
+      if(!el){ el=document.createElementNS(NS,"rect"); el.setAttribute("shape-rendering","crispEdges"); this.els.set(it.id,el); g.appendChild(el); }
+      el.setAttribute("x",(it.x*S).toFixed(1)); el.setAttribute("y",(it.y*S).toFixed(1));
+      el.setAttribute("width",Math.max(0,it.w*S).toFixed(1)); el.setAttribute("height",Math.max(0,it.h*S).toFixed(1));
+      el.setAttribute("fill",fill); seen.add(it.id);
+    };
+    lay.leaves.forEach(l=>put(this.gLeaves,l,MCOL[l.colour]));
+    lay.lines.forEach(l=>put(this.gLines,l,MCOL.black));
+    for(const [id,el] of this.els) if(!seen.has(id)){ el.remove(); this.els.delete(id); }
+  }
+  // tap: move to the next composition of the same family
+  step(){
+    if(this.animStart!==null){ this.finalize(); }
+    this.mutate(); this.animStart=performance.now();
+  }
+  // instant, silent step — used to replay a person's saved variant
+  skip(){ this.mutate(); this.finalize(); this.render(0); }
+  tick(now){
+    if(!this.el.isConnected || this.el.offsetParent===null) return; // hidden: don't burn frames
+    if(this.auto){
+      // 1 s period: hold for 0.333 s, move for 0.667 s
+      const cycle=Math.floor((now-this.born)/1000), local=(now-this.born)%1000;
+      if(cycle!==this.cycle){ if(this.cycle!==null) this.finalize(); this.mutate(); this.cycle=cycle; }
+      this.render(local<333 ? 0 : ease((local-333)/667));
+    }else if(this.animStart!==null){
+      const p=Math.min(1,(now-this.animStart)/667);
+      this.render(ease(p));
+      if(p>=1){ this.finalize(); this.animStart=null; this.render(0); }
+    }
+  }
+}
+(function loop(now){ PLAYERS.forEach(pl=>pl.tick(now)); requestAnimationFrame(loop); })(performance.now());
+const familyOf = email => FAMILIES[hashStr("katte-family-"+email)%FAMILIES.length];
+
+// the two public marks: the logo, and the sign-in hero — the same daily seed
+const LOGO_P = {...FAMILIES[1], maxDepth:3, minCell:.16, name:"Katte"};
+new Mondrian($("#heroMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:1});
+new Mondrian($("#logoMark"), "katte-mark-"+todaySeed(), LOGO_P, {auto:true, lwScale:2.4});
+
+/* ------------ me: personal mark ------------ */
+let meMark=null;
+function renderMeMark(){
+  if(meMark){ meMark.destroy(); meMark=null; }
+  if(!me) return;
+  const fam=familyOf(me.email);
+  meMark=new Mondrian($("#meMark"), "katte-me-"+me.email+"-"+todaySeed(), fam, {lwScale:1});
+  const v=+localStorage.getItem(userKey("markvar"))||0;
+  for(let i=0;i<v;i++) meMark.skip();
+  $("#markNote").innerHTML=`Your Mondrian · the <b>${fam.name}</b> family — ${fam.about}.<br>Minted fresh each day. Tap to shift it.`;
+}
+function shiftMeMark(){
+  if(!meMark) return;
+  meMark.step();
+  localStorage.setItem(userKey("markvar"), (+localStorage.getItem(userKey("markvar"))||0)+1);
+}
+
+/* ------------ install (PWA) ------------
+   Chrome/Android hands us the native prompt via beforeinstallprompt, and we
+   show it only when the person taps — never the browser's own popup. iOS
+   has no prompt at all, so we show the two taps it takes in Safari. */
+let installEvt=null;
+const isStandalone = ()=>matchMedia("(display-mode: standalone)").matches || navigator.standalone===true;
+const isIOS = ()=>/iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; });
+window.addEventListener("appinstalled",()=>{ installEvt=null; toast("Katte is on your home screen"); syncInstallUI(); });
+function syncInstallUI(){ $$("[data-install]").forEach(b=>b.style.display=isStandalone()?"none":""); }
+async function installApp(){
+  if(installEvt){
+    installEvt.prompt();
+    const {outcome}=await installEvt.userChoice;
+    if(outcome==="accepted") installEvt=null;
+    return;
+  }
+  const steps = isIOS()
+    ? [["Open this page in <strong>Safari</strong>", "not Chrome — iPhone only installs from Safari"],
+       ["Tap <strong>Share</strong>", "the square with the arrow, bottom of the screen"],
+       ["Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>", "Katte appears next to your other apps"]]
+    : [["Open the browser menu <strong>⋮</strong>", "top-right of Chrome"],
+       ["Tap <strong>Add to Home screen</strong> or <strong>Install app</strong>", "then confirm"],
+       ["Open Katte from your home screen", "it runs full-screen, like any app"]];
+  $("#installSub").innerHTML = isIOS() ? "iPhone installs from Safari — two taps, no app store." : "Installs from the browser — no app store.";
+  $("#installSteps").innerHTML = steps.map((s,i)=>`<li><b>${i+1}</b><span>${s[0]}<small>${s[1]}</small></span></li>`).join("");
+  $("#installWrap").classList.add("open");
+}
 
 /* ------------ auth (Firebase email + password, domain-gated) ------------ */
 const err = t=>{ $("#loginErr").textContent=t; };
@@ -724,7 +871,7 @@ function enterApp(){
   $("#meEmail").textContent=me.email;
   $("#meRole").textContent=roleLabel(me);
   $("#inviteBox").style.display = isFacultyMe() ? "block" : "none";
-  renderMeKolam();
+  renderMeMark();
   startListeners();
   go("adda");
   toast(`Welcome, <b>${escapeHtml(me.n.split(" ")[0])}</b>`);
@@ -734,7 +881,7 @@ function startListeners(){
   // live class directory → Class tab, DM names, role chips
   unsubs.push(db.collection("profiles").onSnapshot(s=>{
     people = s.docs.map(d=>{const p=d.data(); const email=(p.email||"").toLowerCase();
-      return {uid:d.id, n:p.name||"?", role:p.role||roleFor(email), isAdmin:!!p.isAdmin, email, cohort:cohortOf(email), c:colorFor(p.name||"?")};});
+      return {uid:d.id, n:p.name||"?", role:p.role||roleFor(email), isAdmin:!!p.isAdmin, email, cohort:cohortOf(email)};});
     renderClass(); renderChannels();
     if(curChan){ if(curChan.dm) refreshDMHeader(); renderMsgs(); }
   }, e=>console.warn("profiles listener", e)));
@@ -753,10 +900,10 @@ function startListeners(){
 function stopListeners(){ unsubs.forEach(u=>{try{u();}catch(e){}}); unsubs=[]; if(msgUnsub){try{msgUnsub();}catch(e){} msgUnsub=null;} }
 function showSignin(){
   me=null; curChan=null; people=[]; stopListeners();
+  if(meMark){ meMark.destroy(); meMark=null; }
   $("#app").classList.remove("show");
   $("#signin").style.display="flex";
   $("#loginPass").value=""; $("#loginBtn").disabled=false;
-  renderSigninKolam();
 }
 function signOut(){ if(FB_OK) auth.signOut(); toast("Signed out"); }
 
@@ -789,7 +936,7 @@ function renderClass(){
   const rowsFor=(roster, joined, role)=>{
     const seen=new Set(), rows=[];
     roster.forEach(r=>{ seen.add(r.e); const p=byEmail[r.e];
-      rows.push(p ? {...p, joined:true} : {n:r.n, email:r.e, role, cohort:cohortOf(r.e), c:colorFor(r.n), joined:false}); });
+      rows.push(p ? {...p, joined:true} : {n:r.n, email:r.e, role, cohort:cohortOf(r.e), joined:false}); });
     joined.forEach(p=>{ if(!seen.has(p.email)) rows.push({...p, joined:true}); });
     return rows.sort((a,b)=>a.n.localeCompare(b.n));
   };
@@ -823,7 +970,7 @@ function renderChannels(){
   }).join("");
   const dms = dmThreadsData.length
     ? dmThreadsData.map(d=>{
-        const p=personByEmail(d.email)||{n:d.email, email:d.email, role:"student", c:colorFor(d.email)};
+        const p=personByEmail(d.email)||{n:d.email, email:d.email, role:"student"};
         const open = openOnDesktop && curChan.id===dmIdFor(d.email) ? " open" : "";
         return `<button class="chanrow${open}" data-dm="${p.email}" data-dmname="${escapeHtml(p.n)}">
           <span class="ce dmava" style="${avatarStyle(p)}">${initials(p.n)}</span>
@@ -906,7 +1053,7 @@ function refreshDMHeader(){
   $("#chMeta").textContent = (p ? roleLabel(p).toLowerCase()+" · " : "") + "private to you two";
 }
 function openDM(email, name){
-  const p=personByEmail(email) || {n:name||email, email, role:"student", c:colorFor(name||email)};
+  const p=personByEmail(email) || {n:name||email, email, role:"student"};
   curChan={id:dmIdFor(email), dm:true, name:p.n, otherEmail:email, participants:[me.email, email]};
   localStorage.setItem(userKey("lastchan"),"dm:"+email);
   const ce=$("#chEmoji"); ce.className="ce dmava"; ce.style.cssText=avatarStyle(p); ce.innerHTML=initials(p.n);
@@ -921,230 +1068,16 @@ function openDM(email, name){
   renderChannels();
 }
 
-/* ------------ generative art: seeded rng ------------ */
-const hashStr = s=>{ let h=2166136261; for(const ch of s){ h^=ch.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; };
-const mulberry32 = seed=>()=>{ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
-const todaySeed = ()=>new Date().toLocaleDateString("en-IN");
-
-/* ------------ KOLAM ENGINE — Ujjwal's long-form WFC program, ported ------------
-   Tiles declare which edges a line crosses (e:[top,right,bottom,left]); the WFC
-   solver guarantees neighbours agree, so lines always continue or close — never
-   dangle. Cells may subdivide into nested 3×3 kolams whose borders inherit the
-   parent tile's edges. Seeded: same seed + same weights → the same weave. */
-const KTILES=[
-  {e:[0,0,0,0],type:"BLANK"},
-  {e:[1,1,1,1],type:"CROSS"},
-  {e:[1,1,1,1],type:"CURVES"},
-  {e:[1,1,1,1],type:"LOOPS"},
-  {e:[0,1,1,1],type:"CAP_T"},
-  {e:[1,0,1,1],type:"CAP_R"},
-  {e:[1,1,0,1],type:"CAP_B"},
-  {e:[1,1,1,0],type:"CAP_L"},
-];
-function kolamGen(seed,opt){
-  const r=mulberry32(hashStr(seed));
-  const {cols,rows,wts}=opt;
-  const maxDepth=opt.maxDepth??1, subdivide=opt.subdivide??.75, spatial=opt.spatial??1.4, decay=.6;
-  const margin=opt.margin??12, W=opt.W??380;
-  const cell=(W-2*margin)/cols, H=2*margin+rows*cell;
-  const cx0=W/2, cy0=H/2;
-  const curves=[];
-
-  function runWFC(rr,cc,border,blocked){
-    const total=rr*cc;
-    const wave=Array.from({length:total},()=>new Set(KTILES.map((_,i)=>i)));
-    const idx=(R,C)=>R*cc+C;
-    const clampEdge=(wi,eI,req)=>{
-      for(const t of [...wave[wi]]) if(KTILES[t].e[eI]!==req) wave[wi].delete(t);
-      if(!wave[wi].size) wave[wi].add(0);
-    };
-    const propagate=stack=>{
-      let safety=0;
-      while(stack.length && safety++<10000){
-        const cur=stack.pop(), R=Math.floor(cur/cc), C=cur%cc;
-        for(const [dr,dc,myE,thE] of [[-1,0,0,2],[0,1,1,3],[1,0,2,0],[0,-1,3,1]]){
-          const nr=R+dr, nc=C+dc;
-          if(nr<0||nr>=rr||nc<0||nc>=cc) continue;
-          const ni=idx(nr,nc);
-          if(wave[ni].size<=1) continue;
-          const myVals=new Set();
-          for(const t of wave[cur]) myVals.add(KTILES[t].e[myE]);
-          const before=wave[ni].size;
-          for(const t of [...wave[ni]]) if(!myVals.has(KTILES[t].e[thE])) wave[ni].delete(t);
-          if(!wave[ni].size) wave[ni].add(0);
-          if(wave[ni].size<before) stack.push(ni);
-        }
-      }
-    };
-    if(blocked && blocked.size){
-      const seeds=[];
-      for(const key of blocked){
-        const [R,C]=key.split(",").map(Number);
-        if(R>=0&&R<rr&&C>=0&&C<cc){ wave[idx(R,C)]=new Set([0]); seeds.push(idx(R,C)); }
-      }
-      propagate(seeds); // neighbours close their facing edges — lines end politely at the reserve
-    }
-    if(border){
-      const seeds=[];
-      for(let R=0;R<rr;R++)for(let C=0;C<cc;C++){
-        const wi=idx(R,C); let s=false;
-        if(R===0){clampEdge(wi,0,border[0]);s=true;}
-        if(C===cc-1){clampEdge(wi,1,border[1]);s=true;}
-        if(R===rr-1){clampEdge(wi,2,border[2]);s=true;}
-        if(C===0){clampEdge(wi,3,border[3]);s=true;}
-        if(s) seeds.push(wi);
-      }
-      propagate(seeds);
-    }
-    for(let it=0;it<total;it++){
-      let mE=Infinity, mI=-1;
-      for(let i=0;i<total;i++){
-        if(wave[i].size<=1) continue;
-        const e=wave[i].size+r()*.01;
-        if(e<mE){mE=e;mI=i;}
-      }
-      if(mI===-1) break;
-      const opts=[...wave[mI]];
-      const sum=opts.reduce((a,b)=>a+wts[b],0);
-      let rv=r()*sum, chosen=opts[opts.length-1];
-      for(let k=0;k<opts.length;k++){ rv-=wts[opts[k]]; if(rv<=0){chosen=opts[k];break;} }
-      wave[mI]=new Set([chosen]);
-      propagate([mI]);
-    }
-    const g=[];
-    for(let R=0;R<rr;R++){ g[R]=[]; for(let C=0;C<cc;C++){ const s=wave[idx(R,C)]; g[R][C]=s.size?[...s][0]:0; } }
-    return g;
-  }
-
-  const shouldSub=(tileIdx,depth,ccx,ccy)=>{
-    if(depth>=maxDepth) return false;
-    const nx=(ccx-cx0)/(W/2), ny=(ccy-cy0)/(H/2);
-    const sp=1+spatial*(.15-.35*(nx*nx+ny*ny));
-    const dd=depth===0?1:Math.pow(decay,depth);
-    if(KTILES[tileIdx].type==="BLANK") return depth===0 && r()<.06*subdivide*sp;
-    return r()<.82*subdivide*sp*dd;
-  };
-
-  const emit=(tileIdx,x,y,w,h)=>{
-    const tile=KTILES[tileIdx];
-    if(tile.type==="BLANK") return;
-    const xC=x+w/2, yC=y+h/2;
-    const pts=[{x:xC,y:y},{x:x+w,y:yC},{x:xC,y:y+h},{x:x,y:yC}];
-    const cv=(a,b)=>{
-      const s=pts[a], e=pts[b];
-      curves.push({x1:s.x,y1:s.y,
-        c1x:s.x+(xC-s.x)*.58, c1y:s.y+(yC-s.y)*.58,
-        c2x:e.x+(xC-e.x)*.58, c2y:e.y+(yC-e.y)*.58,
-        x2:e.x,y2:e.y});
-    };
-    switch(tile.type){
-      case "CROSS": cv(0,2);cv(1,3);break;
-      case "CURVES": cv(0,3);cv(1,2);break;
-      case "LOOPS": cv(0,1);cv(2,3);break;
-      case "CAP_T": cv(1,2);cv(2,3);break;
-      case "CAP_R": cv(0,3);cv(2,3);break;
-      case "CAP_B": cv(0,1);cv(0,3);break;
-      case "CAP_L": cv(0,1);cv(1,2);break;
-    }
-  };
-
-  const processCell=(tileIdx,x,y,w,h,depth)=>{
-    if(shouldSub(tileIdx,depth,x+w/2,y+h/2)){
-      const N=3, sw=w/N, sh=h/N;
-      const sub=runWFC(N,N,KTILES[tileIdx].e);
-      for(let R=0;R<N;R++)for(let C=0;C<N;C++) processCell(sub[R][C],x+C*sw,y+R*sh,sw,sh,depth+1);
-    } else emit(tileIdx,x,y,w,h);
-  };
-
-  const blocked=opt.blockedCells||null;
-  const root=runWFC(rows,cols,null,blocked);
-  for(let R=0;R<rows;R++)for(let C=0;C<cols;C++){
-    if(blocked && blocked.has(R+","+C)) continue; // reserved zones stay empty
-    processCell(root[R][C],margin+C*cell,margin+R*cell,cell,cell,0);
-  }
-
-  // macro symmetry — mirror the bezier control points
-  const sym=opt.symmetry||"none";
-  if(sym!=="none"){
-    const mx=c=>(c.x1+c.x2)/2, my=c=>(c.y1+c.y2)/2;
-    const rx=c=>({x1:2*cx0-c.x1,y1:c.y1,c1x:2*cx0-c.c1x,c1y:c.c1y,c2x:2*cx0-c.c2x,c2y:c.c2y,x2:2*cx0-c.x2,y2:c.y2});
-    const ry=c=>({x1:c.x1,y1:2*cy0-c.y1,c1x:c.c1x,c1y:2*cy0-c.c1y,c2x:c.c2x,c2y:2*cy0-c.c2y,x2:c.x2,y2:2*cy0-c.y2});
-    let src;
-    if(sym==="h"){ src=curves.filter(c=>mx(c)<=cx0); curves.length=0; curves.push(...src,...src.map(rx)); }
-    else if(sym==="v"){ src=curves.filter(c=>my(c)<=cy0); curves.length=0; curves.push(...src,...src.map(ry)); }
-    else { src=curves.filter(c=>mx(c)<=cx0&&my(c)<=cy0); curves.length=0; curves.push(...src,...src.map(rx),...src.map(ry),...src.map(c=>ry(rx(c)))); }
-  }
-
-  const d=curves.map(c=>`M${c.x1.toFixed(1)},${c.y1.toFixed(1)} C${c.c1x.toFixed(1)},${c.c1y.toFixed(1)} ${c.c2x.toFixed(1)},${c.c2y.toFixed(1)} ${c.x2.toFixed(1)},${c.y2.toFixed(1)}`).join(" ");
-  return {d,W,H};
-}
-
-/* ------------ me: personal kolam mark ------------
-   Everyone in the class is one mint of the long-form engine: their email seeds
-   a trait family (Sikku / Mandala / Labyrinth / Minimalist), grid and depth. */
-function renderMeKolam(){
-  const el=$("#meKolam"); if(!el||!me) return;
-  const idTr=mulberry32(hashStr("katte-me-"+me.email+"-traits"));
-  const FAMS=[[1,2,4,8,1,1,1,1],[1,1,6,4,1,1,1,1],[0,8,1,0,3,3,3,3],[4,1,2,1,2,2,2,2]];
-  const wts=FAMS[Math.floor(idTr()*4)];
-  const grid=idTr()<.5?5:7;
-  const depth=idTr()>.4?1:2;
-  const opt={cols:grid, rows:grid, W:240, margin:12, wts, symmetry:"4", maxDepth:depth, subdivide:.7, spatial:1.5};
-  const variant=+localStorage.getItem(userKey("kolamvar"))||0;
-  let v=variant, k;
-  for(let t=0;t<12;t++){
-    k=kolamGen("katte-me-"+me.email+"-"+todaySeed()+(v?"-v"+v:""), opt);
-    if(k.d) break;
-    v++;
-  }
-  if(v!==variant) localStorage.setItem(userKey("kolamvar"),v);
-  const stroke = me.role==="faculty" ? "#d7261e" : "#151515";
-  el.innerHTML=`<svg viewBox="0 0 ${k.W} ${k.H.toFixed(1)}" xmlns="http://www.w3.org/2000/svg"><path d="${k.d}" fill="none" stroke="${stroke}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-}
-function remintKolam(){
-  if(!me) return;
-  const v=(+localStorage.getItem(userKey("kolamvar"))||0)+1;
-  localStorage.setItem(userKey("kolamvar"),v);
-  renderMeKolam();
-  toast("Re-minted — same family, fresh weave");
-}
-/* Sign-in threshold: full-screen daily kolam that surrounds the content.
-   Text boxes are measured live and their cells clamped BLANK before the
-   collapse, so the solver itself makes space — no overlap, no cut lines. */
-function renderSigninKolam(){
-  const wrap=$("#signKolamBg"); if(!wrap) return;
-  const box=$("#signin").getBoundingClientRect();
-  if(box.width<10) return; // signed in — sign-in screen hidden
-  const W=Math.round(box.width);
-  const cols=Math.max(9, Math.round(W/46)), cell=W/cols, rows=Math.ceil(box.height/cell);
-  const tight=el=>{ const rg=document.createRange(); rg.selectNodeContents(el); const rr=rg.getBoundingClientRect(); return rr.width?rr:el.getBoundingClientRect(); };
-  const blocked=new Set();
-  [["#signin .hero .kn",el=>el.getBoundingClientRect()],["#signin .hero h1",tight],
-   ["#signin .hero p.def",tight],[".signin-foot",el=>el.getBoundingClientRect()]]
-  .forEach(([sel,measure])=>{
-    const el=document.querySelector(sel); if(!el) return;
-    const r=measure(el), pad=8;
-    const c0=Math.floor((r.left-box.left-pad)/cell), c1=Math.floor((r.right-box.left+pad)/cell);
-    const r0=Math.floor((r.top-box.top-pad)/cell), r1=Math.floor((r.bottom-box.top+pad)/cell);
-    for(let R=r0;R<=r1;R++)for(let C=c0;C<=c1;C++) blocked.add(R+","+C);
-  });
-  const k=kolamGen("katte-hero"+todaySeed(),
-    {cols, rows, W, margin:0, wts:[1.3,2,4,5,1,1,1,1], symmetry:"none",
-     maxDepth:1, subdivide:.55, spatial:1.2, blockedCells:blocked});
-  wrap.innerHTML=`<svg width="${W}" height="${k.H.toFixed(0)}" viewBox="0 0 ${k.W} ${k.H.toFixed(1)}" xmlns="http://www.w3.org/2000/svg"><path class="signpath" pathLength="1000" d="${k.d}"/></svg>`;
-}
-
 /* ------------ faculty: invite the class ------------ */
 function copyInvite(){
   const url=location.origin+location.pathname;
-  const msg=`Katte — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nAdd it to your home screen (iPhone: Share → Add to Home Screen · Android: menu → Install app).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
+  const msg=`Katte — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
   navigator.clipboard.writeText(msg).then(()=>toast("Invite copied — paste it in the class group"),
     ()=>toast("Couldn't copy — long-press to select"));
 }
 
 /* ------------ wiring (no inline handlers — works under strict CSP) ------------ */
 $("#signinBtn").addEventListener("click",openPicker);
-$("#scrim").addEventListener("click",closePicker);
 $("#loginBtn").addEventListener("click",doLogin);
 $("#loginEmail").addEventListener("input",prefillName);
 $("#loginEmail").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#loginPass").focus(); });
@@ -1152,7 +1085,7 @@ $("#loginPass").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); }
 $("#loginName").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
 $("#signoutBtn").addEventListener("click",signOut);
 $("#copyInviteBtn").addEventListener("click",copyInvite);
-$("#meKolam").addEventListener("click",remintKolam);
+$("#meMark").addEventListener("click",shiftMeMark);
 $$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.v)));
 $("#backToAdda").addEventListener("click",()=>{
   $$(".view").forEach(x=>x.classList.remove("active"));
@@ -1160,10 +1093,11 @@ $("#backToAdda").addEventListener("click",()=>{
 });
 $("#sendBtn").addEventListener("click",sendMsg);
 $("#msgIn").addEventListener("keydown",e=>{ if(e.key==="Enter") sendMsg(); });
-window.addEventListener("resize",()=>{ clearTimeout(window._skT); window._skT=setTimeout(renderSigninKolam,150); });
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(renderSigninKolam);
-/* delegated: channel rows, Message buttons */
+/* delegated: channel rows, Message buttons, install buttons, sheet closers */
 document.addEventListener("click",e=>{
+  const cl=e.target.closest("[data-close]");
+  if(cl){ $("#"+cl.dataset.close).classList.remove("open"); return; }
+  if(e.target.closest("[data-install]")){ installApp(); return; }
   const ch=e.target.closest("[data-chan]");
   if(ch){ openChannel(ch.dataset.chan); return; }
   const dm=e.target.closest("[data-dm]");
@@ -1171,7 +1105,7 @@ document.addEventListener("click",e=>{
 });
 
 /* ------------ init ------------ */
-renderSigninKolam();
+syncInstallUI();
 // Firebase's onAuthStateChanged restores the session (or shows sign-in) on load.
 if(!FB_OK){ $("#signin").style.display="flex"; }
 
