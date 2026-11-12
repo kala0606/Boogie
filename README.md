@@ -113,6 +113,64 @@ Security rules are in `firestore.rules`. Deploy them with:
 firebase deploy --only firestore:rules
 ```
 
+## Interim 26 · Computationally Yours (23 Nov – 18 Dec 2026)
+
+A second studio in the same app. Nothing changes for SMI26: its people,
+channels and rules are as they were.
+
+- **Who's in:** the list in `cohorts/interim26` (`members`, `names`). Edit it in
+  the app as admin: Me → *Interim 26 class list*, one `Name, email` per line.
+  Listed students sign in with their first name and need **no class password**.
+  Their profile gets `cohort: "interim26"`. SMI26 is every profile without one.
+  Anyone on both lists, and the admin, gets a switch between the two studios.
+- **Invite link:** `https://kala0606.github.io/Boogie/?c=i26` (Me → *Copy
+  invite message* while in Interim 26).
+- **Channels** (`i26msgs`): Announcements (only Ujjwal posts), Studio, Pin-up.
+- **Days:** the 20 studio days from the handbook's schedule. Students see only
+  the days the facilitator has opened (`openThrough`, the *Open Day N* button
+  on the Days tab). Opening a day sends a notification.
+- **Daily log** (`i26logs/{uid}_d{day}`): the Due-by-3:30 checklist, then
+  what I made, what Codex suggested, what I rejected and why, a commit/output
+  link and an image link. Autosaves, and *Pin up* posts it to Pin-up. The whole
+  studio can read every entry. The facilitator adds a note per entry, and the
+  student gets a notification.
+- **Overview:** a 20 × 20 grid of students × days on the admin's Days tab:
+  white = nothing, yellow = started, blue = logged (made + a link or image),
+  red = has your note. Tap a square to open the entry.
+
+### Phone notifications (free, no Blaze)
+
+Web Push through a small Cloudflare Worker in `push/` (`boogie-push`). After
+an announcement, DM, new day or note is written, the sender's app reads the
+recipients' subscriptions (`pushSubs/{uid}`) and asks the Worker to send them.
+The Worker encrypts each one (RFC 8291) and signs it with VAPID. It only
+talks to real push services.
+
+- Turn on: Me → *Notifications* (Interim 26 only).
+- **iPhone:** only from Boogie **on the Home Screen** (Safari → Share → Add to
+  Home Screen), on **iOS 16.4+**. The app explains this when it's opened in
+  Safari.
+- Deploy / redeploy the Worker:
+  ```sh
+  cd push
+  wrangler secret put VAPID_JWK   # paste the private JWK (kept in push/.dev.vars, never in git)
+  wrangler deploy
+  ```
+  it is live at `https://boogie-push.kala-music.workers.dev` (that URL is
+  `PUSH_URL` in `index.html`). The VAPID public key is in `push/wrangler.toml`
+  and `index.html`. Changing it means everyone turns notifications on again.
+- Locally: `cd push && wrangler dev` (port 8787). The app on localhost uses it
+  automatically.
+
+### Testing locally against the emulators
+
+```sh
+firebase emulators:start --only auth,firestore   # needs Java 11+
+python3 -m http.server 4173                      # open http://localhost:4173/?emu
+```
+
+`?emu` (localhost only) points the app at the emulators, never at katte-d9efb.
+
 ## Installing on a phone
 
 **Get the app** (sign-in page and Me tab) triggers the native install prompt

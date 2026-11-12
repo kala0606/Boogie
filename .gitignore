@@ -14,3 +14,11 @@ venv/
 
 # Claude Code local launch config
 .claude/
+
+# push worker: the VAPID private key never goes in git
+push/.dev.vars
+push/.wrangler/
+
+# emulator logs
+firebase-debug.log
+firestore-debug.log

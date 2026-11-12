@@ -1,6 +1,6 @@
 /* Boogie service worker — offline-first app shell.
    Bump CACHE when any precached file changes to roll the cache over. */
-const CACHE = "katte-v14";
+const CACHE = "katte-v15";
 const SHELL = [
   "./",
   "./index.html",
@@ -51,4 +51,31 @@ self.addEventListener("fetch", e => {
     return;
   }
   // anything else (e.g. the bot tunnel origin): straight to network, no caching
+});
+
+/* ---- Web Push (Interim 26): payloads come from the boogie-push Worker ---- */
+self.addEventListener("push", e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = { body: e.data && e.data.text() }; }
+  const url = new URL(d.url || "./", self.registration.scope).href;
+  e.waitUntil(self.registration.showNotification(d.title || "Boogie", {
+    body: d.body || "",
+    icon: "icon-192.png",
+    badge: "icon-192.png",
+    tag: d.tag || "boogie",
+    renotify: true,
+    data: { url },
+  }));
+});
+
+self.addEventListener("notificationclick", e => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || self.registration.scope;
+  const open = new URL(url).searchParams.get("open");
+  e.waitUntil((async () => {
+    const wins = await clients.matchAll({ type: "window", includeUncontrolled: true });
+    const win = wins.find(w => w.url.startsWith(self.registration.scope));
+    if (win) { await win.focus(); if (open) win.postMessage({ type: "open", open }); return; }
+    await clients.openWindow(url);
+  })());
 });

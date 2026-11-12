@@ -4,7 +4,8 @@ rules_version = '2';
 // Roles come from the email domain, never from the client:
 //   @learner.manipal.edu  → student
 //   @manipal.edu          → faculty   (no "learner." — the two patterns are mutually exclusive)
-// Only the studio owner's address gets isAdmin. Creating a profile also needs the class password.
+// Only the studio owner's address gets isAdmin. Creating a profile also needs the class password —
+// or, for Interim 26 (Computationally Yours), being on the list in cohorts/interim26.
 // Deploy: firebase deploy --only firestore:rules
 
 service cloud.firestore {
@@ -18,6 +19,10 @@ service cloud.firestore {
     function myProfile()       { return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data; }
     function isFaculty()       { return signedIn() && myProfile().role == 'faculty'; }
     function okText(s, max)    { return s is string && s.size() > 0 && s.size() <= max; }
+    function okLong(s, max)    { return s is string && s.size() <= max; }
+    function isAdmin()         { return signedIn() && isOwnerEmail(myEmail()); }
+    function i26Doc()          { return /databases/$(database)/documents/cohorts/interim26; }
+    function i26Listed(e)      { return exists(i26Doc()) && e in get(i26Doc()).data.members; }
 
     // ---- profiles/{uid} — one per signed-in person -----------------------
     match /profiles/{uid} {
@@ -32,8 +37,13 @@ service cloud.firestore {
         && request.resource.data.role == (isStudentEmail(myEmail()) ? 'student' : 'faculty')
         && request.resource.data.isAdmin == isOwnerEmail(myEmail())
         && okText(request.resource.data.name, 80)
-        && request.resource.data.key is string
-        && hashing.sha256(request.resource.data.key.upper()).toHexString().lower() == 'afde2d40bbe599fe1415802cd8fea5a4d167597eafcd61018e313c1523908d93';
+        && (
+          // SMI26: the class password
+          (request.resource.data.key is string
+            && hashing.sha256(request.resource.data.key.upper()).toHexString().lower() == 'afde2d40bbe599fe1415802cd8fea5a4d167597eafcd61018e313c1523908d93')
+          // Interim 26: on the list, and the profile says so
+          || (request.resource.data.get('cohort', '') == 'interim26' && i26Listed(myEmail()))
+        );
 
       // You may edit your own display name / bio, nothing else.
       allow update: if signedIn() && request.auth.uid == uid
@@ -53,6 +63,57 @@ service cloud.firestore {
         && okText(request.resource.data.body, 4000)
         && (request.resource.data.channelId != 'announce' || isFaculty());
       allow update, delete: if false;
+    }
+
+    // ================= INTERIM 26 · Computationally Yours =================
+    // Everyone in the studio may read everything; the facilitator (admin) runs it.
+
+    // ---- cohorts/interim26 — {members:[emails], names:{email:name}, openThrough:0–20}
+    // Public read: the sign-in sheet checks the list before there is an account.
+    match /cohorts/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ---- i26msgs/{id} — Interim 26 channels; announce is the facilitator's
+    match /i26msgs/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.channelId in ['announce', 'studio', 'pinup']
+        && okText(request.resource.data.body, 4000)
+        && (request.resource.data.channelId != 'announce' || isAdmin());
+      allow update, delete: if false;
+    }
+
+    // ---- i26logs/{uid}_d{day} — one entry per student per studio day.
+    // The student writes their own fields; the facilitator writes the note.
+    match /i26logs/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == myEmail()
+        && request.resource.data.day is int && request.resource.data.day >= 1 && request.resource.data.day <= 20
+        && id == request.auth.uid + '_d' + string(request.resource.data.day)
+        && !request.resource.data.keys().hasAny(['note', 'noteAt'])
+        && okLong(request.resource.data.get('made', ''), 4000);
+      allow update: if signedIn()
+        && resource.data.uid == request.auth.uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.day == resource.data.day
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['note', 'noteAt'])
+        && okLong(request.resource.data.get('made', ''), 4000);
+      allow write: if isAdmin();
+    }
+
+    // ---- pushSubs/{uid} — this person's Web Push subscriptions (one per device).
+    // Senders read them to notify; anyone may prune a dead endpoint (subs only).
+    match /pushSubs/{uid} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.uid == uid && request.resource.data.email == myEmail();
+      allow update: if signedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['subs']);
+      allow delete: if signedIn() && request.auth.uid == uid;
     }
 
     // ---- dms/{id} — direct messages, private to the two participants ------

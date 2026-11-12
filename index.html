@@ -269,6 +269,93 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
 /* ---------- flat icons ---------- */
 .fi{width:1em;height:1em;display:inline-block;vertical-align:-0.16em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter}
 
+/* ---------- INTERIM 26 · cohort switch ---------- */
+.cohortsw{display:flex;margin-top:14px;border:2px solid var(--ink)}
+.cohortsw button{flex:1;background:var(--white);border:none;padding:9px 6px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.cohortsw button+button{border-left:2px solid var(--ink)}
+.cohortsw button.on{background:var(--yellow)}
+
+/* ---------- INTERIM 26 · days ---------- */
+.dayhead{margin-top:10px;background:var(--ink);color:var(--white);padding:16px 18px;font-size:14px;display:flex;align-items:center;gap:14px}
+.dayhead b{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--yellow)}
+.dayhead .cl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75;display:block;margin-top:3px}
+.dayrow{width:100%;display:flex;align-items:stretch;background:var(--white);border:2px solid var(--ink);margin-bottom:8px;text-align:left;padding:0}
+.dayrow .dn{flex:none;width:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:2px solid var(--ink);font-weight:700;font-size:22px;letter-spacing:-.03em;line-height:1}
+.dayrow .dn small{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+.dayrow .dn.crit{background:var(--red);color:#fff}
+.dayrow .dn.open{background:var(--blue);color:#fff}
+.dayrow .dn.today{background:var(--yellow)}
+.dayrow .dm{flex:1;min-width:0;padding:11px 13px}
+.dayrow .dt{font-weight:700;font-size:14.5px;line-height:1.3}
+.dayrow .dd{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dayrow .ds{flex:none;align-self:center;margin-right:12px}
+.dayrow.shut{border-color:transparent;padding:0}
+.dayrow.shut .dn{border-right-color:transparent;color:var(--faint)}
+.dayrow.shut .dt{color:var(--muted);font-weight:500}
+.chip{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--ink);padding:2px 7px;background:var(--white)}
+.chip.y{background:var(--yellow)} .chip.b{background:var(--blue);color:#fff} .chip.r{background:var(--red);color:#fff}
+.opener{display:flex;border:2px solid var(--ink);margin-top:10px}
+.opener button{flex:1;border:none;background:var(--white);padding:12px 8px;font-weight:700;font-size:13px}
+.opener button+button{border-left:2px solid var(--ink)}
+.opener button.go{background:var(--red);color:#fff}
+.opener button:hover{background:var(--ink);color:var(--white)}
+.opener button:disabled{color:var(--faint);background:var(--white);cursor:default}
+.notice{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);margin-top:12px;background:var(--white);width:100%;text-align:left;padding:0}
+.notice .np{flex:none;width:14px;align-self:stretch;background:var(--blue);border-right:2px solid var(--ink)}
+.notice div{flex:1;padding:11px 0;font-size:13.5px} .notice small{display:block;color:var(--muted);font-size:11.5px}
+.notice .val{flex:none;margin-right:13px;font-family:var(--mono);font-weight:700;font-size:12.5px;color:var(--red)}
+
+/* the 20 × 20 overview: a grid of planes — lines only where cells meet */
+.gridwrap{overflow-x:auto;margin-top:12px;border:2px solid var(--ink)}
+table.og{border-collapse:collapse;font-family:var(--mono);font-size:10.5px;width:100%}
+table.og td,table.og th{border:2px solid var(--ink);padding:0;height:26px}
+table.og tr:first-child>*{border-top:none} table.og tr:last-child>*{border-bottom:none}
+table.og tr>*:first-child{border-left:none} table.og tr>*:last-child{border-right:none}
+table.og th{font-weight:600;min-width:26px;text-align:center;background:var(--white)}
+table.og th.nm{text-align:left;padding:0 8px;white-space:nowrap;position:sticky;left:0;max-width:130px;overflow:hidden;text-overflow:ellipsis;font-family:var(--sans);font-size:12px}
+table.og th.shut{color:var(--faint)}
+table.og td{min-width:26px;cursor:pointer}
+table.og td.y{background:var(--yellow)} table.og td.b{background:var(--blue)} table.og td.r{background:var(--red)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border:1.5px solid var(--ink);vertical-align:-2px;margin-right:5px}
+
+/* ---------- INTERIM 26 · one day ---------- */
+.daytop{display:flex;align-items:flex-start;gap:11px;padding:8px 0 2px}
+.daytop .k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.daytop h3{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:2px}
+.daybody p{font-size:14px;margin-top:10px;color:var(--ink)}
+.daybody code,.duebox code{font-family:var(--mono);font-size:12.5px}
+.daybody a.hb{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px}
+.duebox{border:2px solid var(--ink);margin-top:16px;display:flex}
+.duebox .dp{flex:none;width:14px;background:var(--red);border-right:2px solid var(--ink)}
+.duebox .di{flex:1;padding:10px 13px}
+.duebox .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.duebox label{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin-top:8px;cursor:pointer}
+.duebox input{appearance:none;-webkit-appearance:none;flex:none;width:18px;height:18px;border:2px solid var(--ink);background:var(--white);margin-top:1px;cursor:pointer}
+.duebox input:checked{background:var(--blue)}
+.duebox input:disabled{cursor:default}
+.logform textarea.finput{min-height:74px;resize:vertical;line-height:1.45}
+.logform .finput[readonly]{border-color:transparent;padding-left:0;padding-right:0;min-height:0}
+.logimg{display:block;max-width:100%;margin-top:10px;border:2px solid var(--ink)}
+.notebox{border:2px solid var(--ink);margin-top:18px;display:flex}
+.notebox .npl{flex:none;width:14px;background:var(--yellow);border-right:2px solid var(--ink)}
+.notebox .nb{flex:1;padding:10px 13px;font-size:14px;white-space:pre-wrap}
+.notebox .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:normal;margin-bottom:4px}
+.btnrow{display:flex;gap:8px;margin-top:14px}
+.btnrow .createbtn{margin-top:0;flex:1}
+.createbtn.alt{background:var(--white);color:var(--ink)}
+.createbtn.alt:hover{background:var(--ink);color:var(--white)}
+.saved{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;min-height:16px}
+.entry{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--ink);padding:11px 12px;margin-bottom:8px;width:100%;background:var(--white);text-align:left}
+.entry .pa{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;border:2px solid var(--ink)}
+.entry .em{flex:1;min-width:0}
+.entry .nm{font-weight:700;font-size:13.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.entry .tx{font-size:13px;color:var(--muted);margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.entry.ghost{border-color:transparent;padding-top:4px;padding-bottom:4px}
+.entry.ghost .pa{opacity:.3;filter:grayscale(1)}
+.entry.ghost .nm{color:var(--muted);font-weight:500}
+textarea.roster{min-height:260px;font-family:var(--mono);font-size:12px;line-height:1.5}
+
 /* ================= DESKTOP (>=900px) ================= */
 @media(hover:hover) and (min-width:900px){
   .chanrow:not(.open):hover{background:var(--ink);color:var(--white)}
@@ -322,6 +409,14 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
   #classList h2.sec{grid-column:1/-1}
   .prow{padding:13px 14px}
 
+  /* ---- INTERIM 26 · days ---- */
+  #v-days.active{max-width:900px;margin:0 auto}
+  #v-day.active{max-width:720px;margin:0 auto}
+  .dayrow:hover:not(.shut){background:var(--ink);color:var(--white)}
+  .dayrow:hover:not(.shut) .dd{color:#ffffffaa}
+  .entry:not(.ghost):hover{background:var(--ink);color:var(--white)}
+  .entry:not(.ghost):hover .tx{color:#ffffffaa}
+
   /* ---- ME ---- */
   #v-me.active{max-width:640px;margin:0 auto}
   .mecard h3{font-size:36px}
@@ -356,9 +451,9 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     <div class="signgrid">
       <div class="mark lg mhero" id="heroMark" aria-hidden="true"></div>
       <div class="hero">
-        <div class="kn">SMI26 · Creative Coding &amp; Generative Art</div>
+        <div class="kn" id="heroKn">SMI26 · Creative Coding &amp; Generative Art</div>
         <h1>Boo<em>gie</em></h1>
-        <p class="def">After <b>Broadway Boogie Woogie</b>, Mondrian's last painting — a grid that moves. The studio's own room: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
+        <p class="def" id="heroDef">After <b>Broadway Boogie Woogie</b>, Mondrian's last painting — a grid that moves. The studio's own room: announcements, questions, show &amp; tell, and a direct line to your faculty.</p>
         <button class="gbtn" id="signinBtn">Sign in to the studio →</button>
         <small>Students <b>@learner.manipal.edu</b> · Faculty <b>@manipal.edu</b></small>
         <div class="installrow"><button class="mini installbtn" data-install>Get the app on your phone</button></div>
@@ -371,14 +466,14 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     <div class="scrim" data-close="sheetWrap"></div>
     <div class="sheet">
       <h4>Sign in</h4>
-      <p class="sub">Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? Add the <b>class password</b> from the invite — that's the whole sign-up; we already know your name from the class list.</p>
+      <p class="sub" id="loginSub">Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? Add the <b>class password</b> from the invite — that's the whole sign-up; we already know your name from the class list.</p>
       <label class="flabel">Email</label>
       <input class="finput" id="loginEmail" type="email" inputmode="email" autocomplete="username" placeholder="you.smiblr2025@learner.manipal.edu">
       <label class="flabel">Password</label>
       <input class="finput" id="loginPass" type="password" autocomplete="current-password" placeholder="your first name">
       <label class="flabel">Your name <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— if we don't have it already</span></label>
       <input class="finput" id="loginName" autocomplete="name" placeholder="e.g. Oorja Mundra">
-      <label class="flabel">Class password <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— first time only</span></label>
+      <label class="flabel" id="loginKeyLabel">Class password <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— first time only</span></label>
       <input class="finput" id="loginKey" autocomplete="off" autocapitalize="characters" placeholder="from the invite">
       <button class="createbtn" id="loginBtn">Enter</button>
       <p class="fine" id="loginErr" style="min-height:16px;color:var(--red)"></p>
@@ -396,15 +491,39 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
     </div>
   </div>
 
+  <!-- ============ NOTIFICATIONS SHEET ============ -->
+  <div id="pushWrap" class="sheetwrap">
+    <div class="scrim" data-close="pushWrap"></div>
+    <div class="sheet">
+      <h4 id="pushTitle">Notifications</h4>
+      <p class="sub" id="pushSub"></p>
+      <ol class="steps" id="pushSteps"></ol>
+      <button class="createbtn" data-close="pushWrap">Got it</button>
+    </div>
+  </div>
+
+  <!-- ============ INTERIM 26 CLASS LIST SHEET (admin) ============ -->
+  <div id="rosterWrap" class="sheetwrap">
+    <div class="scrim" data-close="rosterWrap"></div>
+    <div class="sheet">
+      <h4>Interim 26 class list</h4>
+      <p class="sub">One person per line: <b>Name, email</b>. Only these @learner.manipal.edu addresses can sign in to Computationally Yours, and they don't need the class password.</p>
+      <textarea class="finput roster" id="rosterIn" spellcheck="false" placeholder="Oorja Mundra, oorja.smiblr2024@learner.manipal.edu"></textarea>
+      <button class="createbtn" id="rosterSave">Save list</button>
+      <p class="fine" id="rosterErr" style="min-height:16px;color:var(--red)"></p>
+    </div>
+  </div>
+
   <!-- ============ APP ============ -->
   <div id="app">
     <header class="appbar">
       <div class="brand">
         <div class="mark" id="logoMark" aria-hidden="true"></div>
-        <div><div class="word">Boo<i>gie</i></div><div class="tag">CCGA studio · SMI26</div></div>
+        <div><div class="word">Boo<i>gie</i></div><div class="tag" id="brandTag">CCGA studio · SMI26</div></div>
       </div>
       <nav class="tabs">
         <button class="on" data-v="adda"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><path d="M3.5 5.5h17v11h-9.2L7 20v-3H3.5z"/></svg></span>Atelier</button>
+        <button data-v="days" id="navDays" style="display:none"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15"/><path d="M4 10h16M9 3v4M15 3v4M9 10v10M4 15h16"/></svg></span>Days</button>
         <button data-v="class"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></span>Class</button>
         <button data-v="me"><span class="tic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"/><path d="M12 4v16M4 13h8"/></svg></span>Me</button>
       </nav>
@@ -437,6 +556,18 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
       </section>
       </div>
 
+      <!-- ---------- INTERIM 26 · DAYS ---------- -->
+      <section class="view" id="v-days">
+        <div id="daysWrap"></div>
+      </section>
+      <section class="view" id="v-day">
+        <div class="daytop">
+          <button class="backbtn" id="backToDays" aria-label="Back">←</button>
+          <div style="flex:1;min-width:0"><div class="k" id="dayKicker">—</div><h3 id="dayTitle">—</h3></div>
+        </div>
+        <div id="dayDetail"></div>
+      </section>
+
       <!-- ---------- CLASS ---------- -->
       <section class="view" id="v-class">
         <div class="classhead" id="classHead"></div>
@@ -452,8 +583,13 @@ nav.tabs button.on{color:var(--ink);background:var(--yellow)}
           <div class="mark lg memark" id="meMark" role="button" aria-label="Shift your Mondrian"></div>
           <p class="marknote" id="markNote"></p>
         </div>
+        <div id="cohortBox"></div>
         <h2 class="sec">App</h2>
+        <div id="pushBox"></div>
         <button class="setrow install" data-install><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18"/><path d="M12 8v7M9 12l3 3 3-3"/></svg></span><div>Get the app<small>Install Boogie on your phone's home screen</small></div><span class="val">Install</span></button>
+        <div id="i26AdminBox" style="display:none">
+          <button class="setrow" id="editRosterBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span><div>Interim 26 class list<small id="rosterCount">Who may sign in to Computationally Yours</small></div><span class="val">Edit</span></button>
+        </div>
         <div id="inviteBox" style="display:none">
           <button class="setrow" id="copyInviteBtn"><span class="ic"><svg class="fi" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg></span><div>Copy invite message<small>Ready to paste into the class group</small></div><span class="val">Copy</span></button>
         </div>
@@ -482,6 +618,11 @@ const firebaseConfig = {
 let auth=null, db=null, FB_OK=false;
 try{ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); FB_OK=true; }
 catch(e){ console.warn("Firebase unavailable (offline?)", e); }
+// local testing only: http://localhost:…/?emu talks to the Firebase emulators, never to katte-d9efb
+if(FB_OK && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)){
+  try{ if(new URLSearchParams(location.search).has("emu")) sessionStorage.setItem("katte-emu","1");
+    if(sessionStorage.getItem("katte-emu")){ auth.useEmulator("http://127.0.0.1:9099"); db.useEmulator("127.0.0.1",8080); console.info("Boogie → emulators"); } }catch(e){}
+}
 const svTime = ()=>firebase.firestore.FieldValue.serverTimestamp();
 
 /* ------------ the class ------------
@@ -519,11 +660,26 @@ const CHANNELS = [
   {id:"studio",   icon:"chat",      name:"Studio",        desc:"Questions, help, anything about the work"},
   {id:"showtell", icon:"frame",     name:"Show & Tell",   desc:"Drop a link to your sketch — p5 editor, GitHub, anything"},
 ];
+/* Interim 26 · Computationally Yours — a second cohort, see the INTERIM 26 section below */
+const I26 = "interim26";
+const I26_CHANNELS = [
+  {id:"announce", icon:"megaphone", name:"Announcements", desc:"From Ujjwal · read-only for students", locked:true},
+  {id:"studio",   icon:"chat",      name:"Studio",        desc:"Questions, help, the day's work"},
+  {id:"pinup",    icon:"frame",     name:"Pin-up",        desc:"End of day: what you made, a link, a line"},
+];
+// the 20 studio days, from ujjwalagarwal.com/SMI/Interim26/schedule.html ("Due by 3:30" split into items)
+const DAYS = [{"d":1,"date":"Mon 23 Nov","title":"Enter the theme and see what the studio can make.","tag":"","body":["Opening talk: <em>Out of One's Place</em>. A walk through the plotter, resin printer and archival printer, with past work. Clone the starter repo.","<b>Coordinates</b> exercise: list the places, languages, roles and routes you already hold."],"due":["Coordinates sheet.","Repo set up with README."]},{"d":2,"date":"Tue 24 Nov","title":"Read displacement as a critical lens.","tag":"","body":["Reading: Pessoa's heteronyms and Duchamp's Rrose Sélavy, authored selves with full bodies of work.","<b>Conditions</b> exercise: choose a real condition (water, labour, migration, language, automation, the city, care) and ask who is shaped by it."],"due":["Three candidate identities, a paragraph each, each tied to a condition."]},{"d":3,"date":"Wed 25 Nov","title":"Commit to one identity and give it facts.","tag":"","body":["Alter ego worksheet: name, origin, what it attends to, what it refuses, what it would build. Pair interviews: a partner questions the identity for 20 minutes.","Codex as <b>interlocutor</b>: five computational metaphors, no code yet."],"due":["Identity worksheet.","Codex metaphor log in the repo."]},{"d":4,"date":"Thu 26 Nov","title":"Write in the identity's voice.","tag":"","body":["Manifesto workshop: 150 words, read aloud, edited by cutting.","Field research: real archives, materials, sites and data from the identity's world, not a style moodboard."],"due":["Manifesto draft.","<code>references.md</code> with at least 15 references."]},{"d":5,"date":"Fri 27 Nov","title":"Defend the identity.","tag":"Critique 1","body":["Critique runs all day. Students not presenting revise and draft the identity card and a one-page proposal with an initial generative concept."],"due":["Identity card draft, manifesto v2 and one-page proposal."]},{"d":6,"date":"Mon 30 Nov","title":"Turn a metaphor into rules.","tag":"","body":["Talk: what a generative system is (inputs, rules, parameters, randomness, seed). Codex as <b>researcher</b>: the algorithms behind your chosen metaphor.","Clinics: noise and flow fields; recursion and L-systems."],"due":["System diagram on paper: inputs, rules, parameters, outputs.","Technique chosen."]},{"d":7,"date":"Tue 1 Dec","title":"Get a first working system.","tag":"","body":["Clinics: agents and simulation; cellular automata; data as material, using real datasets from the identity's condition.","Codex as <b>collaborator</b>: propose the architecture before writing code. Seeds and reproducibility."],"due":["The system runs and exports.","Seed logged."]},{"d":8,"date":"Wed 2 Dec","title":"Map the parameter space.","tag":"","body":["<b>Twenty Variations of Myself</b>: twenty seeds or settings. How far can the system change and still be this identity?"],"due":["20 outputs in <code>outputs/digital</code>.","Parameter table in the README."]},{"d":9,"date":"Thu 3 Dec","title":"Take critique, including the machine's.","tag":"","body":["Codex as <b>critic</b>: analyse the outputs without erasing the voice. Authorship log: what Codex suggested, what you rejected and why.","Peer-group review in fours."],"due":["Authorship log entry.","Three promising directions."]},{"d":10,"date":"Fri 4 Dec","title":"Show that the system speaks for the identity.","tag":"Critique 2","body":["Critique runs all day. Students not presenting choose a fabrication pathway and book machine time."],"due":["Pathway or pathways chosen (plotter, resin, archival, or a combination), with a one-page production plan."]},{"d":11,"date":"Mon 7 Dec","title":"Learn the constraints of each medium.","tag":"","body":["Demos in rotation. <b>Plotter</b>: A2 is 420 × 594 mm; covers SVG, path ordering, pen lifts, nibs and paper. <b>Resin</b>: watertight meshes, wall thickness, supports, safe handling. <b>Archival</b>: 300 PPI at final size, colour profiles, TIFF or PDF."],"due":["Production spec sheet for your medium."]},{"d":12,"date":"Tue 8 Dec","title":"Make a production-ready file.","tag":"","body":["Codex as <b>fabricator</b>: export pipeline (SVG optimisation, STL repair, high-resolution TIFF). Resin test prints begin, one a day."],"due":["First file passes its checks: path-optimised, watertight or 300 PPI."]},{"d":13,"date":"Wed 9 Dec","title":"Test material against the idea.","tag":"","body":["Test plots on two papers and two nibs. Resin test washed and cured. Archival colour proof and test strip."],"due":["Test log with photos and notes."]},{"d":14,"date":"Thu 10 Dec","title":"Build a prototype.","tag":"","body":["The hero piece at reduced scale or as a section. Draft <code>process.md</code>, explaining the computational logic in your own words."],"due":["Prototype and a <code>process.md</code> draft."]},{"d":15,"date":"Fri 11 Dec","title":"Show that the material carries the system.","tag":"Critique 3","body":["Critique runs all day. Students not presenting lock the production file and write an exhibition proposal (what is shown in the zone and how)."],"due":["Final production file locked.","Exhibition proposal."]},{"d":16,"date":"Mon 14 Dec","title":"Begin final production.","tag":"","body":["Final archival prints. A2 and resin finals continue in their queues. Artist statement workshop. Each student gets coordinates on the Collective Atlas."],"due":["Production under way.","Statement draft."]},{"d":17,"date":"Tue 15 Dec","title":"Finish the artefact and frame the identity.","tag":"","body":["Resin post-processing, print checks, mounting (framing to be confirmed). Identity cards, labels and QR codes linking to each repo."],"due":["Identity card, label and QR code, each tested by scanning."]},{"d":18,"date":"Wed 16 Dec","title":"Document the work.","tag":"","body":["Photograph the artefacts. Finish the repo: README, <code>process.md</code>, <code>final-statement.md</code> and the authorship reflection. Gallery layout fixed on the floor plan. Collective Atlas entries submitted."],"due":["Repo complete.","Work photographed."]},{"d":19,"date":"Thu 17 Dec","title":"Install.","tag":"","body":["Hang the hero works and set out the zones (identity card, manifesto, QR code, artefact). Assemble the Collective Atlas. Lighting and technical tests."],"due":["Zone installed and checked against the installation checklist."]},{"d":20,"date":"Fri 18 Dec","title":"Open.","tag":"Opening","body":["Morning: walkthrough, label and QR check, a 60-second introduction for each identity. Opening in the evening. The exhibition stays open Sat 19 Dec."],"due":["Final submission checklist complete."]}];
+// phone notifications: the boogie-push Cloudflare Worker (push/). The VAPID public key is public by design.
+const PUSH_URL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+  ? "http://127.0.0.1:8787"       // `cd push && wrangler dev`
+  : "https://boogie-push.kala-music.workers.dev";   // push/ — `wrangler deploy`
+const PUSH_KEY = "z_GT23w2ijYU";
+const VAPID_PUBLIC = "BK4l-lg6zYn1YAbVGo6oK0SJHknuJEIADM9f4QJrArNdsjtvxZfPya8I2XP1zex5o32W7DwtpJeXfb74PRk6CKg";
 const isStudentEmail = e => /@learner\.manipal\.edu$/i.test(e);
 const isClassEmail   = e => /@(learner\.)?manipal\.edu$/i.test(e);
 const roleFor        = e => isStudentEmail(e) ? "student" : "faculty";
 const cohortOf       = e => { const m=/smiblr(\d{4})@/i.exec(e||""); return m ? m[1] : null; };
-const rosterFind     = e => ROSTER.concat(FACULTY_ROSTER).find(r=>r.e===e);
+const rosterFind     = e => ROSTER.concat(FACULTY_ROSTER).find(r=>r.e===e) || ((i26.names||{})[e] ? {n:i26.names[e], e} : undefined);
 
 /* ------------ state ------------ */
 let me=null;                 // {uid, email, n, role, isAdmin, cohort}
@@ -532,6 +688,10 @@ let unsubs=[];               // realtime listeners torn down on sign-out
 let curChan=null;
 let dmThreadsData=[], liveMsgs=[], allDMs=[], msgUnsub=null;
 let pendingSignup=null;      // {name, key} captured for a first-time account
+let cohort="smi26";          // the studio being shown: "smi26" or I26
+let i26={members:[], names:{}, openThrough:0};   // cohorts/interim26
+let logs={}, logsByEmail={}; // i26logs, keyed by doc id / by email → day
+let curDay=null, saveTimer=null, pushStateNow="off";
 // the class password is checked server-side (firestore.rules); this hash only lets the form say "wrong" instantly
 const CLASS_KEY_SHA256="afde2d40bbe599fe1415802cd8fea5a4d167597eafcd61018e313c1523908d93";
 async function keyLooksRight(k){
@@ -1043,8 +1203,9 @@ async function doLogin(){
         const name=$("#loginName").value.trim() || (r?r.n:"");
         if(!name) throw {code:"need-name"};
         const key=$("#loginKey").value.trim();
-        if(!key) throw {code:"need-key"};
-        if(!(await keyLooksRight(key))) throw {code:"wrong-key"};
+        const listed=i26Member(email);                       // on the Interim 26 list → no class password
+        if(!key && !listed) throw {code:"need-key"};
+        if(!listed && !(await keyLooksRight(key))) throw {code:"wrong-key"};
         pendingSignup={name, key};
         try{ await auth.createUserWithEmailAndPassword(email,pass); }
         catch(e2){
@@ -1072,6 +1233,7 @@ if(FB_OK) auth.onAuthStateChanged(async user=>{
   const email=(user.email||"").toLowerCase();
   if(!isClassEmail(email)){ await auth.signOut(); err("Use your @learner.manipal.edu address."); return; }
   try{
+    await loadCohortPublic();
     const ref=db.collection("profiles").doc(user.uid);
     let snap=await ref.get();
     if(!snap.exists){
@@ -1081,9 +1243,12 @@ if(FB_OK) auth.onAuthStateChanged(async user=>{
       const name=info.name || $("#loginName").value.trim() || (r?r.n:null) || email.split("@")[0];
       const key=info.key || $("#loginKey").value.trim();
       pendingSignup=null;
-      if(!key){ err("New here? Add the class password from the invite."); await auth.signOut(); $("#loginBtn").disabled=false; $("#loginKey").focus(); return; }
+      const listed=i26Member(email);
+      if(!key && !listed){ err("New here? Add the class password from the invite."); await auth.signOut(); $("#loginBtn").disabled=false; $("#loginKey").focus(); return; }
       try{
-        await ref.set({email, name, role:roleFor(email), isAdmin:email===OWNER, key, joinedAt:svTime()});
+        const prof={email, name, role:roleFor(email), isAdmin:email===OWNER, joinedAt:svTime()};
+        if(listed) prof.cohort=I26; else prof.key=key;           // Interim 26: the list is the gate
+        await ref.set(prof);
         snap=await ref.get();
       }catch(rulesErr){
         console.error(rulesErr);
@@ -1092,7 +1257,9 @@ if(FB_OK) auth.onAuthStateChanged(async user=>{
       }
     }
     const p=snap.data();
-    me={uid:user.uid, email, n:p.name, role:p.role||roleFor(email), isAdmin:!!p.isAdmin, cohort:cohortOf(email)};
+    me={uid:user.uid, email, n:p.name, role:p.role||roleFor(email), isAdmin:!!p.isAdmin, cohort:cohortOf(email), grp:p.cohort||null};
+    me.inSmi = me.grp!==I26;
+    me.inI26 = me.isAdmin || me.grp===I26 || i26Member(email);
     enterApp();
   }catch(e){ console.error(e); err("Something went wrong signing in."); $("#loginBtn").disabled=false; }
 });
@@ -1108,7 +1275,10 @@ function enterApp(){
   $("#inviteBox").style.display = isFacultyMe() ? "block" : "none";
   renderMeMark();
   startListeners();
-  go("adda");
+  let pref=null; try{ pref=localStorage.getItem(userKey("cohort")); }catch(e){}
+  applyCohort(me.inI26 && (pref!=="smi26" || !me.inSmi) ? I26 : "smi26");
+  consumeOpenParam();
+  refreshPushSub();
   toast(`Welcome, <b>${escapeHtml(me.n.split(" ")[0])}</b>`);
 }
 function startListeners(){
@@ -1116,8 +1286,8 @@ function startListeners(){
   // live class directory → Class tab, DM names, role chips
   unsubs.push(db.collection("profiles").onSnapshot(s=>{
     people = s.docs.map(d=>{const p=d.data(); const email=(p.email||"").toLowerCase();
-      return {uid:d.id, n:p.name||"?", role:p.role||roleFor(email), isAdmin:!!p.isAdmin, email, cohort:cohortOf(email)};});
-    renderClass(); renderChannels();
+      return {uid:d.id, n:p.name||"?", role:p.role||roleFor(email), isAdmin:!!p.isAdmin, email, cohort:cohortOf(email), grp:p.cohort||null};});
+    renderClass(); renderChannels(); renderDays();
     if(curChan){ if(curChan.dm) refreshDMHeader(); renderMsgs(); }
   }, e=>console.warn("profiles listener", e)));
   // all my direct messages — one stream powers the DM list and any open thread
@@ -1131,14 +1301,30 @@ function startListeners(){
     renderChannels();
     if(curChan && curChan.dm){ renderMsgs(); scrollThread(); }
   }, e=>console.warn("dm listener", e)));
+  if(!me.inI26) return;
+  // Interim 26: the class list + which days are open, and every day-log (the studio reads everything)
+  unsubs.push(db.collection("cohorts").doc(I26).onSnapshot(s=>{
+    i26={members:[], names:{}, openThrough:0, ...(s.exists?s.data():{})};
+    $("#rosterCount").textContent=`${(i26.members||[]).length} on the list · who may sign in to Computationally Yours`;
+    renderClass(); renderChannels(); renderDays();
+    if(curDay && $("#v-day").classList.contains("active")) renderDayLive();
+  }, e=>console.warn("cohort listener", e)));
+  unsubs.push(db.collection("i26logs").onSnapshot(s=>{
+    logs={}; s.docs.forEach(d=>{ logs[d.id]={id:d.id, ...d.data()}; }); indexLogs();
+    renderDays();
+    if(curDay && $("#v-day").classList.contains("active")){
+      if(curDay.email && curDay.email!==me.email && !document.activeElement.matches("#noteIn")) renderDayForm();
+      renderDayLive();
+    }
+  }, e=>console.warn("logs listener", e)));
 }
 function stopListeners(){ unsubs.forEach(u=>{try{u();}catch(e){}}); unsubs=[]; if(msgUnsub){try{msgUnsub();}catch(e){} msgUnsub=null;} }
 function showSignin(){
-  me=null; curChan=null; people=[]; stopListeners();
+  me=null; curChan=null; curDay=null; people=[]; logs={}; logsByEmail={}; cohort="smi26"; stopListeners();
   if(meMark){ meMark.destroy(); meMark=null; }
   $("#app").classList.remove("show");
   $("#signin").style.display="flex";
-  $("#loginPass").value=""; $("#loginBtn").disabled=false;
+  $("#loginPass").value=""; $("#loginName").value=""; $("#loginKey").value=""; $("#loginBtn").disabled=false;
 }
 function signOut(){ if(FB_OK) auth.signOut(); toast("Signed out"); }
 
@@ -1152,12 +1338,13 @@ function go(v){
   $("#v-"+v).classList.add("active");
   $$("nav.tabs button").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
   window.scrollTo({top:0});
+  if(v==="days"){ curDay=null; renderDays(); }
   if(v==="adda" && desktop){
     if(curChan){ $("#v-channel").classList.add("active"); }
     else{
-      const last=localStorage.getItem(userKey("lastchan"));
+      const last=localStorage.getItem(lastChanKey());
       if(last && last.startsWith("dm:")) openDM(last.slice(3));
-      else if(last && CHANNELS.some(c=>c.id===last)) openChannel(last);
+      else if(last && chans().some(c=>c.id===last)) openChannel(last);
       else openChannel("announce");
     }
   }
@@ -1165,9 +1352,12 @@ function go(v){
 
 /* ------------ class list ------------ */
 function renderClass(){
+  if(!me) return;
+  const i=cohort===I26;
   const byEmail={}; people.forEach(p=>byEmail[p.email]=p);
-  const studentsJoined=people.filter(p=>p.role==="student");
-  const facultyJoined=people.filter(p=>p.role==="faculty");
+  const studentsJoined=people.filter(p=>p.role==="student" && inCohort(p,cohort));
+  const facultyJoined=people.filter(p=>p.role==="faculty" && (!i || p.email===OWNER));
+  const studentRoster = i ? (i26.members||[]).filter(isStudentEmail).map(e=>({n:(i26.names||{})[e]||e.split("@")[0], e})) : ROSTER;
   const rowsFor=(roster, joined, role)=>{
     const seen=new Set(), rows=[];
     roster.forEach(r=>{ seen.add(r.e); const p=byEmail[r.e];
@@ -1176,9 +1366,9 @@ function renderClass(){
     return rows.sort((a,b)=>a.n.localeCompare(b.n));
   };
   const fac=rowsFor(FACULTY_ROSTER, facultyJoined, "faculty");
-  const stu=rowsFor(ROSTER, studentsJoined, "student");
-  const total=Math.max(ROSTER.length, studentsJoined.length);
-  $("#classHead").innerHTML=`<b>${studentsJoined.length}</b><div>of ${total} students are here<span class="cl">Creative Coding &amp; Generative Art</span></div>`;
+  const stu=rowsFor(studentRoster, studentsJoined, "student");
+  const total=Math.max(studentRoster.length, studentsJoined.length);
+  $("#classHead").innerHTML=`<b>${studentsJoined.length}</b><div>of ${total} students are here<span class="cl">${i?"Computationally Yours · Interim 26":"Creative Coding &amp; Generative Art"}</span></div>`;
   const row=p=>{
     const isMe=me && p.email===me.email;
     const act = isMe ? `<span class="youchip">You</span>`
@@ -1195,16 +1385,19 @@ function renderClass(){
 
 /* ------------ adda: channels + threads ------------ */
 function renderChannels(){
+  if(!me) return;
   const openOnDesktop = isDesktop() && curChan;
-  const chans=CHANNELS.map(c=>{
+  const chanRows=chans().map(c=>{
     const open = openOnDesktop && curChan.id===c.id ? " open" : "";
     return `<button class="chanrow${open}" data-chan="${c.id}">
       <span class="ce">${icon(c.icon)}</span>
       <span class="cm"><span class="cn"><span class="cntext">${c.name}</span>${c.locked?`<span class="lk">${icon("lock")}</span>`:""}</span><span class="cd">${c.desc}</span></span>
     </button>`;
   }).join("");
-  const dms = dmThreadsData.length
-    ? dmThreadsData.map(d=>{
+  // DMs stay personal, but each studio lists only its own people (unknown addresses show in both)
+  const threads = dmThreadsData.filter(d=>{ const p=personByEmail(d.email); return !p || inCohort(p,cohort); });
+  const dms = threads.length
+    ? threads.map(d=>{
         const p=personByEmail(d.email)||{n:d.email, email:d.email, role:"student"};
         const open = openOnDesktop && curChan.id===dmIdFor(d.email) ? " open" : "";
         return `<button class="chanrow${open}" data-dm="${p.email}" data-dmname="${escapeHtml(p.n)}">
@@ -1213,7 +1406,7 @@ function renderChannels(){
         </button>`;
       }).join("")
     : `<p class="empty">No direct messages yet — open <b>Class</b> and tap <b>Message</b>.</p>`;
-  $("#chanList").innerHTML = `<h2 class="sec">Channels</h2>${chans}<h2 class="sec">Direct messages</h2>${dms}`;
+  $("#chanList").innerHTML = `${cohortSwitchHtml()}${cohort===I26 && !me.isAdmin ? pushNoticeHtml() : ""}<h2 class="sec">Channels</h2>${chanRows}<h2 class="sec">Direct messages</h2>${dms}`;
 }
 function msgHtml(m){
   const p=profileOf(m.authorId); const role=p?p.role:null;
@@ -1231,15 +1424,15 @@ function renderMsgs(){
   const msgs=src.slice().sort((a,b)=>ms(a.createdAt)-ms(b.createdAt))
     .map(m=>({authorId:m.authorId, authorName:m.authorName, html:linkify(escapeHtml(m.body||"")), when:fmtTime(m.createdAt), pin:!!c.locked}));
   $("#msgList").innerHTML = msgs.map(msgHtml).join("") ||
-    `<p class="empty center">${c.locked && !isFacultyMe() ? "Nothing posted yet." : "Quiet here. Say something."}</p>`;
+    `<p class="empty center">${c.locked && !mayPostLocked() ? "Nothing posted yet." : "Quiet here. Say something."}</p>`;
 }
-function listenMessages(channelId){
+function listenMessages(channelId, coll){
   if(msgUnsub){ msgUnsub(); msgUnsub=null; }
   liveMsgs=[];
   if(!db) return;
-  msgUnsub=db.collection("messages").where("channelId","==",channelId).onSnapshot(s=>{
+  msgUnsub=db.collection(coll).where("channelId","==",channelId).onSnapshot(s=>{
     liveMsgs=s.docs.map(d=>d.data());
-    if(curChan && curChan.id===channelId){ renderMsgs(); scrollThread(); }
+    if(curChan && curChan.id===channelId && curChan.coll===coll){ renderMsgs(); scrollThread(); }
   }, e=>console.warn("messages listener", e));
 }
 function showChannelPane(){
@@ -1253,29 +1446,40 @@ function showChannelPane(){
   window.scrollTo({top:0});
 }
 function openChannel(id){
-  const c=CHANNELS.find(x=>x.id===id); if(!c) return;
+  const base=chans().find(x=>x.id===id); if(!base) return;
+  const c={...base, coll:msgColl()};
   curChan=c;
-  localStorage.setItem(userKey("lastchan"),id);
+  localStorage.setItem(lastChanKey(),id);
   const ce=$("#chEmoji"); ce.className="ce"; ce.style.cssText=""; ce.innerHTML=icon(c.icon);
   $("#chName").textContent=c.name;
-  $("#chMeta").textContent=c.locked ? "faculty post · everyone reads" : c.desc.toLowerCase();
-  $("#msgIn").placeholder = c.id==="showtell" ? "Paste a link, say a line about it…" : "Message…";
-  const mayPost = !c.locked || isFacultyMe();
+  $("#chMeta").textContent=c.locked ? (cohort===I26 ? "ujjwal posts · everyone reads" : "faculty post · everyone reads") : c.desc.toLowerCase();
+  $("#msgIn").placeholder = (c.id==="showtell"||c.id==="pinup") ? "Paste a link, say a line about it…" : "Message…";
+  $("#lockedText").textContent = cohort===I26 ? "Ujjwal posts here — everyone reads" : "Faculty post here — everyone reads";
+  const mayPost = !c.locked || mayPostLocked();
   $("#composer").style.display = mayPost ? "flex" : "none";
   $("#lockedBar").style.display = mayPost ? "none" : "block";
-  listenMessages(id);
+  listenMessages(id, c.coll);
   showChannelPane();
   renderChannels();
 }
 function sendMsg(){
   const t=$("#msgIn").value.trim();
   if(!t || !curChan){ $("#msgIn").focus(); return; }
-  if(curChan.locked && !isFacultyMe()) return;
+  if(curChan.locked && !mayPostLocked()) return;
   $("#msgIn").value="";
   const m={channelId:curChan.id, authorId:me.uid, authorName:me.n, body:t, createdAt:svTime()};
   const fail=e=>{ console.error(e); toast("Didn't send — try again"); };
-  if(curChan.dm){ m.participants=curChan.participants; db.collection("dms").add(m).catch(fail); }
-  else db.collection("messages").add(m).catch(fail);
+  const first=t.length>160 ? t.slice(0,157)+"…" : t;
+  if(curChan.dm){
+    const to=curChan.otherEmail;
+    m.participants=curChan.participants;
+    db.collection("dms").add(m).then(()=>pushPerson(to, {title:me.n, body:first, url:`./?open=dm:${me.email}`, tag:`dm-${me.email}`})).catch(fail);
+  } else {
+    const ch=curChan;
+    db.collection(ch.coll).add(m).then(()=>{
+      if(ch.coll==="i26msgs" && ch.id==="announce") pushCohort({title:`Announcement · ${me.n}`, body:first, url:"./?open=i26:announce", tag:"i26-announce"});
+    }).catch(fail);
+  }
   scrollThread();
 }
 function scrollThread(){
@@ -1290,7 +1494,7 @@ function refreshDMHeader(){
 function openDM(email, name){
   const p=personByEmail(email) || {n:name||email, email, role:"student"};
   curChan={id:dmIdFor(email), dm:true, name:p.n, otherEmail:email, participants:[me.email, email]};
-  localStorage.setItem(userKey("lastchan"),"dm:"+email);
+  localStorage.setItem(lastChanKey(),"dm:"+email);
   const ce=$("#chEmoji"); ce.className="ce dmava"; ce.style.cssText=avatarStyle(p); ce.innerHTML=initials(p.n);
   $("#chName").textContent=p.n;
   refreshDMHeader();
@@ -1303,10 +1507,393 @@ function openDM(email, name){
   renderChannels();
 }
 
+/* ================================================================
+   INTERIM 26 · Computationally Yours (23 Nov – 18 Dec 2026)
+   A second cohort beside SMI26. Membership: the list in
+   cohorts/interim26 (edited by the admin in the app). SMI26 is every
+   profile without a `cohort` field, so nothing changes for that class.
+   Everyone in the studio can read everything; the facilitator opens the
+   days to students one at a time (cohorts/interim26.openThrough).
+   ================================================================ */
+function i26Member(e){ return !!e && (i26.members||[]).includes(String(e).toLowerCase()); }
+function inCohort(p, c){
+  if(!p) return false;
+  if(c===I26) return p.email===OWNER || i26Member(p.email) || p.grp===I26;
+  return p.grp!==I26;
+}
+const chans   = ()=> cohort===I26 ? I26_CHANNELS : CHANNELS;
+const msgColl = ()=> cohort===I26 ? "i26msgs" : "messages";
+const mayPostLocked = ()=> cohort===I26 ? !!(me&&me.isAdmin) : isFacultyMe();
+const lastChanKey = ()=> userKey(cohort===I26 ? "lastchan-i26" : "lastchan");
+const bothCohorts = ()=> me && me.inI26 && me.inSmi;
+async function loadCohortPublic(){
+  if(!db) return;
+  try{ const s=await db.collection("cohorts").doc(I26).get(); if(s.exists) i26={...i26, ...s.data()}; }catch(e){ console.warn("cohort", e); }
+}
+function applyCohort(c, quiet){
+  cohort = (c===I26 && me.inI26) ? I26 : (me.inSmi ? "smi26" : I26);
+  try{ localStorage.setItem(userKey("cohort"), cohort); }catch(e){}
+  const i=cohort===I26;
+  $("#brandTag").textContent = i ? "Computationally Yours · I26" : "CCGA studio · SMI26";
+  $("#navDays").style.display = i ? "" : "none";
+  $("#inviteBox").style.display = (i ? me.isAdmin : isFacultyMe()) ? "block" : "none";
+  $("#i26AdminBox").style.display = (i && me.isAdmin) ? "block" : "none";
+  $("#meRole").textContent = roleLabel(me) + (i ? " · Interim 26" : "");
+  if(msgUnsub){ try{msgUnsub();}catch(e){} msgUnsub=null; }
+  curChan=null; liveMsgs=[];
+  renderChannels(); renderClass(); renderDays(); renderCohortBox(); renderPushBox();
+  if(!quiet) go("adda");
+}
+function cohortSwitchHtml(){
+  if(!bothCohorts()) return "";
+  return `<div class="cohortsw"><button data-cohort="smi26" class="${cohort!==I26?"on":""}">SMI26 · CCGA</button><button data-cohort="${I26}" class="${cohort===I26?"on":""}">Interim 26</button></div>`;
+}
+function renderCohortBox(){ const b=$("#cohortBox"); if(b) b.innerHTML = bothCohorts() ? `<h2 class="sec">Studio</h2>${cohortSwitchHtml()}` : ""; }
+
+/* ---------- the twenty days ---------- */
+const MONTH = {Nov:10, Dec:11};
+DAYS.forEach(d=>{ const [,dd,mm]=d.date.split(" "); d.at=new Date(2026, MONTH[mm], +dd); });
+const todayDay = ()=>{ const k=new Date().toDateString(); const d=DAYS.find(x=>x.at.toDateString()===k); return d?d.d:0; };
+const openThrough = ()=> Math.max(0, Math.min(20, +i26.openThrough||0));
+const logId = (uid,n)=> `${uid}_d${n}`;
+const logOf = (email,n)=> logsByEmail[email] && logsByEmail[email][n];
+function indexLogs(){
+  logsByEmail={};
+  Object.values(logs).forEach(L=>{ (logsByEmail[L.email]=logsByEmail[L.email]||{})[L.day]=L; });
+}
+// white = nothing · yellow = started · blue = logged (made + a link or image) · red = the facilitator left a note
+function logStatus(L){
+  if(!L) return "";
+  if(L.note) return "r";
+  if(L.made && (L.link||L.image)) return "b";
+  if(L.made||L.codex||L.rejected||L.why||L.link||L.image||(L.dueDone||[]).some(Boolean)) return "y";
+  return "";
+}
+const STATUS_WORD = {"":"To do", y:"Draft", b:"Logged", r:"Note"};
+function i26Students(){
+  const rows={}, names=i26.names||{};
+  (i26.members||[]).forEach(e=>{ rows[e]={email:e, n:names[e]||e.split("@")[0], role:"student"}; });
+  people.filter(p=>p.role==="student" && inCohort(p,I26)).forEach(p=>{ rows[p.email]={...rows[p.email], ...p, joined:true}; });
+  return Object.values(rows).sort((a,b)=>a.n.localeCompare(b.n));
+}
+function dayRow(d, opts={}){
+  const tdy=todayDay(), cls = d.tag.startsWith("Critique") ? "crit" : d.tag==="Opening" ? "open" : (d.d===tdy ? "today" : "");
+  let chip="";
+  if(opts.shut) chip=`<span class="chip">Opens with the studio</span>`;
+  else if(me.isAdmin){
+    const n=i26Students().filter(s=>{const c=logStatus(logOf(s.email,d.d)); return c==="b"||c==="r";}).length;
+    chip = d.d>openThrough() ? `<span class="chip">Closed</span>` : `<span class="chip ${n?"b":""}">${n} logged</span>`;
+  } else { const c=logStatus(logOf(me.email,d.d)); chip=`<span class="chip ${c}">${STATUS_WORD[c]}</span>`; }
+  const plain = s=>s.replace(/<[^>]+>/g,"");
+  return `<button class="dayrow${opts.shut?" shut":""}" ${opts.shut?"":`data-day="${d.d}"`}>
+    <span class="dn ${opts.shut?"":cls}">${d.d}<small>${d.date.split(" ").slice(1).join(" ")}</small></span>
+    <span class="dm"><span class="dt">${escapeHtml(d.title)}</span><span class="dd">${d.tag?escapeHtml(d.tag)+" · ":""}Due: ${escapeHtml(plain(d.due.join(" ")))}</span></span>
+    <span class="ds">${chip}</span>
+  </button>`;
+}
+function gridHtml(){
+  const open=openThrough(), studs=i26Students();
+  if(!studs.length) return `<p class="empty">No one on the list yet — Me → <b>Interim 26 class list</b>.</p>`;
+  const head=`<tr><th class="nm">Day →</th>${DAYS.map(d=>`<th class="${d.d>open?"shut":""}">${d.d}</th>`).join("")}</tr>`;
+  const rows=studs.map(s=>`<tr><th class="nm" title="${escapeHtml(s.email)}">${escapeHtml(s.n)}</th>${DAYS.map(d=>`<td class="${logStatus(logOf(s.email,d.d))}" data-cell="${escapeHtml(s.email)}|${d.d}" title="${escapeHtml(s.n)} · Day ${d.d}"></td>`).join("")}</tr>`).join("");
+  return `<div class="gridwrap"><table class="og">${head}${rows}</table></div>
+    <div class="legend"><span><i></i>nothing yet</span><span><i style="background:var(--yellow)"></i>started</span><span><i style="background:var(--blue)"></i>logged</span><span><i style="background:var(--red)"></i>your note</span></div>`;
+}
+function renderDays(){
+  const w=$("#daysWrap"); if(!w) return;
+  if(!me || cohort!==I26){ w.innerHTML=""; return; }
+  const open=openThrough(), tdy=todayDay();
+  let h="";
+  if(me.isAdmin){
+    h+=`<div class="dayhead"><b>${open}</b><div>of 20 days open to students<span class="cl">${tdy?`today is day ${tdy}`:"Computationally Yours · 23 Nov – 18 Dec"}</span></div></div>
+      <div class="opener"><button id="closeDayBtn" ${open?"":"disabled"}>Close Day ${open||1}</button><button class="go" id="openDayBtn" ${open>=20?"disabled":""}>Open Day ${Math.min(20,open+1)} →</button></div>
+      <h2 class="sec">Overview <small>tap a square to open the entry</small></h2>${gridHtml()}
+      <h2 class="sec">All twenty days <small>you see every day; students see 1–${open||"…"}</small></h2>${DAYS.map(d=>dayRow(d)).join("")}`;
+  } else {
+    const mine=DAYS.filter(d=>d.d<=open && ["b","r"].includes(logStatus(logOf(me.email,d.d)))).length;
+    h+=`<div class="dayhead"><b>${mine}</b><div>of ${open} open days logged<span class="cl">${tdy?`today is day ${tdy}`:"Computationally Yours · 23 Nov – 18 Dec"}</span></div></div>`;
+    h+=pushNoticeHtml();
+    if(!open) h+=`<p class="empty center">Day 1 opens on <b>Mon 23 Nov</b>.<br>Each day opens here as the studio reaches it.</p>`;
+    else{
+      h+=`<h2 class="sec">Your days</h2>`;
+      if(open<20) h+=dayRow(DAYS[open], {shut:true});
+      h+=DAYS.filter(d=>d.d<=open).reverse().map(d=>dayRow(d)).join("");
+    }
+  }
+  w.innerHTML=h;
+}
+async function setOpenThrough(n){
+  n=Math.max(0,Math.min(20,n));
+  const opening = n>openThrough();
+  if(opening && !confirm(`Open Day ${n} to the students?\n\n${DAYS[n-1].title}\n\nThey'll get a notification.`)) return;
+  try{
+    await db.collection("cohorts").doc(I26).set({openThrough:n, openedAt:svTime()}, {merge:true});
+    toast(opening ? `Day <b>${n}</b> is open` : `Students now see days 1–${n}`);
+    if(opening){ const d=DAYS[n-1]; pushCohort({title:`Day ${n} is open`, body:`${d.title} Due by 3:30: ${d.due.join(" ").replace(/<[^>]+>/g,"")}`, url:`./?open=day:${n}`, tag:`i26-day`}); }
+  }catch(e){ console.error(e); toast("Couldn't change that — try again"); }
+}
+
+/* ---------- one day: the brief, the log, the studio's entries ---------- */
+function openDay(n, email){
+  const d=DAYS[n-1]; if(!d || !me) return;
+  if(cohort!==I26) applyCohort(I26, true);
+  if(!me.isAdmin && n>openThrough()){ toast(`Day ${n} isn't open yet`); return; }
+  curDay={n, email: email || (me.isAdmin ? null : me.email)};
+  $("#dayKicker").textContent=`Day ${n} · ${d.date}${d.tag?" · "+d.tag:""}`;
+  $("#dayTitle").textContent=d.title;
+  renderDayForm(); renderDayLive();
+  $$(".view").forEach(x=>x.classList.remove("active"));
+  $("#v-day").classList.add("active");
+  $$("nav.tabs button").forEach(b=>b.classList.toggle("on", b.dataset.v==="days"));
+  window.scrollTo({top:0});
+}
+const FIELDS=[
+  ["made",     "What I made today",              "What exists now that didn't this morning?", true],
+  ["codex",    "What Codex suggested",           "Its proposals, in a line or two each", true],
+  ["rejected", "What I rejected",                "Which suggestions you turned down", true],
+  ["why",      "Why",                            "What the identity would never do, and why", true],
+  ["link",     "Commit or output link",          "https://github.com/…/commit/…", false],
+  ["image",    "Image link (optional)",          "https://… .png / .jpg", false],
+];
+function renderDayForm(){
+  const {n,email}=curDay, d=DAYS[n-1];
+  const body = d.body.map(p=>`<p>${p}</p>`).join("") + `<a class="hb" href="https://www.ujjwalagarwal.com/SMI/Interim26/schedule.html#day-${n}" target="_blank" rel="noopener">Day ${n} in the handbook →</a>`;
+  let h=`<div class="daybody">${body}</div>`;
+  if(email){
+    const L=logOf(email,n)||{}, mine=email===me.email;
+    const who=personByEmail(email)||i26Students().find(s=>s.email===email)||{n:email};
+    if(!mine) h+=`<h2 class="sec">${escapeHtml(who.n)} <small>${STATUS_WORD[logStatus(L.uid?L:null)]}</small></h2>`;
+    h+=`<div class="duebox"><span class="dp"></span><div class="di"><div class="k">Due by 3:30</div>${d.due.map((t,i)=>
+      `<label><input type="checkbox" data-due="${i}" ${(L.dueDone||[])[i]?"checked":""} ${mine?"":"disabled"}><span>${t}</span></label>`).join("")}</div></div>`;
+    h+=`<div class="logform">`;
+    if(mine) h+=`<h2 class="sec">Your log <small>autosaves · the studio can read it</small></h2>`;
+    FIELDS.forEach(([k,label,ph,multi])=>{
+      const v=escapeHtml(L[k]||"");
+      if(!mine && !L[k]) return;
+      if(!mine && (k==="link"||k==="image")){ h+=`<label class="flabel">${label}</label><p>${linkify(v)}</p>`; return; }
+      h+=`<label class="flabel">${label}</label>` + (multi
+        ? `<textarea class="finput" data-f="${k}" placeholder="${escapeHtml(ph)}" ${mine?"":"readonly"}>${v}</textarea>`
+        : `<input class="finput" data-f="${k}" placeholder="${escapeHtml(ph)}" value="${v}" ${mine?"":"readonly"} inputmode="url" autocomplete="off">`);
+    });
+    if(!mine && !L.uid) h+=`<p class="empty">Nothing logged for this day yet.</p>`;
+    h+=`<img class="logimg" id="logImg" alt="" ${L.image?`src="${escapeHtml(L.image)}"`:`style="display:none"`}>`;
+    if(mine) h+=`<div class="btnrow"><button class="createbtn alt" id="pinupBtn">Pin up to the studio</button></div><p class="saved" id="savedLine">${L.updatedAt?"Saved "+fmtTime(L.updatedAt):""}</p>`;
+    if(me.isAdmin && !mine){
+      const canNote = !!(L.uid || (who && who.uid));
+      h+=`<label class="flabel">Your note to ${escapeHtml(String(who.n).split(" ")[0])} <span style="text-transform:none;letter-spacing:0;color:var(--faint)">— they get a notification</span></label>
+        ${canNote ? `<textarea class="finput" id="noteIn" placeholder="A line of feedback for this day">${escapeHtml(L.note||"")}</textarea>
+        <div class="btnrow"><button class="createbtn" id="noteSave">Save note</button>${L.note?`<button class="createbtn alt" id="noteClear">Clear</button>`:""}</div>`
+        : `<p class="empty">They haven't signed in yet.</p>`}`;
+    }
+    h+=`</div>`;
+  }
+  h+=`<div id="dayLive"></div>`;
+  $("#dayDetail").innerHTML=h;
+  const img=$("#logImg"); if(img) img.onerror=()=>{ img.style.display="none"; };
+}
+function renderDayLive(){
+  if(!curDay) return;
+  const {n,email}=curDay, live=$("#dayLive"); if(!live) return;
+  let h="";
+  const L = email && logOf(email,n);
+  if(email===me.email && L && L.note) h+=`<div class="notebox"><span class="npl"></span><div class="nb"><div class="k">Note from Ujjwal${L.noteAt?" · "+fmtTime(L.noteAt):""}</div>${linkify(escapeHtml(L.note))}</div></div>`;
+  const studs=i26Students();
+  const rows=studs.map(s=>{ const E=logOf(s.email,n), c=logStatus(E);
+    return `<button class="entry${E&&E.made?"":" ghost"}" data-entry="${escapeHtml(s.email)}|${n}">
+      <span class="pa" style="${avatarStyle(s)}">${initials(s.n)}</span>
+      <span class="em"><span class="nm">${escapeHtml(s.n)}${s.email===me.email?` <span class="youchip">You</span>`:""}<span class="chip ${c}">${STATUS_WORD[c]}</span></span>${E&&E.made?`<span class="tx">${escapeHtml(E.made)}</span>`:""}</span>
+    </button>`; }).join("");
+  h+=`<h2 class="sec">The studio on Day ${n} <small>${studs.filter(s=>{const E=logOf(s.email,n); return E&&E.made;}).length} of ${studs.length}</small></h2>${rows||`<p class="empty">No one yet.</p>`}`;
+  live.innerHTML=h;
+  // the owner's form is never re-rendered under their fingers — only the status line
+  const sl=$("#savedLine"); if(sl && L && L.updatedAt && !saveTimer) sl.textContent="Saved "+fmtTime(L.updatedAt);
+}
+function collectLog(){
+  const data={uid:me.uid, email:me.email, name:me.n, day:curDay.n, updatedAt:svTime(),
+    dueDone:[...$$("#dayDetail [data-due]")].map(c=>c.checked)};
+  $$("#dayDetail [data-f]").forEach(el=>{ data[el.dataset.f]=el.value.trim().slice(0,4000); });
+  return data;
+}
+function queueSave(){
+  if(!curDay || curDay.email!==me.email) return;
+  const sl=$("#savedLine"); if(sl) sl.textContent="Saving…";
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(saveLog, 900);
+}
+async function saveLog(){
+  clearTimeout(saveTimer); saveTimer=null;
+  if(!curDay || curDay.email!==me.email) return;
+  const data=collectLog(), sl=$("#savedLine");
+  try{ await db.collection("i26logs").doc(logId(me.uid,curDay.n)).set(data,{merge:true}); if(sl) sl.textContent="Saved just now"; }
+  catch(e){ console.error(e); if(sl) sl.textContent="Not saved — check your connection"; }
+}
+async function pinUp(){
+  await saveLog();
+  const v=collectLog();
+  if(!v.made){ toast("Say what you made first"); $('[data-f="made"]').focus(); return; }
+  const body=[`Day ${curDay.n} · ${v.made}`, v.link, v.image].filter(Boolean).join("\n").slice(0,4000);
+  try{
+    await db.collection("i26msgs").add({channelId:"pinup", authorId:me.uid, authorName:me.n, body, day:curDay.n, createdAt:svTime()});
+    toast("Pinned up — it's in <b>Pin-up</b>");
+  }catch(e){ console.error(e); toast("Didn't pin up — try again"); }
+}
+async function saveNote(clear){
+  const {n,email}=curDay; const L=logOf(email,n);
+  const who=personByEmail(email)||{};
+  const uid=(L&&L.uid)||who.uid; if(!uid) return;
+  const note=clear ? "" : ($("#noteIn").value||"").trim().slice(0,4000);
+  try{
+    await db.collection("i26logs").doc(logId(uid,n)).set({uid, email, day:n, name:(L&&L.name)||who.n||email, note, noteAt:svTime()}, {merge:true});
+    toast(note ? "Note saved" : "Note cleared");
+    if(note) pushPerson(email, {title:`Note from ${me.n.split(" ")[0]} · Day ${n}`, body:note, url:`./?open=day:${n}`, tag:`i26-note-${n}`});
+    renderDayForm(); renderDayLive();
+  }catch(e){ console.error(e); toast("Couldn't save the note"); }
+}
+
+/* ---------- the class list (admin) ---------- */
+function openRoster(){
+  const names=i26.names||{};
+  $("#rosterIn").value=(i26.members||[]).map(e=>`${names[e]||""}, ${e}`.replace(/^, /,"")).join("\n");
+  $("#rosterErr").textContent="";
+  $("#rosterWrap").classList.add("open");
+}
+async function saveRoster(){
+  const members=[], names={}, bad=[];
+  $("#rosterIn").value.split(/\n+/).map(l=>l.trim()).filter(Boolean).forEach(l=>{
+    const m=l.match(/[^\s,;<>]+@[^\s,;<>]+/); if(!m){ bad.push(l); return; }
+    const e=m[0].toLowerCase(); const n=l.replace(m[0],"").replace(/[<>,;]+/g," ").replace(/\s+/g," ").trim();
+    if(!isClassEmail(e)){ bad.push(l); return; }
+    if(!members.includes(e)) members.push(e); if(n) names[e]=n;
+  });
+  if(bad.length){ $("#rosterErr").textContent=`Not a Manipal address: ${bad[0]}`; return; }
+  try{
+    await db.collection("cohorts").doc(I26).set({members, names, updatedAt:svTime()}, {merge:true});
+    $("#rosterWrap").classList.remove("open"); toast(`<b>${members.length}</b> on the Interim 26 list`);
+  }catch(e){ console.error(e); $("#rosterErr").textContent="Couldn't save — are the rules deployed?"; }
+}
+
+/* ---------- phone notifications: Web Push via the boogie-push Worker ----------
+   iPhone: only once Boogie is on the Home Screen (iOS 16.4+), opened from there. */
+const pushCapable = ()=> "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+async function pushState(){
+  if(!pushCapable()) return isIOS() ? (isStandalone() ? "ios-old" : "ios-install") : "unsupported";
+  if(Notification.permission==="denied") return "denied";
+  try{ const reg=await navigator.serviceWorker.ready; const sub=await reg.pushManager.getSubscription(); return sub && Notification.permission==="granted" ? "on" : "off"; }
+  catch(e){ return "off"; }
+}
+function pushNoticeHtml(){
+  if(pushStateNow==="on" || pushStateNow==="unsupported") return "";
+  const t = pushStateNow==="ios-install" ? ["Get notifications on your iPhone","Add Boogie to your Home Screen first — tap to see how"]
+    : pushStateNow==="ios-old" ? ["Notifications need iOS 16.4 or later","Update your iPhone, then turn them on in Me"]
+    : pushStateNow==="denied" ? ["Notifications are blocked","Tap to see how to allow them"]
+    : ["Turn on notifications","Announcements, new days, DMs and notes from Ujjwal"];
+  return `<button class="notice" data-push><span class="np"></span><div>${t[0]}<small>${t[1]}</small></div><span class="val">${pushStateNow==="off"?"Turn on":"How"}</span></button>`;
+}
+async function renderPushBox(){
+  pushStateNow = await pushState();
+  const b=$("#pushBox"); if(!b) return;
+  if(!me || cohort!==I26){ b.innerHTML=""; return; }
+  const val={on:"On · test", off:"Turn on", denied:"Blocked", "ios-install":"How", "ios-old":"iOS 16.4+", unsupported:"—"}[pushStateNow];
+  const sub={on:"On for this device — tap to send yourself a test", off:"Announcements, new days, DMs and notes", denied:"Blocked in this browser's settings",
+    "ios-install":"iPhone: add Boogie to your Home Screen first", "ios-old":"Needs iOS 16.4 or later", unsupported:"This browser can't receive them"}[pushStateNow];
+  b.innerHTML=`<button class="setrow" data-push><span class="ic"><svg class="fi" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/></svg></span><div>Notifications<small>${sub}</small></div><span class="val">${val}</span></button>`;
+  if($("#v-days").classList.contains("active")) renderDays();
+}
+function pushHelp(kind){
+  const S = {
+    "ios-install":["iPhone: Home Screen first","Apple only lets apps on the Home Screen send notifications, and only on iOS 16.4 or later.",
+      [["Open this page in <strong>Safari</strong>","not Chrome — iPhone installs only from Safari"],["Tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>","Boogie appears next to your other apps"],["Open Boogie <strong>from the Home Screen</strong>","then Me → Notifications → Turn on → Allow"]]],
+    "ios-old":["Update your iPhone","Notifications from web apps arrived in iOS 16.4. Settings → General → Software Update, then come back here.",[]],
+    denied:["Notifications are blocked","You (or the browser) said no earlier. Allow them, then come back and tap Turn on.",
+      isIOS() ? [["Settings → <strong>Notifications</strong>","scroll to Boogie"],["Turn on <strong>Allow Notifications</strong>","then reopen Boogie"]]
+              : [["Tap the <strong>lock</strong> or <strong>⋮</strong> beside the address","Site settings / Permissions"],["Set <strong>Notifications</strong> to Allow","then reload Boogie"]]],
+    unsupported:["Not in this browser","Try Chrome on Android, Safari on a Mac, or Boogie from the Home Screen on an iPhone (iOS 16.4+).",[]],
+  }[kind];
+  if(!S) return;
+  $("#pushTitle").textContent=S[0]; $("#pushSub").innerHTML=S[1];
+  $("#pushSteps").innerHTML=S[2].map((s,i)=>`<li><b>${i+1}</b><span>${s[0]}<small>${s[1]}</small></span></li>`).join("");
+  $("#pushWrap").classList.add("open");
+}
+const b64uBytes = s=>{ const b=atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)); return Uint8Array.from(b, c=>c.charCodeAt(0)); };
+async function onPushTap(){
+  const st=await pushState();
+  if(st==="on"){ await pushPerson(me.email, {title:"Boogie", body:"Notifications work on this device.", url:"./?open=i26:announce", tag:"test"}, true); toast("Test sent — it should arrive in a moment"); return; }
+  if(st!=="off"){ pushHelp(st); return; }
+  try{
+    const perm=await Notification.requestPermission();
+    if(perm!=="granted"){ renderPushBox(); if(perm==="denied") pushHelp("denied"); return; }
+    const reg=await navigator.serviceWorker.ready;
+    const sub=await reg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:b64uBytes(VAPID_PUBLIC)});
+    await savePushSub(sub);
+    toast("Notifications on"); renderPushBox();
+  }catch(e){ console.error(e); toast("Couldn't turn them on — try again"); }
+}
+async function savePushSub(sub){
+  const j=sub.toJSON(); const k="s"+hashStr(j.endpoint).toString(36);
+  const cohorts=[...(me.inI26?[I26]:[]), ...(me.inSmi?["smi26"]:[])];
+  await db.collection("pushSubs").doc(me.uid).set({uid:me.uid, email:me.email, name:me.n, cohorts, updatedAt:svTime(),
+    subs:{[k]:{endpoint:j.endpoint, keys:j.keys, ua:navigator.userAgent.slice(0,120), at:Date.now()}}}, {merge:true});
+}
+// keep this device's subscription filed (endpoints can rotate)
+async function refreshPushSub(){
+  try{ if(!pushCapable() || Notification.permission!=="granted") return;
+    const reg=await navigator.serviceWorker.ready; const sub=await reg.pushManager.getSubscription(); if(sub) await savePushSub(sub); }catch(e){}
+}
+async function pushToDocs(docs, payload, includeSelf){
+  const subs=[], owner={};
+  docs.forEach(d=>{ const x=d.data(); if(!includeSelf && x.uid===me.uid) return;
+    Object.entries(x.subs||{}).forEach(([k,s])=>{ if(s&&s.endpoint){ subs.push({endpoint:s.endpoint, keys:s.keys}); owner[s.endpoint]=[d.id,k]; } }); });
+  if(!subs.length || !PUSH_URL) return;
+  try{
+    const r=await fetch(PUSH_URL+"/notify",{method:"POST", keepalive:true, headers:{"Content-Type":"application/json"}, body:JSON.stringify({key:PUSH_KEY, subs, payload})});
+    const {results=[]}=await r.json();
+    results.filter(x=>x.status===404||x.status===410).forEach(x=>{ const [id,k]=owner[x.endpoint]||[];
+      if(id) db.collection("pushSubs").doc(id).update({["subs."+k]:firebase.firestore.FieldValue.delete()}).catch(()=>{}); });
+  }catch(e){ console.warn("push", e); }
+}
+async function pushCohort(payload){
+  try{ const s=await db.collection("pushSubs").where("cohorts","array-contains",I26).get(); await pushToDocs(s.docs, payload); }catch(e){ console.warn("push", e); }
+}
+async function pushPerson(email, payload, includeSelf){
+  try{ const s=await db.collection("pushSubs").where("email","==",email).get(); await pushToDocs(s.docs, payload, includeSelf); }catch(e){ console.warn("push", e); }
+}
+
+/* ---------- deep links (?open=…) from notifications ---------- */
+function handleOpen(o){
+  if(!o || !me) return;
+  if(o.startsWith("i26:")){ if(me.inI26){ applyCohort(I26, true); openChannel(o.slice(4)); } }
+  else if(o.startsWith("dm:")) openDM(o.slice(3));
+  else if(o.startsWith("day:")){ const [,n,e]=o.split(":"); if(me.inI26) openDay(+n, e||undefined); }
+}
+function consumeOpenParam(){
+  const q=new URLSearchParams(location.search), o=q.get("open");
+  if(o){ handleOpen(o); q.delete("open"); history.replaceState(null,"",location.pathname+(q.toString()?"?"+q:"")); }
+}
+if("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e=>{ if(e.data && e.data.type==="open") handleOpen(e.data.open); });
+
+/* ---------- sign-in page: the Interim 26 invite link (?c=i26) ---------- */
+function syncSigninCohort(){
+  let entry=null;
+  try{ const c=new URLSearchParams(location.search).get("c"); if(c) localStorage.setItem("katte-entry", c); entry=localStorage.getItem("katte-entry"); }catch(e){}
+  if(entry!=="i26") return;
+  $("#heroKn").textContent="Interim 26 · Computationally Yours";
+  $("#heroDef").innerHTML="After <b>Broadway Boogie Woogie</b>, Mondrian's last painting — a grid that moves. The studio's room for the month: announcements, the studio channel, daily pin-ups, your day-by-day log, and a direct line to Ujjwal.";
+}
+function syncLoginKeyField(){
+  const e=$("#loginEmail").value.trim().toLowerCase(), on=i26Member(e);
+  $("#loginKey").style.display = on ? "none" : "";
+  $("#loginKeyLabel").style.display = on ? "none" : "";
+  $("#loginSub").innerHTML = on
+    ? "You're on the <b>Interim 26</b> list. Password is your <b>first name, lowercase</b> — no class password needed."
+    : "Your Manipal email. Password is your <b>first name, lowercase</b>. First time here? Add the <b>class password</b> from the invite — that's the whole sign-up; we already know your name from the class list.";
+}
+
 /* ------------ faculty: invite the class ------------ */
 function copyInvite(){
   const url=location.origin+location.pathname;
-  const msg=`Boogie — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. First time, it also asks for the class password: MONDRIAN. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
+  const msg = cohort===I26
+    ? `Boogie — our studio's app for Computationally Yours 🟥🟨🟦\n\nOpen on your phone: ${url}?c=i26\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen). Open it from the home screen and turn on notifications in Me.\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. No class password: you're already on the list.\n\nAnnouncements, the studio channel, daily pin-ups, your day-by-day log, and a direct line to me. All in one place, for the month.`
+    : `Boogie — our studio's class app 🟥🟨🟦\n\nOpen on your phone: ${url}\nThen tap "Get the app" to put it on your home screen (iPhone: Safari → Share → Add to Home Screen).\n\nSign in with your @learner.manipal.edu email. Password: your first name, lowercase. First time, it also asks for the class password: MONDRIAN. That's it — your name is already on the class list.\n\nAnnouncements, studio chat, show & tell, and direct messages — all in one place.`;
   navigator.clipboard.writeText(msg).then(()=>toast("Invite copied — paste it in the class group"),
     ()=>toast("Couldn't copy — long-press to select"));
 }
@@ -1314,7 +1901,7 @@ function copyInvite(){
 /* ------------ wiring (no inline handlers — works under strict CSP) ------------ */
 $("#signinBtn").addEventListener("click",openPicker);
 $("#loginBtn").addEventListener("click",doLogin);
-$("#loginEmail").addEventListener("input",prefillName);
+$("#loginEmail").addEventListener("input",()=>{ prefillName(); syncLoginKeyField(); });
 $("#loginEmail").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#loginPass").focus(); });
 $("#loginPass").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
 $("#loginName").addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); });
@@ -1328,6 +1915,13 @@ $("#backToAdda").addEventListener("click",()=>{
   $("#v-adda").classList.add("active");
 });
 $("#sendBtn").addEventListener("click",sendMsg);
+$("#backToDays").addEventListener("click",()=>{ saveTimer && saveLog(); go("days"); });
+$("#editRosterBtn").addEventListener("click",openRoster);
+$("#rosterSave").addEventListener("click",saveRoster);
+$("#dayDetail").addEventListener("input",e=>{ if(e.target.matches("[data-f],[data-due]")) queueSave();
+  if(e.target.matches('[data-f="image"]')){ const img=$("#logImg"), v=e.target.value.trim(); if(/^https?:\/\//.test(v)){ img.src=v; img.style.display=""; } else img.style.display="none"; } });
+$("#dayDetail").addEventListener("change",e=>{ if(e.target.matches("[data-due]")) queueSave(); });
+document.addEventListener("visibilitychange",()=>{ if(document.hidden && saveTimer) saveLog(); });
 $("#msgIn").addEventListener("keydown",e=>{ if(e.key==="Enter") sendMsg(); });
 /* delegated: channel rows, Message buttons, install buttons, sheet closers */
 document.addEventListener("click",e=>{
@@ -1338,10 +1932,25 @@ document.addEventListener("click",e=>{
   if(ch){ openChannel(ch.dataset.chan); return; }
   const dm=e.target.closest("[data-dm]");
   if(dm){ openDM(dm.dataset.dm, dm.dataset.dmname); return; }
+  // Interim 26
+  const cs=e.target.closest("[data-cohort]");
+  if(cs){ applyCohort(cs.dataset.cohort); return; }
+  if(e.target.closest("[data-push]")){ onPushTap(); return; }
+  const dy=e.target.closest("[data-day]");
+  if(dy){ openDay(+dy.dataset.day); return; }
+  const cell=e.target.closest("[data-cell],[data-entry]");
+  if(cell){ const [em,n]=(cell.dataset.cell||cell.dataset.entry).split("|"); openDay(+n, em); return; }
+  if(e.target.closest("#openDayBtn")){ setOpenThrough(openThrough()+1); return; }
+  if(e.target.closest("#closeDayBtn")){ setOpenThrough(openThrough()-1); return; }
+  if(e.target.closest("#pinupBtn")){ pinUp(); return; }
+  if(e.target.closest("#noteSave")){ saveNote(false); return; }
+  if(e.target.closest("#noteClear")){ saveNote(true); return; }
 });
 
 /* ------------ init ------------ */
 syncInstallUI();
+syncSigninCohort();
+loadCohortPublic().then(syncLoginKeyField);
 // Firebase's onAuthStateChanged restores the session (or shows sign-in) on load.
 if(!FB_OK){ $("#signin").style.display="flex"; }
 

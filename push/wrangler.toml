@@ -1,0 +1,12 @@
+name = "boogie-push"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+VAPID_PUBLIC = "BK4l-lg6zYn1YAbVGo6oK0SJHknuJEIADM9f4QJrArNdsjtvxZfPya8I2XP1zex5o32W7DwtpJeXfb74PRk6CKg"
+VAPID_SUBJECT = "https://kala0606.github.io/Boogie/"
+# not a secret — it ships in index.html; it only stops casual drive-by use
+PUSH_KEY = "z_GT23w2ijYU"
+ALLOW_ORIGINS = "https://kala0606.github.io"
